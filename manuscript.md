@@ -106,7 +106,7 @@ This might seem like a small change, but it unlocks an entirely new mathematical
 A multivector lives in a space of 2^k dimensions, where k is the dimensionality of your original space. Because it doesn't just store the coordinates of a point — it stores scalars, vectors, planes, volumes, and more, all in a single unified mathematical object.
 
 <!-- fresh-render -->
-[![Geometric Algebra 3D visualization](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/thumbnail.png)](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/ch3_ga_visualization.mp4)
+[![Geometric Algebra grade hierarchy: scalar, vector, bivector, trivector](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/ga_cheatsheet.png)](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/ch3_ga_visualization.mp4)
 
 *Click the image to watch the animation (geometric product, bivector orientation, trivector volume). [Manim source](visualizations/).*
 
