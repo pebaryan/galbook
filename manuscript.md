@@ -161,6 +161,23 @@ R_matrix = | 0  -1 |   ·   |1|   =   |0|   ✓
 
 Both give the same answer. But there's a crucial difference: the rotor *is the rotation plane*. If you extract the bivector part of R, you get e₁∧e₂ — a direct algebraic representation of "rotating in the xy-plane." The rotation matrix hides this information in its four entries.
 
+```mermaid
+flowchart LR
+    A["Input vector x"] --> B["Build rotor R = exp(B/2)"]
+    B --> C["Sandwich: R·x·R̃"]
+    C --> D["Rotated output x'"]
+
+    subgraph Rotor in Cl(2)
+        E["B = e₁∧e₂  (rotation plane)"]
+        F["R = 0.707 + 0.707·e₁₂  (plane + angle)"]
+        G["R̃ = 0.707 - 0.707·e₁₂  (reverse)"]
+    end
+
+    E --> F
+    F --> G
+    G --> C
+```
+
 Now try composing two rotations: 90° then another 90° (total 180°). With rotors:
 
 ```
@@ -398,10 +415,51 @@ Now consider the transformation from "king" to "queen". In standard word embeddi
 king + (-man + woman) ≈ queen
 ```
 
+```mermaid
+flowchart LR
+    subgraph Input["Input"]
+        K1["king: royalty vector"]
+        V1["man - woman: gender offset"]
+    end
+    K1 --> Add["vector addition (linear)"]
+    V1 --> Add
+    Add --> Q1["queen: approximate result"]
+    
+    subgraph Note["Problem"]
+        N1["❌ No geometric meaning"]
+        N2["❌ Different pairs give different offsets"]
+        N3["❌ Can't compose transformations"]
+    end
+    
+    Q1 -.-> Note
+```
+
 In the multivector framework, this becomes a **geometric transformation**:
 
 ```
 R · king · R̃ ≈ queen
+```
+
+```mermaid
+flowchart LR
+    subgraph RotorBuild["Construct rotor"]
+        B["B = male ∧ female\n(gender bivector)"]
+        R["R = exp(θ/2 · B)\n(gender rotor)"]
+        Rt["R̃ = reverse(R)"]
+    end
+    
+    subgraph Apply["Sandwich product"]
+        K2["king: royalty vector"]
+        S["R · king · R̃"]
+        Q2["queen: rotated royalty"]
+    end
+
+    B --> R --> Rt --> S
+    K2 --> S --> Q2
+    
+    Q2 --> Gains["✅ Built-in geometric meaning"]
+    Q2 --> Gains2["✅ Same R works for any word pair"]
+    Q2 --> Gains3["✅ R₂·(R₁·x·R̃₁)·R̃₂ composes"]
 ```
 
 Where R is a rotor encoding a gender transition — a rotation in the plane spanned by "male" and "female" directions. The bivector B = "male" ∧ "female" defines the rotation plane, and the rotor R = exp(θ/2 · B) applies the transition.
@@ -426,6 +484,29 @@ One of the deepest problems in language understanding is **compositionality**: h
 Standard neural networks handle this through attention — a weighted sum of value vectors. This works, but it's fundamentally a *linear* operation. The geometric product offers a *bilinear* alternative that captures interactions standard attention cannot.
 
 Consider "red car". In a multivector embedding space:
+
+```mermaid
+flowchart LR
+    subgraph Red["red (multivector)"]
+        R1["scalar: intensity = 0.8"]
+        R2["vector: ← red direction"]
+    end
+
+    subgraph Car["car (multivector)"]
+        C1["scalar: object-ness = 0.9"]
+        C2["vector: → car concept"]
+        C3["bivector: 🚗 affordances"]
+    end
+
+    Red --> GP["geometric product red · car"]
+    Car --> GP
+    GP --> Result["output multivector"]
+    
+    Result --> D1["scalar·scalar: compatibility score"]
+    Result --> D2["vector·vector = dot + wedge"]
+    Result --> D3["new bivector: red-car property"]
+    Result --> D4["grade shifts: mixed interactions"]
+```
 
 - **red**: vector part encodes the color direction; scalar part encodes intensity
 - **car**: vector part encodes the object concept; bivector part encodes affordances (drives, contains people, etc.)
