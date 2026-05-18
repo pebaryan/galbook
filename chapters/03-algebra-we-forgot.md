@@ -22,7 +22,7 @@ The first part (a·b) is the dot product — a number. The second part (a∧b) i
 
 Instead of trying to visualize this with ASCII, here is a proper 3D animation that shows exactly how it works:
 
-> **▶ Watch the 3D visualization**: [ch3_ga_visualization.mp4](visualizations/ch3_ga_visualization.mp4)
+> **▶ Watch the 3D visualization**: [ch3_ga_visualization.mp4](../visualizations/ch3_ga_visualization.mp4)
 > It demonstrates the geometric product, bivector orientation (including why a∧b = −b∧a), and how trivectors represent oriented volumes. The camera rotates around each object so you can see the geometry clearly.
 
 This might seem like a small change, but it unlocks an entirely new mathematical universe. You can keep multiplying vectors and get higher-dimensional objects: **trivectors** (oriented volumes), **quadvectors**, and so on. These are all **multivectors** — the fundamental objects in Geometric Algebra.
@@ -33,6 +33,6 @@ A multivector lives in a space of 2^k dimensions, where k is the dimensionality 
 
 To make these abstract objects more concrete, the book includes a short 3D animation that visualizes exactly how the geometric product works in practice. You can watch the dot product project one vector onto another, the wedge product sweep out an oriented parallelogram (the bivector), and how three vectors combine to form a trivector with volume and orientation. The animation also demonstrates the critical antisymmetry of the wedge product — that a∧b is the negative of b∧a — which is fundamental to how Geometric Algebra handles oriented quantities.
 
-The video is available in the `visualizations/` folder, along with the Manim source code if you want to explore or modify the scenes yourself.
+The video is available in the `../visualizations/` folder, along with the Manim source code if you want to explore or modify the scenes yourself.
 
 ---
