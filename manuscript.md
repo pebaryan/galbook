@@ -109,7 +109,9 @@ This might seem like a small change, but it unlocks an entirely new mathematical
 
 A multivector lives in a space of 2^k dimensions, where k is the dimensionality of your original space. Because it doesn't just store the coordinates of a point — it stores scalars, vectors, planes, volumes, and more, all in a single unified mathematical object.
 
-> **▶ Watch it in 3D:** A short animation ([source](visualizations/)) visualizes all three concepts — the geometric product's dot and wedge components, the bivector's orientation (a∧b vs b∧a), and the trivector as an oriented volume. The camera rotates around each object so you can see the geometry from every angle.
+<video src="visualizations/ch3_ga_visualization.mp4" controls width="100%"></video>
+
+*A short animation of the geometric product, bivector orientation, and trivector volume. [Source code](visualizations/) in manim.*
 
 ---
 
