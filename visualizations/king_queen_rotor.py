@@ -43,31 +43,30 @@ class KingQueenRotor(Scene):
         panel1_title.move_to([lx, 2.0, 0])
         self.add(panel1_title)
 
-        # King vector
-        k_vec = np.array([-0.8, 1.2, 0.0])
+        # King vector (up-left, bold)
+        k_vec = np.array([-0.8, 1.4, 0.0])
         k_arrow = Arrow(start=[lx, ly, 0], end=[lx + k_vec[0], ly + k_vec[1], 0],
-                        color=GREEN, stroke_width=7, max_tip_length_to_length_ratio=0.12)
+                        color=GREEN, stroke_width=9, max_tip_length_to_length_ratio=0.14)
         k_lab = Text("king", font=MONO, font_size=16, color=GREEN, weight=BOLD)
-        k_lab.next_to([lx + k_vec[0], ly + k_vec[1], 0], UP + RIGHT, buff=0.05)
+        k_lab.next_to([lx + k_vec[0], ly + k_vec[1], 0], UP + LEFT, buff=0.05)
         self.add(k_arrow, k_lab)
 
-        # Gender offset vector
-        g_vec = np.array([0.5, -1.0, 0.0])
-        g_arrow = Arrow(start=[lx + k_vec[0] * 0.6, ly + k_vec[1] * 0.6, 0],
-                        end=[lx + k_vec[0] * 0.6 + g_vec[0], ly + k_vec[1] * 0.6 + g_vec[1], 0],
-                        color=ACCENT, stroke_width=5, max_tip_length_to_length_ratio=0.1)
+        # Gender offset vector (right-down — clearly different direction)
+        g_vec = np.array([1.4, -0.6, 0.0])
+        g_start = np.array([lx + k_vec[0], ly + k_vec[1], 0])
+        g_arrow = Arrow(start=g_start,
+                        end=g_start + g_vec,
+                        color=ACCENT, stroke_width=7, max_tip_length_to_length_ratio=0.12)
         g_lab = Text("woman \u2212 man", font=MONO, font_size=13, color=ACCENT)
-        g_lab.next_to([lx + k_vec[0] * 0.6 + g_vec[0] * 0.5,
-                       ly + k_vec[1] * 0.6 + g_vec[1] * 0.5, 0],
-                      LEFT, buff=0.05)
+        g_lab.next_to(g_start + g_vec * 0.5, RIGHT, buff=0.05)
         self.add(g_arrow, g_lab)
 
         # Result: queen (approximate)
         q_vec = k_vec + g_vec
         q_arrow = Arrow(start=[lx, ly, 0],
                         end=[lx + q_vec[0], ly + q_vec[1], 0],
-                        color=RED, stroke_width=5, max_tip_length_to_length_ratio=0.1,
-                        stroke_opacity=0.6)
+                        color=RED, stroke_width=8, max_tip_length_to_length_ratio=0.13,
+                        stroke_opacity=0.75)
         q_lab = Text("queen (approx)", font=MONO, font_size=14, color=RED)
         q_lab.next_to([lx + q_vec[0], ly + q_vec[1], 0], DOWN + RIGHT, buff=0.05)
         self.add(q_arrow, q_lab)
@@ -80,7 +79,7 @@ class KingQueenRotor(Scene):
             "X Can't compose"
         ]):
             t = Text(label, font=MONO, font_size=11, color=RED)
-            t.move_to([cx1, -1.0 - 0.4 * i, 0])
+            t.move_to([cx1, -2.0 - 0.35 * i, 0])
             self.add(t)
 
         # ══════════════════════════════════════════════════════════
@@ -114,46 +113,56 @@ class KingQueenRotor(Scene):
         rk_lab.next_to([rx + rk_vec[0], ry + rk_vec[1], 0], UP + LEFT, buff=0.05)
         self.add(rk_arrow, rk_lab)
 
-        # Rotation arc
-        rot_angle = -PI * 0.65
-        start_angle = np.arctan2(rk_vec[1], rk_vec[0])
-        arc = Arc(
-            radius=1.0, start_angle=start_angle, angle=rot_angle,
-            color=ACCENT, stroke_width=3
-        )
-        arc.move_to([rx, ry, 0])
-        self.add(arc)
+        # Queen result (define here for arc calculation)
+        rq_vec = np.array([0.8, -0.9, 0.0])
 
-        # Rotor label on arc
-        rotor_lab = Text("R = exp(\u03b8/2 \u00b7 B)", font=MONO, font_size=14, color=ACCENT)
-        mid_angle = start_angle + rot_angle / 2
-        rotor_lab.next_to([rx + 1.3 * np.cos(mid_angle),
-                           ry + 1.3 * np.sin(mid_angle), 0],
-                          UP, buff=0.15)
+        # Rotation arc with arrow (king direction -> queen direction)
+        arc_radius = 1.2
+        k_angle = np.arctan2(rk_vec[1], rk_vec[0])
+        q_angle = np.arctan2(rq_vec[1], rq_vec[0])
+        # Shortest rotation from king to queen (clockwise)
+        arc_angle = q_angle - k_angle
+        if arc_angle > 0:
+            arc_angle -= TAU  # force clockwise
+        k_pt = np.array([rx + arc_radius * np.cos(k_angle),
+                         ry + arc_radius * np.sin(k_angle), 0])
+        q_pt = np.array([rx + arc_radius * np.cos(q_angle),
+                         ry + arc_radius * np.sin(q_angle), 0])
+        rot_arc = CurvedArrow(
+            k_pt, q_pt,
+            color=ACCENT, stroke_width=5,
+        )
+        self.add(rot_arc)
+
+        # Rotor label above the arc
+        mid_angle = k_angle + arc_angle / 2
+        rotor_lab = Text("R \u00b7 king \u00b7 R\u0303", font=MONO, font_size=14, color=ACCENT)
+        rotor_lab.next_to([rx + (arc_radius + 0.4) * np.cos(mid_angle),
+                           ry + (arc_radius + 0.4) * np.sin(mid_angle), 0],
+                          UP, buff=0.1)
         self.add(rotor_lab)
 
-        # Bivector label
+        # Bivector label (below plane)
         biv_lab = Text("B = male \u2227 female", font=MONO, font_size=13, color=PURPLE)
-        biv_lab.move_to([rx, ry - 1.8, 0])
+        biv_lab.move_to([rx, -2.4, 0])
         self.add(biv_lab)
 
-        # Queen result
-        rq_vec = np.array([0.8, -0.9, 0.0])
+        # Queen result (arrow)
         rq_arrow = Arrow(start=[rx, ry, 0], end=[rx + rq_vec[0], ry + rq_vec[1], 0],
                          color=RED, stroke_width=7, max_tip_length_to_length_ratio=0.12)
         rq_lab = Text("queen", font=MONO, font_size=16, color=RED, weight=BOLD)
         rq_lab.next_to([rx + rq_vec[0], ry + rq_vec[1], 0], DOWN + RIGHT, buff=0.05)
         self.add(rq_arrow, rq_lab)
 
-        # Checkmarks
-        ckx = rx - 0.8
+        # Checkmarks (right of panel)
+        ckx = 5.5
         for i, label in enumerate([
             "Built-in geometric meaning",
             "Same R for any word pair",
             "Composes: R2(R1 x R1~)R2~"
         ]):
             t = Text(label, font=MONO, font_size=11, color=GREEN)
-            t.move_to([ckx, -1.0 - 0.4 * i, 0])
+            t.move_to([ckx, -0.5 - 0.4 * i, 0])
             self.add(t)
 
         # ── Bottom formula ─────────────────────────────────────────
