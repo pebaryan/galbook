@@ -57,6 +57,14 @@ SLERP(a, b, t) = sin((1-t)ω)/sin(ω) · a + sin(tω)/sin(ω) · b
 
 Where ω is the angle between vectors a and b, and t is how far along the path you want to go.
 
+### A Thought Experiment
+
+Imagine yourself standing at the North Pole. If you walk in a straight line toward New York, you follow a great circle route — the shortest path on a sphere's surface. SLERP does the same thing in high-dimensional space: it moves between two points along the shortest arc on the sphere.
+
+Now here's the problem: SLERP can tell you the coordinates of the halfway point between the North Pole and New York. But it can't tell you *which direction you were facing* when you started walking, or whether you passed through London or Tokyo on the way. The rotation plane — the 2D circle your path traces on the sphere's surface — is completely invisible.
+
+This matters because in language, *how* you get from one concept to another often carries information. The relationship "king → queen" isn't just a start and end point — it's a gender transition happening in a specific semantic plane. SLERP discards that plane. Rotors preserve it.
+
 This works. It's mathematically correct. But it has limitations:
 
 1. **It throws away information.** The rotation happens in a specific plane, but the trig formula only tells you the result — not *which way* you rotated.
@@ -122,6 +130,44 @@ x' = R x R̃
 ```
 
 Where R̃ is the reverse of R (like a conjugate). The sandwich wraps around x, applies the rotation, and gives you the result.
+
+### A Concrete Rotation
+
+Let's see this in 2D, where the math is simplest. Suppose we want to rotate the vector x = (1, 0) — pointing east — by 90 degrees counterclockwise. The result should be (0, 1) — pointing north.
+
+In 2D, there's only one plane: the xy-plane. The bivector representing this plane is e₁∧e₂ (often called the pseudoscalar in 2D). To rotate by 90 degrees (θ = π/2), we build the rotor:
+
+```
+R = exp((π/4) · e₁∧e₂) = cos(π/4) + sin(π/4) · e₁∧e₂
+  = 0.707 + 0.707 · e₁∧e₂
+```
+
+Now apply the sandwich:
+
+```
+x' = R · (1, 0) · R̃
+   = (0.707 + 0.707·e₁₂) · e₁ · (0.707 - 0.707·e₁₂)
+   = e₂  (= north ✓)
+```
+
+The bivector e₁∧e₂ encodes the rotation plane (the xy-plane), and the angle is built into the rotor coefficients. The sandwich product applies the rotation.
+
+Now contrast this with a rotation matrix:
+
+```
+R_matrix = | 0  -1 |   ·   |1|   =   |0|   ✓
+           | 1   0 |       |0|       |1|
+```
+
+Both give the same answer. But there's a crucial difference: the rotor *is the rotation plane*. If you extract the bivector part of R, you get e₁∧e₂ — a direct algebraic representation of "rotating in the xy-plane." The rotation matrix hides this information in its four entries.
+
+Now try composing two rotations: 90° then another 90° (total 180°). With rotors:
+
+```
+R_total = R₂ · R₁   (simple multiplication)
+```
+
+With matrices, you multiply two 2×2 matrices — four times as many operations. In higher dimensions, the gap widens dramatically: an n×n rotation matrix has n² entries, while a rotor in Cl(n) always has exactly 2^{⌊n/2⌋} components. For n=256, that's 65,536 vs 256 entries — the matrix is 256x larger.
 
 This is a fundamentally different way of thinking about rotation. In school, we learn rotation matrices — rectangular arrays of numbers that transform vectors. Matrices work, but they can't compose cleanly (matrix multiplication is expensive, and small errors accumulate). Quaternions solve some of these problems in 3D, but they don't generalize to higher dimensions.
 
@@ -437,6 +483,57 @@ None of this is proven at scale. But there are now three independent lines of ev
 The multivector hypothesis makes a testable prediction: a language model trained with multivector embeddings and geometric product attention should learn compositional structure more efficiently than an equivalent vector-based model, especially on tasks requiring systematic generalization (analogy, negation, composition).
 
 That test hasn't been run yet. But the machinery to run it is now in place.
+
+### Clifford Frame Attention: The Mechanism
+
+The ideas above are compelling in theory, but they need a concrete neural network mechanism to work. That mechanism already exists: **Clifford Frame Attention (CFA)**.
+
+Standard attention computes:
+
+```
+Attention(Q, K, V) = softmax(Q · Kᵀ / √d) · V
+```
+
+The dot product Q·Kᵀ produces a single scalar per query-key pair. It asks: "how similar are these two vectors?" — but it discards everything except the alignment.
+
+CFA replaces every step with geometric operations:
+
+**1. Multivector projections.** Instead of projecting input vectors to Q, K, V, CFA projects *multivectors* to Q, K, V. Each is a full multivector in Cl(k,0,0) — carrying scalar, vector, bivector, and higher-grade information.
+
+**2. Grade-weighted scoring.** The attention score is computed as the geometric product's scalar part between query and key:
+
+```
+score = ⟨Q · reverse(K)⟩₀
+```
+
+The `reverse(K)` operation flips the signs of higher-grade blades, making the product respect the geometric structure. The scalar part is the *grade-0 component* of the geometric product — which includes both the standard dot product AND contributions from higher-grade interactions.
+
+This means two tokens can have a high attention score not just because their vectors align, but because their bivectors align — they share a rotational relationship, even if their vector directions are orthogonal.
+
+**3. Bilinear output.** After aggregating values via the attention weights, CFA applies one more geometric product:
+
+```
+output = geometric_product(Q, V_agg) + V_agg
+```
+
+This is the key innovation. Where standard attention outputs a weighted sum of values (a linear operation), CFA outputs a **geometric product** between the query and the aggregated value (a bilinear operation). This captures interactions that no linear combination can:
+
+- If Q and V_agg both have strong vector components, their geometric product produces a bivector — encoding the *plane of interaction* between the two pieces of information.
+- If one has a strong bivector and the other a strong vector, the product shifts grade, creating a vector that mixes both.
+
+In code, the core of CFA is remarkably compact:
+
+```python
+# Grade-weighted score (Q, K are multivectors)
+score = torch.matmul(Q, K * grade_signs) · scale
+weights = softmax(score)
+V_agg = weights · V
+
+# Bilinear output via geometric product
+output = engine.geometric_product(Q, V_agg) + V_agg
+```
+
+The current implementation lives in `gaflowlm/models/cfs_arch.py`, as part of the CFS flow-matching model. It hasn't yet been extracted into the attractor backbone (gattrlm) or the flow backbone (gaflowlm RHF). That integration — pairing CFA with a proper CE training loop — is one of the most concrete next steps on the research roadmap.
 
 ---
 
