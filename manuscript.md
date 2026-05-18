@@ -40,14 +40,9 @@ This isn't a metaphor. Most modern language models *actually do this*. After pro
 
 On a sphere, the natural operation is **rotation**. To transform one thought into another, you rotate. To interpolate between "cat" and "dog", you move along a great arc on the sphere's surface — geodesic interpolation, or SLERP (Spherical Linear Interpolation).
 
-```
-      cat
-     /
-    /
-   /  ← What's halfway between cat and dog?
-  /
- dog
-```
+![Cat and Dog word vectors on a hypersphere with SLERP interpolation arc](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/cat_dog_slerp.png)
+
+*Two word vectors on the hypersphere surface. The SLERP path traces the shortest arc between them.*
 
 For years, this has been done with trigonometry. The formula for SLERP looks like this:
 
@@ -420,51 +415,14 @@ Now consider the transformation from "king" to "queen". In standard word embeddi
 king + (-man + woman) ≈ queen
 ```
 
-```mermaid
-flowchart LR
-    subgraph Input["Input"]
-        K1["king: royalty vector"]
-        V1["man - woman: gender offset"]
-    end
-    K1 --> Add["vector addition (linear)"]
-    V1 --> Add
-    Add --> Q1["queen: approximate result"]
+![King → Queen: vector offset vs rotor transformation](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/king_queen_rotor.png)
 
-    subgraph Note["Problem"]
-        N1["X No geometric meaning"]
-        N2["X Different pairs give different offsets"]
-        N3["X Can't compose transformations"]
-    end
-
-    Q1 -.-> Note
-```
+*Left: the vector offset approach treats gender as a linear addition. Right: the rotor approach treats gender as a rotation in a bivector plane.*
 
 In the multivector framework, this becomes a **geometric transformation**:
 
 ```
 R * king * R~ = queen
-```
-
-```mermaid
-flowchart LR
-    subgraph RotorBuild["Construct rotor"]
-        B["B = male ^ female (gender bivector)"]
-        R["R = exp(theta/2 * B) (gender rotor)"]
-        Rt["R~ = reverse(R)"]
-    end
-
-    subgraph Apply["Sandwich product"]
-        K2["king: royalty vector"]
-        S["R * king * R~"]
-        Q2["queen: rotated royalty"]
-    end
-
-    B --> R --> Rt --> S
-    K2 --> S --> Q2
-
-    Q2 --> Gains["+ Built-in geometric meaning"]
-    Q2 --> Gains2["+ Same R works for any word pair"]
-    Q2 --> Gains3["+ R2*(R1*x*R1~)*R2~ composes"]
 ```
 
 Where R is a rotor encoding a gender transition -- a rotation in the plane spanned by "male" and "female" directions. The bivector B = "male" ^ "female" defines the rotation plane, and the rotor R = exp(theta/2 * B) applies the transition.
