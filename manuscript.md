@@ -207,6 +207,10 @@ The trigonometric SLERP throws away the bivector information. The rotor version 
 
 ---
 
+![Geometric Algebra grade hierarchy: scalar, vector, bivector, trivector](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/ga_cheatsheet.png)
+
+*The grade hierarchy at a glance: scalars (magnitudes), vectors (directions), bivectors (oriented planes), and trivectors (oriented volumes).*
+
 ### Quick Reference: Geometric Objects
 
 Before we move on to the wider research landscape, here's a glossary of the geometric objects we've encountered:
