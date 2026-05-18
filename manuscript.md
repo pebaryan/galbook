@@ -40,6 +40,7 @@ This isn't a metaphor. Most modern language models *actually do this*. After pro
 
 On a sphere, the natural operation is **rotation**. To transform one thought into another, you rotate. To interpolate between "cat" and "dog", you move along a great arc on the sphere's surface — geodesic interpolation, or SLERP (Spherical Linear Interpolation).
 
+<!-- fresh-render -->
 ![Cat and Dog word vectors on a hypersphere with SLERP interpolation arc](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/cat_dog_slerp.png)
 
 *Two word vectors on the hypersphere surface. The SLERP path traces the shortest arc between them.*
@@ -104,6 +105,7 @@ This might seem like a small change, but it unlocks an entirely new mathematical
 
 A multivector lives in a space of 2^k dimensions, where k is the dimensionality of your original space. Because it doesn't just store the coordinates of a point — it stores scalars, vectors, planes, volumes, and more, all in a single unified mathematical object.
 
+<!-- fresh-render -->
 [![Geometric Algebra 3D visualization](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/thumbnail.png)](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/ch3_ga_visualization.mp4)
 
 *Click the image to watch the animation (geometric product, bivector orientation, trivector volume). [Manim source](visualizations/).*
@@ -202,6 +204,7 @@ The trigonometric SLERP throws away the bivector information. The rotor version 
 
 ---
 
+<!-- fresh-render -->
 ![Geometric Algebra grade hierarchy: scalar, vector, bivector, trivector](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/ga_cheatsheet.png)
 
 *The grade hierarchy at a glance: scalars (magnitudes), vectors (directions), bivectors (oriented planes), and trivectors (oriented volumes).*
@@ -415,6 +418,7 @@ Now consider the transformation from "king" to "queen". In standard word embeddi
 king + (-man + woman) ≈ queen
 ```
 
+<!-- fresh-render -->
 ![King → Queen: vector offset vs rotor transformation](https://raw.githubusercontent.com/pebaryan/galbook/main/visualizations/king_queen_rotor.png)
 
 *Left: the vector offset approach treats gender as a linear addition. Right: the rotor approach treats gender as a rotation in a bivector plane.*
