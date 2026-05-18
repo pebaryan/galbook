@@ -163,19 +163,16 @@ Both give the same answer. But there's a crucial difference: the rotor *is the r
 
 ```mermaid
 flowchart LR
-    A["Input vector x"] --> B["Build rotor R = exp(B/2)"]
-    B --> C["Sandwich: R·x·R̃"]
-    C --> D["Rotated output x'"]
-
-    subgraph Rotor in Cl(2)
-        E["B = e₁∧e₂  (rotation plane)"]
-        F["R = 0.707 + 0.707·e₁₂  (plane + angle)"]
-        G["R̃ = 0.707 - 0.707·e₁₂  (reverse)"]
+    subgraph RotorSteps["Rotor in Cl(2)"]
+        direction TB
+        E["B = e1^e2 (rotation plane)"]
+        F["R = 0.707 + 0.707*e12 (plane + angle)"]
+        G["R~ = 0.707 - 0.707*e12 (reverse)"]
     end
 
-    E --> F
-    F --> G
-    G --> C
+    A["Input: x = (1, 0)"] --> C["Sandwich: R * x * R~"]
+    E --> F --> G --> C
+    C --> D["Output: x' = (0, 1) (rotated 90 deg)"]
 ```
 
 Now try composing two rotations: 90° then another 90° (total 180°). With rotors:
@@ -424,45 +421,45 @@ flowchart LR
     K1 --> Add["vector addition (linear)"]
     V1 --> Add
     Add --> Q1["queen: approximate result"]
-    
+
     subgraph Note["Problem"]
-        N1["❌ No geometric meaning"]
-        N2["❌ Different pairs give different offsets"]
-        N3["❌ Can't compose transformations"]
+        N1["X No geometric meaning"]
+        N2["X Different pairs give different offsets"]
+        N3["X Can't compose transformations"]
     end
-    
+
     Q1 -.-> Note
 ```
 
 In the multivector framework, this becomes a **geometric transformation**:
 
 ```
-R · king · R̃ ≈ queen
+R * king * R~ = queen
 ```
 
 ```mermaid
 flowchart LR
     subgraph RotorBuild["Construct rotor"]
-        B["B = male ∧ female\n(gender bivector)"]
-        R["R = exp(θ/2 · B)\n(gender rotor)"]
-        Rt["R̃ = reverse(R)"]
+        B["B = male ^ female (gender bivector)"]
+        R["R = exp(theta/2 * B) (gender rotor)"]
+        Rt["R~ = reverse(R)"]
     end
-    
+
     subgraph Apply["Sandwich product"]
         K2["king: royalty vector"]
-        S["R · king · R̃"]
+        S["R * king * R~"]
         Q2["queen: rotated royalty"]
     end
 
     B --> R --> Rt --> S
     K2 --> S --> Q2
-    
-    Q2 --> Gains["✅ Built-in geometric meaning"]
-    Q2 --> Gains2["✅ Same R works for any word pair"]
-    Q2 --> Gains3["✅ R₂·(R₁·x·R̃₁)·R̃₂ composes"]
+
+    Q2 --> Gains["+ Built-in geometric meaning"]
+    Q2 --> Gains2["+ Same R works for any word pair"]
+    Q2 --> Gains3["+ R2*(R1*x*R1~)*R2~ composes"]
 ```
 
-Where R is a rotor encoding a gender transition — a rotation in the plane spanned by "male" and "female" directions. The bivector B = "male" ∧ "female" defines the rotation plane, and the rotor R = exp(θ/2 · B) applies the transition.
+Where R is a rotor encoding a gender transition -- a rotation in the plane spanned by "male" and "female" directions. The bivector B = "male" ^ "female" defines the rotation plane, and the rotor R = exp(theta/2 * B) applies the transition.
 
 The crucial difference from the vector offset approach:
 
@@ -489,21 +486,21 @@ Consider "red car". In a multivector embedding space:
 flowchart LR
     subgraph Red["red (multivector)"]
         R1["scalar: intensity = 0.8"]
-        R2["vector: ← red direction"]
+        R2["vector: red direction"]
     end
 
     subgraph Car["car (multivector)"]
         C1["scalar: object-ness = 0.9"]
-        C2["vector: → car concept"]
-        C3["bivector: 🚗 affordances"]
+        C2["vector: car concept"]
+        C3["bivector: affordances"]
     end
 
-    Red --> GP["geometric product red · car"]
+    Red --> GP["geometric product red * car"]
     Car --> GP
     GP --> Result["output multivector"]
     
-    Result --> D1["scalar·scalar: compatibility score"]
-    Result --> D2["vector·vector = dot + wedge"]
+    Result --> D1["scalar*scalar: compatibility score"]
+    Result --> D2["vector*vector = dot + wedge"]
     Result --> D3["new bivector: red-car property"]
     Result --> D4["grade shifts: mixed interactions"]
 ```
