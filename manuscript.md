@@ -327,7 +327,7 @@ This is speculative. We're still early in testing it. But there are now three in
 
 ---
 
-## 8. The Bigger Picture
+## 8. The Roadmap
 
 Geometric Algebra isn't the only mathematical frontier in AI, but it's a particularly promising one because of a fundamental observation:
 
@@ -335,28 +335,47 @@ Geometric Algebra isn't the only mathematical frontier in AI, but it's a particu
 
 The word embeddings, rotations, transformations, and comparisons that language models perform daily are inherently geometric operations. But the tools we use to describe and implement them — matrices, trigonometry, dot products — miss the deeper structure.
 
-Geometric Algebra offers:
-- A **unified vocabulary** for scalars, vectors, planes, volumes, and rotations
-- **Compositional operations** that naturally chain together
-- **Richer representations** that capture information standard approaches discard
-- **Differentiable** operations that work with modern machine learning frameworks
+This book's three projects aren't just three separate experiments. They're **building blocks** for a single vision: a complete language modeling stack built on Geometric Algebra — from the optimizer that trains it, to the generative dynamics that drive it, to the architecture that runs it.
 
-But it also faces real challenges:
-- Computational cost (a full multivector in Cl(256) is infeasible — we use projections to small k like 8)
-- The field is small — fewer than a thousand researchers worldwide work on GA for ML
-- The benefits are often subtle, not dramatic 10x improvements
+### The Foundation
 
-The history of science suggests that when you align your mathematics with the structure of your problem, progress accelerates. We used complex numbers instead of awkward trig for waves. We used matrices instead of scalar formulas for linear systems. We used tensors for general relativity.
+| Stage | Project | Status | What it does |
+|-------|---------|--------|--------------|
+| 1 | **gamuon** | Early prototype | Grade-aware optimizer. The training signal itself should respect geometry — rotors for rotations, separate control over scaling and strain. A drop-in upgrade for any PyTorch model. |
+| 2 | **gaflowlm** | Proven on Sudoku (70.70%) | Rotor-based flow matching. Replaces trigonometric sphere operations with a unified algebraic framework — cleaner gradients, preserved bivector information, better separability. |
+| 3 | **gattrlm** | Clifford layers prototyped | GA-native architecture. Deep Equilibrium models with built-in rotors, geometric products, and blade selection. Constant memory regardless of reasoning depth. |
 
-The roadmap forward looks like this:
+These three pieces connect through a **consistent geometric vocabulary** — the same rotors, the same Clifford engine, the same multivector layout. The book you're reading defines this vocabulary and serves as the manifesto tying everything together.
 
-| Stage | What | Timeline |
-|-------|------|----------|
-| 1 | Flow matching with GA (gaflowlm) | ✓ Proven — Sudoku 70.70% |
-| 2 | Attractor models with GA (gattrlm) | In progress |
-| 3 | GA-native optimizers (gamuon) | Early |
-| 4 | GA for attention (multivector QKV) | Under investigation |
-| 5 | Full GA-native language model | Future |
+### The Spine
+
+**Grade-Wise Scheduling** — the insight that different grades of a multivector need different learning rates — runs through all three projects. It was prototyped in gaflowlm's GWS research and is the first principled way to train multivector networks that acknowledges their internal structure. This isn't a trick. It's a new capability: the ability to say "learn rotations faster than scales" and have that mean something mathematically precise.
+
+### The Road Ahead
+
+**Stage 4 — GA-Native Attention** (near-term)
+Replace dot-product attention with geometric product attention. The query-key comparison becomes a geometric operation — not just a scalar similarity score but a full interaction that preserves which planes words rotate in and what transformations are implied.
+
+**Stage 5 — Full GA Language Model** (medium-term)
+Combine all three: train with gamuon, generate with gaflowlm, reason with gattrlm. A 1B+ parameter GA-native language model trained from scratch, evaluated on reasoning benchmarks (GSM8K, MATH, ARC-AGI), and compared head-to-head against equivalent standard architectures.
+
+**Stage 6 — Multimodal Grounding** (long-term)
+Conformal Geometric Algebra Cl(4,1) — already implemented in gattrlm — can represent 3D points, spheres, planes, and rotations as first-class citizens. Connect the GA language model to vision, robotics, and 3D scenes. A model that *understands* physical space because it speaks the language of space natively.
+
+**Stage 7 — Inference Pipeline** (long-term)
+GA-specific quantization, speculative decoding, and KV-cache compression. If the model is built on rotors and multivectors, the inference pipeline should exploit their structure.
+
+### What Success Looks Like
+
+This isn't just a research program. It's a claim:
+
+> *Linear algebra has been good to us. But it's not the right language for describing transformation, composition, and meaning. Geometric Algebra is.*
+
+The three repos are the working prototypes for that worldview. This book is the explanation. The roadmap is the plan.
+
+What we learn on the way — about neural networks, about geometry, about language — might matter more than any single result. The 70.70% on Sudoku is one data point. The real signal is this: every time we've had access to richer geometric structure, we've found something we couldn't see before.
+
+History suggests that when you align your mathematics with the structure of your problem, progress accelerates. We used complex numbers instead of awkward trig for waves. We used matrices instead of scalar formulas for linear systems. We used tensors for general relativity.
 
 Geometric Algebra for language modeling might be the next step in that progression — not because it's more mathematically sophisticated, but because it's a better match for what language models are actually doing.
 
@@ -403,6 +422,7 @@ And in a field where connection is everything — language — that might be exa
 - **gaflowlm**: [github.com/pebaryan/gaflowlm](https://github.com/pebaryan/gaflowlm) — GA flow matching for language
 - **gattrlm**: [github.com/pebaryan/gattrlm](https://github.com/pebaryan/gattrlm) — Clifford attractor model
 - **gamuon**: [github.com/pebaryan/gamuon](https://github.com/pebaryan/gamuon) — GA reformulation of Muon optimizer
+- **galbook**: [github.com/pebaryan/galbook](https://github.com/pebaryan/galbook) — This book (manuscript, roadmap, reviews)
 
 ---
 
