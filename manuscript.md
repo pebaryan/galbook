@@ -327,22 +327,116 @@ A multivector in Cl(3,0,0) — Geometric Algebra of 3D space — has eight compo
 - 3 bivectors (grade 2): oriented planes
 - 1 trivector (grade 3): oriented volume
 
-Now imagine that instead of representing each word as a single vector in 512-dimensional space, you represent it as a *multivector* in a smaller Cl(8,0,0) space. Each word is now a package with:
-- A **scalar** part: perhaps encoding abstract category information (noun-ness, verb-ness)
-- A **vector** part: the primary semantic direction
-- A **bivector** part: relationships, interactions, transformations
-- Higher-grade parts: complex compositional structure
+Now imagine that instead of representing each word as a single vector in 512-dimensional space, you represent it as a *multivector* in a smaller Cl(8,0,0) space. Each word is now a package with distinct geometric grades that can carry different kinds of linguistic information:
+
+| Grade | Geometric meaning | Possible linguistic role |
+|-------|-------------------|--------------------------|
+| 0 (scalar) | A magnitude | Abstract category: noun-ness, verb-ness, register, formality |
+| 1 (vector) | A direction | Core semantic content: "royalty", "animal", "action" |
+| 2 (bivector) | An oriented plane | Relationships between concepts: gender transition, tense shift, polarity flip |
+| 3+ (higher) | Multi-way interactions | Compositional structure: how multiple words combine |
 
 This is the **multivector embedding hypothesis**: different aspects of linguistic meaning naturally map to different grades of a multivector. The geometric product between words becomes a rich interaction, not just a simple comparison.
 
-In this framework, the relationship between "king" and "queen" isn't just a vector difference — it's a full geometric transformation encoded in a multivector. The subspace captures "royalty" while the bivector captures "gender transition" as a rotation plane.
+### Worked Example: King → Queen
 
-Clifford attention (as explored in gattrlm) provides a concrete mechanism: instead of query-key dot products, the attention score is computed via the geometric product, capturing oriented-plane relationships. The model can attend to specific *types* of geometric relationships — not just "similar words" but "words that rotate each other in a particular plane."
+Let's make this concrete. Suppose we represent "king" as a multivector where:
 
-This is speculative. We're still early in testing it. But there are now three independent lines of evidence pointing in the same direction:
+- **Scalar part** = +0.9 (high noun-ness, high concreteness)
+- **Vector part** = a unit vector in the direction of "royalty" (learned from data)
+- **Bivector part** = zero initially (no built-in transformation)
+
+Now consider the transformation from "king" to "queen". In standard word embeddings, this is captured as a vector offset:
+
+```
+king + (-man + woman) ≈ queen
+```
+
+In the multivector framework, this becomes a **geometric transformation**:
+
+```
+R · king · R̃ ≈ queen
+```
+
+Where R is a rotor encoding a gender transition — a rotation in the plane spanned by "male" and "female" directions. The bivector B = "male" ∧ "female" defines the rotation plane, and the rotor R = exp(θ/2 · B) applies the transition.
+
+The crucial difference from the vector offset approach:
+
+- **Vector offset**: `king + (-man + woman)` works statistically but has no geometric interpretation. Why does adding "maleness subtracted, femaleness added" produce "queen"? The model doesn't know — it just learned the correlation.
+- **Rotor transformation**: `R · king · R̃` says "rotate the concept of royalty in the gender plane." The geometry *means* something. The bivector explicitly encodes that gender transition is a rotation between two poles, not a linear shift.
+
+Furthermore, the rotor representation composes cleanly:
+
+```
+R₂ · (R₁ · king · R̃₁) · R̃₂
+```
+
+A second rotor could add tense ("king" → "queen" → "former queen"), or register ("queen" → "Your Majesty"). Each transformation is a separate geometric operation, not an embedding lookup.
+
+### Compositionality via Geometric Product
+
+One of the deepest problems in language understanding is **compositionality**: how do words combine to form phrase meanings?
+
+Standard neural networks handle this through attention — a weighted sum of value vectors. This works, but it's fundamentally a *linear* operation. The geometric product offers a *bilinear* alternative that captures interactions standard attention cannot.
+
+Consider "red car". In a multivector embedding space:
+
+- **red**: vector part encodes the color direction; scalar part encodes intensity
+- **car**: vector part encodes the object concept; bivector part encodes affordances (drives, contains people, etc.)
+
+The geometric product "red" · "car" produces a multivector with cross-grade terms:
+
+```
+red · car = (scalar·scalar) + (scalar·vector + vector·scalar) + (vector·vector + scalar·bivector + ...) + ...
+```
+
+The key term is **vector·vector** = dot product + wedge product. The dot captures compatibility ("is 'red' a property that applies to 'car'?") while the wedge captures the *new meaning created by their combination* ("red car" isn't just the sum of its parts — it implies a specific object with a specific property).
+
+Standard vector composition (addition or element-wise multiplication) cannot produce this emergent structure. The geometric product naturally does.
+
+### Negation as Bivector Reflection
+
+Negation is surprisingly hard for standard word vectors. If "happy" has a positive vector, what does "not happy" look like? In practice, negation doesn't map to negation of the vector (that would give you -"happy", which is meaningless). And "unhappy" isn't the opposite of "happy" in vector space — it's a different concept entirely.
+
+In the multivector framework, negation can be modeled as a **reflection through a semantic plane**. Consider a bivector P representing the polarity axis (positive ↔ negative). To negate a concept:
+
+```
+unhappy = R_π · happy · R̃_π
+```
+
+Where R_π is a rotor that rotates by π in the polarity plane P. This rotates the semantic vector to its polar opposite while preserving the concept's other properties (intensity, register, etc.).
+
+This is more than a neat analogy. If the model learns a *single* polarity rotor that works across many words, it means the geometry of negation is *shared* — exactly the kind of structural generalization that standard embeddings struggle with.
+
+### Analogy as Rotor Algebra
+
+The classic word analogy "king : queen :: man : woman" has a simple rotor interpretation:
+
+```
+R_gender · king · R̃_gender ≈ queen
+R_gender · man · R̃_gender ≈ woman
+```
+
+The *same rotor* R_gender transforms both pairs. This means the geometric algebra naturally captures the one-to-many mapping that vector offsets approximate:
+
+- `queen - king =?= woman - man` in vector space
+- `R_gender` applied to both in GA space
+
+The rotor formulation is *exact* (the same transformation applies to all words in the same semantic domain). The vector offset formulation is *approximate* (different word pairs give slightly different offset vectors).
+
+This also means the rotor components of a multivector vocabulary explicitly encode the *transformational structure* of the semantic space — which dimensions are axes of variation, which are invariant, and how concepts relate to each other through shared transformations.
+
+### What This Means
+
+None of this is proven at scale. But there are now three independent lines of evidence pointing in the same direction:
+
 1. The FGA paper showing transformer operations can be expressed as GA operations
 2. The gattrlm experiments showing Clifford layers improve geometric reasoning
 3. Our gaflowlm results showing rotor-based training signals break performance ceilings
+
+The multivector hypothesis makes a testable prediction: a language model trained with multivector embeddings and geometric product attention should learn compositional structure more efficiently than an equivalent vector-based model, especially on tasks requiring systematic generalization (analogy, negation, composition).
+
+That test hasn't been run yet. But the machinery to run it is now in place.
 
 ---
 
