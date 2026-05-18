@@ -20,15 +20,10 @@ ab = a·b + a∧b
 
 The first part (a·b) is the dot product — a number. The second part (a∧b) is the *wedge product* — a new kind of object called a **bivector**, representing the oriented plane swept out by a and b.
 
-```
-    b
-    ↑
-    |    ← The parallelogram a∧b
-    |   /    has area and orientation
-    |  /
-    | /
-    a
-```
+Instead of trying to visualize this with ASCII, here is a proper 3D animation that shows exactly how it works:
+
+> **▶ Watch the 3D visualization**: [ch3_ga_visualization.mp4](visualizations/ch3_ga_visualization.mp4)
+> It demonstrates the geometric product, bivector orientation (including why a∧b = −b∧a), and how trivectors represent oriented volumes. The camera rotates around each object so you can see the geometry clearly.
 
 This might seem like a small change, but it unlocks an entirely new mathematical universe. You can keep multiplying vectors and get higher-dimensional objects: **trivectors** (oriented volumes), **quadvectors**, and so on. These are all **multivectors** — the fundamental objects in Geometric Algebra.
 
