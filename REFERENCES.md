@@ -19,6 +19,19 @@ arXiv:2305.18415 [cs.LG].
 
 ---
 
+### GCANs — Geometric Clifford Algebra Networks (Microsoft Research)
+
+**Ruhe, D., Gupta, J. K., de Haan, P., Brandstetter, J., and Forré, P. (2023).**
+Geometric Clifford Algebra Networks.
+*International Conference on Machine Learning (ICML), 2023.*
+arXiv:2302.06594 [cs.LG].
+
+> Proposes group action layers using geometric (Clifford) algebras for modeling dynamical systems. Builds on Pin(p,q,r) group isometries. Applied to 3D rigid body transformations and large-scale fluid dynamics. Accompanied by the open-source [CliffordLayers](https://github.com/microsoft/cliffordlayers) library from Microsoft Research and the earlier Clifford Neural Layers (ICLR 2023).
+
+**Links:** [Microsoft Research](https://www.microsoft.com/en-us/research/publication/geometric-clifford-algebra-networks/) · [arXiv](https://arxiv.org/abs/2302.06594) · [GitHub](https://github.com/microsoft/cliffordlayers)
+
+---
+
 ### GAFL — Geometric Algebra Flow Matching
 
 **Wagner, J., et al. (2024).**

@@ -414,6 +414,7 @@ And in a field where connection is everything — language — that might be exa
 | Paper | Where | What |
 |-------|-------|------|
 | GATr (Geometric Algebra Transformer) | NeurIPS 2023 | GA for E(3)-equivariant geometric data |
+| GCANs (Geometric Clifford Algebra Networks) | ICML 2023 | Microsoft Research — group action layers via Clifford algebras |
 | GAFL (Geometric Algebra Flow Matching) | NeurIPS 2024 | GA for protein backbone generation |
 | Solve the Loop (Attractor Models) | arXiv 2605.12466 | DEQ fixed-point models for language |
 | FGA (Functional GA for NLP) | arXiv 2604.25902 | GA as foundation for language semantics |
