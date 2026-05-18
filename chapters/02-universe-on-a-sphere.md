@@ -31,6 +31,8 @@ Now here's the problem: SLERP can tell you the coordinates of the halfway point 
 
 This matters because in language, *how* you get from one concept to another often carries information. The relationship "king → queen" isn't just a start and end point — it's a gender transition happening in a specific semantic plane. SLERP discards that plane. Rotors preserve it.
 
+### The Three Limitations
+
 This works. It's mathematically correct. But it has limitations:
 
 1. **It throws away information.** The rotation happens in a specific plane, but the trig formula only tells you the result — not *which way* you rotated.
@@ -40,4 +42,3 @@ This works. It's mathematically correct. But it has limitations:
 These limitations might seem abstract, but they matter. Because language isn't just about moving between words — it's about *transforming meaning* in complex, compositional ways.
 
 ---
-
