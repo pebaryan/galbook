@@ -135,13 +135,16 @@ Representing Words in a Geometric Algebra.
 
 ## Foundational GA Texts
 
-1. **Macdonald, A.** *Linear and Geometric Algebra.* CreateSpace, 2011.
+1. **Vince, J.** *Geometric Algebra for Computer Graphics.* Springer, 2008.
+   — An accessible and very readable introduction, written in John Vince's tutorial style. Covers complex numbers, quaternions, wedge product, geometric product, reflections, rotations, and applications to computer graphics. A great starting point for programmers.
+
+2. **Macdonald, A.** *Linear and Geometric Algebra.* CreateSpace, 2011.
    — The gentlest introduction to GA from linear algebra foundations.
 
-2. **Dorst, L., Fontijne, D., and Mann, S.** *Geometric Algebra for Computer Science: An Object-Oriented Approach to Geometry.* Morgan Kaufmann, 2007.
+3. **Dorst, L., Fontijne, D., and Mann, S.** *Geometric Algebra for Computer Science: An Object-Oriented Approach to Geometry.* Morgan Kaufmann, 2007.
    — Practical and intuitive, with applications to graphics and robotics.
 
-3. **Hestenes, D. and Sobczyk, G.** *Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics.* D. Reidel, 1984.
+4. **Hestenes, D. and Sobczyk, G.** *Clifford Algebra to Geometric Calculus: A Unified Language for Mathematics and Physics.* D. Reidel, 1984.
    — The original modern treatment. Mathematically rigorous.
 
 ---

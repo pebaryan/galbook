@@ -405,9 +405,10 @@ And in a field where connection is everything — language — that might be exa
 
 ### Further Reading
 
+- *Geometric Algebra for Computer Graphics* by John Vince — An accessible and very readable introduction, great for programmers
 - *Linear and Geometric Algebra* by Alan Macdonald — The gentlest introduction
 - *Geometric Algebra for Computer Science* by Dorst, Fontijne, and Mann — Practical and intuitive
-- *Clifford Algebra to Geometric Calculus* by Hestenes and Sobczyk — The original modern treatment
+- *Clifford Algebra to Geometric Calculus* by Hestenes and Sobczyk — The original modern treatment, for the mathematically brave
 
 ### Key Papers
 
