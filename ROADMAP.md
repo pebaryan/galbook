@@ -80,6 +80,8 @@ Replace dot-product attention with geometric product attention. Not just in the 
 
 **Why it matters:** Dot products collapse everything to a single number. Geometric products preserve the full interaction structure — which planes words rotate in, how grades mix, what transformations are implied.
 
+**Head start:** `CliffordFrameAttention` (CFA) in `gaflowlm/models/cfs_arch.py` already implements GA-native attention: Q, K, V from multivector projections, grade-weighted geometric product scoring, and bilinear output via `engine.geometric_product(Q, V_agg)`. The next step is extracting CFA from the CFS pipeline and connecting it to the attractor (gattrlm) and flow (gaflowlm RHF) backbones with proper CE training.
+
 ### Stage 5 — Full GA Language Model (Medium-term)
 
 Combine all three:

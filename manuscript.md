@@ -356,6 +356,8 @@ These three pieces connect through a **consistent geometric vocabulary** — the
 **Stage 4 — GA-Native Attention** (near-term)
 Replace dot-product attention with geometric product attention. The query-key comparison becomes a geometric operation — not just a scalar similarity score but a full interaction that preserves which planes words rotate in and what transformations are implied.
 
+**Head start:** A working implementation already exists — `CliffordFrameAttention` (CFA) in `gaflowlm/models/cfs_arch.py`. It projects Q, K, V from multivectors, scores via grade-weighted geometric product (`Q·reverse(K)` using engine reverse_signs), and produces bilinear output via `engine.geometric_product(Q, V_agg)`. The gap is integration: CFA currently lives inside the CFS flow-matching pipeline (MSE loss, Cl(4) space, tiny-vocabulary ceiling). The next step is extracting it into the attractor backbone (gattrlm) and the flow backbone (gaflowlm RHF), paired with proper CE training.
+
 **Stage 5 — Full GA Language Model** (medium-term)
 Combine all three: train with gamuon, generate with gaflowlm, reason with gattrlm. A 1B+ parameter GA-native language model trained from scratch, evaluated on reasoning benchmarks (GSM8K, MATH, ARC-AGI), and compared head-to-head against equivalent standard architectures.
 
