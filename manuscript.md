@@ -143,6 +143,25 @@ The trigonometric SLERP throws away the bivector information. The rotor version 
 
 ---
 
+### Quick Reference: Geometric Objects
+
+Before we move on to the wider research landscape, here's a glossary of the geometric objects we've encountered:
+
+| Object | Grade | What it represents | Example |
+|--------|-------|--------------------|---------|
+| **Scalar** | 0 | A plain number | Temperature, magnitude, part-of-speech weight |
+| **Vector** | 1 | A direction with magnitude | Word embedding, "king" → [0.2, -0.5, 0.1, ...] |
+| **Bivector** | 2 | An oriented plane | Rotation plane, relationship between two concepts |
+| **Trivector** | 3 | An oriented volume | Triple interaction, higher-order composition |
+| **Multivector** | 0-3 | All of the above in one package | A word represented with scalar + vector + bivector parts |
+| **Geometric product** | — | `ab = a·b + a∧b` | Combines dot (alignment) and wedge (plane) in one operation |
+| **Rotor** | 0+2 | `R = exp(B/2)` | Encodes a rotation: plane (bivector B) and angle |
+| **Sandwich product** | — | `R x R̃` | Applies a rotor to an object: wraps, rotates, and returns |
+
+The key intuition: **grade tells you what kind of geometric thing you're dealing with.** Scalars (grade 0) are numbers. Vectors (grade 1) are directions. Bivectors (grade 2) are planes. Higher grades capture richer interactions. A rotor is special because it mixes scalars and bivectors — that's what lets it encode both a rotation plane and an angle in a single object.
+
+---
+
 ## 5. The GA+ML Landscape: A Map of the Frontier
 
 Geometric Algebra in machine learning is a small but rapidly growing field. It's not one thing — it's several distinct threads of research, each with a different motivation and set of results. Let's map the territory.
@@ -366,6 +385,22 @@ Conformal Geometric Algebra Cl(4,1) — already implemented in gattrlm — can r
 
 **Stage 7 — Inference Pipeline** (long-term)
 GA-specific quantization, speculative decoding, and KV-cache compression. If the model is built on rotors and multivectors, the inference pipeline should exploit their structure.
+
+### Limitations and Open Questions
+
+A honest assessment of where this approach falls short:
+
+**Computational cost.** Full multivector operations in Cl(k) grow as 2^k. For k=8, that's 256-dimensional operations — manageable. For k=16, it's 65,536. Scaling GA-native models to GPT-scale hidden dimensions requires projection layers (embed → Cl(8) → embed), which lose information at the bottleneck. Whether the geometric benefits outweigh the compression cost is an open question.
+
+**Small field, limited baselines.** Fewer than a thousand researchers worldwide work on GA for ML. There are no established best practices for multivector architecture design, no standard benchmarks, and no production-scale GA training runs. Every result so far — including ours — comes from small models on toy tasks.
+
+**The Sudoku ceiling is not yet broken on real language.** Our 70.70% improvement came on a 12-token Sudoku vocabulary. The real test — scaling to 50K-token vocabularies on open-domain text — hasn't been attempted. The multivector hypothesis may prove true for small, structured domains and false for the messy entropy of natural language.
+
+**Equivariance is proven for 3D, not for language.** GATr and GCANs have mathematically proven equivariance to E(3) rotations — but language doesn't have an obvious symmetry group. What does "rotate a sentence" even mean? GA for language may need different mathematical guarantees than GA for physics.
+
+**Hardware is not on our side.** GPUs are optimized for matrix multiply, not for geometric products. A single geometric product via einsum is ~2-10x more expensive than an equivalent matrix operation. Without custom CUDA kernels for GA operations, wall-clock speed will lag behind standard architectures regardless of theoretical advantages.
+
+These aren't reasons to stop. They're reasons to be precise about what we claim and rigorous about how we measure.
 
 ### What Success Looks Like
 
