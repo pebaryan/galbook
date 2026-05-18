@@ -417,7 +417,7 @@ And in a field where connection is everything — language — that might be exa
 | GAFL (Geometric Algebra Flow Matching) | NeurIPS 2024 | GA for protein backbone generation |
 | Solve the Loop (Attractor Models) | arXiv 2605.12466 | DEQ fixed-point models for language |
 | FGA (Functional GA for NLP) | arXiv 2604.25902 | GA as foundation for language semantics |
-| CliffordNet | 2025 | GA as general framework for neural nets |
+| CliffordNet | arXiv 2601.06793 (Jan 2026) | GA as general framework for neural nets (vision backbone) |
 
 ### Project Repositories
 
