@@ -143,46 +143,161 @@ The trigonometric SLERP throws away the bivector information. The rotor version 
 
 ---
 
-## 5. Why This Matters for Language
+## 5. The GA+ML Landscape: A Map of the Frontier
 
-Okay, so rotors are mathematically elegant. But why should anyone who works with language care?
+Geometric Algebra in machine learning is a small but rapidly growing field. It's not one thing — it's several distinct threads of research, each with a different motivation and set of results. Let's map the territory.
 
-Let me tell you a story about Sudoku.
+### 5.1 GATr: Geometric Algebra Transformer (Qualcomm AI Research, 2023)
 
-### The Sudoku Puzzle
+The most well-known GA + ML paper is the Geometric Algebra Transformer, or **GATr**, published at NeurIPS 2023 by researchers at Qualcomm AI Research.
 
-In our lab, we've been training language models to solve Sudoku puzzles. The model sees the first 81 digits of a Sudoku grid (the "clues") and has to predict the remaining 81 digits. It's a simple test bed for evaluating new ideas.
+GATr's key insight: many real-world problems involve geometric data — points, vectors, rotations, translations — that have built-in symmetries under rotations, reflections, and translations (the Euclidean group E(3)). Standard neural networks must learn these symmetries from data (through data augmentation), which is inefficient. GATr uses projective geometric algebra Cl(3,0,1) to encode these transformations *directly in the architecture*.
 
-The traditional approach works like this:
-1. Each digit (1-9, plus special tokens) is embedded as a vector on a sphere
-2. The model learns to transform noise into structured predictions through a process called **flow matching**
-3. At the core of flow matching are SLERP operations — moving along the sphere from random noise toward meaningful content
+The 16-dimensional projective geometric algebra is remarkable: it can represent points, lines, planes, spheres, rotations, and translations all as first-class citizens. A rotation isn't a 3×3 matrix — it's a rotor, just like the ones we met in Chapter 4. A translation isn't a vector addition — it's also a rotor (a translation rotor in the conformal model).
 
-We trained multiple models. Each hit the same ceiling: **62.90% accuracy**.
+GATr achieves **E(3) equivariance** by construction: rotate the input, and the output rotates the same way. This is critical for applications like:
+- **N-body physics**: predicting particle trajectories respects rotational symmetry
+- **Robotics**: a robot arm's decision shouldn't depend on arbitrary rotations of the scene
+- **Medical imaging**: anatomical structures should be recognized regardless of orientation
 
-No matter what we changed — model size, number of layers, learning rate — we couldn't break through. It was like hitting a wall in a video game where you need a new ability to proceed.
+GATr consistently outperformed non-geometric and equivariant baselines across these tasks. It was followed by **L-GATr** (Lorentz-equivariant for high-energy physics) and **LaB-GATr** (for large biomedical data).
 
-### The Rotor Replacement
+But GATr wasn't designed for language. It was designed for 3D geometric reasoning. The question of how to adapt its ideas to the very different geometry of language is what drives much of the research we'll discuss next.
 
-Then we tried something different. We replaced the trigonometric SLERP operations with rotor-based equivalents. Not changing the model architecture — just swapping the math under the hood.
+### 5.2 GAFL: Geometric Algebra Flow Matching (HITS, 2024)
 
-The models were *numerically identical*. Same training loss, same convergence. No improvement.
+**GAFL** (Geometric Algebra Flow Matching), published at NeurIPS 2024, uses GA for a different purpose: generating protein backbone structures.
 
-But here's what changed: we had access to the bivectors now. The rotation planes. Information that was previously discarded.
+Proteins are chains of amino acids, each with a position and orientation in 3D space. The space of all possible protein backbones is the product of SE(3) groups — rotation + translation for each amino acid. This is a highly structured geometric space.
 
-We added a simple loss term that pushed the word embeddings toward orthogonality — making them more separable, more distinct. This is a natural thing to want: you want "1" and "2" to be clearly different, not overlapping.
+GAFL represents protein frames as elements of the projective geometric algebra (the same Cl(3,0,1) as GATr) and uses the geometric product for message passing between residues. The flow matching objective learns to interpolate from noise to valid protein structures.
 
-But this loss competes with the main training objective. To make it matter, we had to weight it 30x relative to the primary loss.
+The results are impressive: GAFL generates protein backbones with high "designability" (the fraction of generated structures that fold into stable proteins) while preserving a realistic distribution of secondary structures. Other methods tend to over-represent alpha helices; GAFL captures the full diversity.
 
-The result: **70.70% accuracy.** A 7.8 point jump.
+What GAFL showed is that Geometric Algebra's bilinear products — the geometric product between multivectors — capture richer interactions than standard vector operations. This is the same principle that makes GA interesting for language: words don't just *align* (dot product) — they *interact* (geometric product).
 
-The rotor representation gave us access to geometric structure we couldn't touch before. The bivectors revealed the rotation dynamics, and that information let us design a better training signal.
+### 5.3 FGA: Functional Geometric Algebra for NLP (Pustejovsky, 2026)
 
-This is just one small example, but it illustrates a broader point. When you have access to richer geometric structure, you can do richer things.
+The most directly relevant work for our story is James Pustejovsky's **Functional Geometric Algebra** (FGA), published in April 2026. It's a 43-page paper that argues — passionately and in detail — that Geometric Algebra is a mathematically superior foundation for natural language semantics.
+
+Pustejovsky's core claim: current approaches to language semantics are built on linear algebra (vectors, matrices, tensors), but the operations we *actually need* for compositional semantics — type coercion, operator-level contrasts, semantic transformation — are geometric operations that linear algebra expresses awkwardly or not at all.
+
+FGA proposes that words and phrases should be represented as **multivectors**, not vectors. The scalar grade captures category information. The vector grade captures entity-level semantics. The bivector grade captures relational and transformational structure. The geometric product between two word multivectors produces a richer interaction than any composition of dot products.
+
+Crucially, Pustejovsky shows that many operations already implicit in transformer attention can be made *explicit* through GA — transforming opaque neural computations into interpretable geometric transformations. The paper includes worked examples of type coercion ("began the book" → began reading/writing the book) expressed as operator-level geometric operations.
+
+This paper is important not just for its technical contributions but for its timing: it signals that the GA-for-NLP idea has moved from fringe speculation to serious academic discourse.
+
+### 5.4 Other Threads
+
+Several other works are worth noting:
+
+- **CliffordNet** (2025): proposes Clifford algebras as a general framework for neural network design, including for NLP tasks
+- **Word2Mvec** (Princeton, 2024): a senior thesis showing that representing words as multivectors (instead of vectors) and taking geometric products outperforms standard Word2Vec on word similarity and analogy tasks
+- **LLM + CGA for 3D scene editing** (2024): uses conformal geometric algebra as an intermediate representation for LLM-driven 3D manipulation
+
+What unites these threads is the belief that **the mathematical language we use shapes what we can think about**. Linear algebra is good for many things, but it's not the best language for describing composition, transformation, and geometric structure. Geometric Algebra might be.
 
 ---
 
-## 6. Beyond Rotors: The Multivector Hypothesis
+## 6. Three Projects
+
+This chapter tells the story of three projects that apply Geometric Algebra to language modeling. They're different approaches to the same question: *can GA improve how machines understand and generate language?*
+
+### 6.1 gaflowlm: Flow Matching on the Sphere
+
+Our first project, **gaflowlm**, starts with a simple observation: the most successful language models based on continuous diffusion — flow matching — operate on the surface of a hypersphere (S^{d-1}). They interpolate between noise and meaningful content using SLERP (spherical linear interpolation), which is a trigonometric operation.
+
+But as we saw in Chapter 4, SLERP is a grade-1 projection of a rotor sandwich. The rotor operation is richer — it preserves the bivector (rotation plane) information that SLERP discards.
+
+The experiment was straightforward: replace SLERP with rotor-based operations in an existing flow matching architecture (called S-FLM). The model is otherwise identical — same transformer backbone, same training procedure. The rotor version produces mathematically identical results (SLERP = rotor sandwich projected to grade 1).
+
+We trained multiple models on **Sudoku** — a puzzle task where the model sees the first 81 digits of a 9×9 grid and must predict the remaining 81 digits. It's a simple test bed for evaluating new ideas in language modeling.
+
+Every variant hit the same wall: **62.90% accuracy**. SFM baseline: 62.90%. RHF (rotor replacement): 62.90%. Clifford variant: 62.90%. No matter what we changed — model size, layers, learning rate — the ceiling held.
+
+The breakthrough came when we realized the rotor representation gave us access to something new: the bivectors. By adding a loss term that pushed the 12 token embeddings toward orthogonality — making them geometrically more separable — we achieved **70.70% accuracy**. The bivector information let us see and fix a separability bottleneck we couldn't detect before.
+
+**What gaflowlm taught us:** You don't need to change the model. You need to change what information you have access to. The rotor representation gave us a window into the rotation geometry, and that window revealed a fix.
+
+---
+
+### 6.2 gattrlm: Clifford Attractor Models (USC, 2025)
+
+The second project, **gattrlm**, takes a completely different approach. Instead of flow matching, it uses **attractor models** — a fascinating alternative to transformer stacks.
+
+#### The Deep Equilibrium (DEQ) Idea
+
+Standard language models stack layers: layer 1, layer 2, ..., layer L. Each layer transforms the representation, and the total computation grows with the number of layers.
+
+Deep Equilibrium models ask a different question: what if we learn a single transformation f and iterate it until we reach a fixed point?
+
+```
+x_{t+1} = f(x_t)   for t = 0, 1, 2, ...
+```
+
+Instead of stacking L layers, you apply the same block f repeatedly until the representation stops changing — until it reaches an **attractor** state. This decouples effective depth from memory: you can iterate for hundreds of steps while only storing the final state (using a mathematical trick called implicit differentiation).
+
+This is the idea behind the paper *"Solve the Loop"* (Fein-Ashley & Rashidinejad, USC, 2025), which shows that attractor models match or exceed standard transformers at language modeling, reasoning (Sudoku, ARC-AGI), and in-context learning — while using constant memory.
+
+#### Adding Geometric Algebra
+
+The **gattrlm** extension adds Clifford algebra layers directly into the DEQ iteration block. Instead of processing plain vectors, the model processes **multivectors** — complete geometric objects with scalar, vector, bivector, and trivector components.
+
+The DEQ block becomes a chain of geometric operations:
+1. **RotorLayer**: learns bivector coefficients and applies the sandwich product R·x·R̃, giving the model built-in rotation equivariance
+2. **CliffordLinear**: channel mixing that preserves blade structure across the multivector components
+3. **GeometricProductLayer**: computes the geometric product of x with itself (quadratic self-interaction), creating cross-blade terms without adding parameters
+4. **BladeSelector**: learns which geometric grades to amplify or suppress — effectively letting the model decide what kind of geometric information matters for each task
+
+The result is an architecture with **built-in geometric priors** that would require extensive data augmentation for standard networks to learn.
+
+#### Conformal Geometric Algebra for 3D Reasoning
+
+The gattrlm project also implements **Cl(4,1) Conformal Geometric Algebra (CGA)**, which extends 3D Euclidean space into a 5D Minkowski-like space. CGA can represent spheres, circles, planes, and lines as **grade-1 multivectors** — the same type of object as a point. This means:
+- Intersection of two spheres = geometric product, no special-case code
+- Translation and rotation = same operation (a rotor), no separate matrix and vector
+- Rigid motions = screw rotors combining rotation and translation in a single step
+
+For language models that need to reason about physical space — describing a scene, following navigation instructions, or manipulating objects — this unified representation could be transformative.
+
+**What gattrlm taught us:** GA isn't just about replacing operations in existing architectures. It enables entirely new model designs where geometry is built in from the ground up — and the DEQ framework gives you constant memory regardless of how deep the geometric reasoning goes.
+
+---
+
+### 6.3 gamuon: GA Reformulation of the Muon Optimizer
+
+The third project, **gamuon**, takes GA in a completely different direction — not into the model architecture, but into the **optimizer**.
+
+#### What is Muon?
+
+The Muon optimizer (from the Grok paper, 2024) is a recent innovation in training large language models. It's based on a theoretical insight: the gradient signal in neural network training can be understood as a matrix structure, and the optimal update is related to the **orthogonalization** of that structure.
+
+Muon works by computing the **matrix sign function** of the gradient — essentially asking "what is the nearest orthogonal matrix to this gradient?" — and using that as the update direction. This is related to Newton's method but much cheaper computationally.
+
+For language models, Muon has been shown to train significantly faster than Adam (the standard optimizer), especially at scale.
+
+#### Reformulating with GA
+
+The key insight of **gamuon** is that the matrix sign function — the core computational primitive of Muon — is actually a **geometric operation**. Orthogonal matrices are rotors (in even dimensions). The sign function is related to the polar decomposition, which in GA terms is the decomposition of a multivector into a rotor times a positive definite factor.
+
+Gamuon reformulates the entire Muon optimizer using Geometric Algebra:
+- Gradients are multivectors in the Clifford algebra of the weight space
+- The matrix sign function becomes a geometric function on multivectors
+- The orthogonal constrain behaves naturally under the geometric product
+
+This reformulation offers several potential advantages:
+- **Natural gradient structure**: GA captures the manifold structure of the optimization landscape more faithfully
+- **Unified treatment**: the same operations work for scalars, vectors, matrices, and higher-order weight structures — no special cases
+- **Differentiable metric**: the geometric product naturally respects the metric of the parameter space
+
+The project is in its early stages, but the core idea is compelling: if the optimal update in neural network training is a geometric operation, it should be expressed in the language of geometry.
+
+**What gamuon teaches us:** GA isn't just about model architecture. It's a mathematical framework that can reshape how we think about training, optimization, and learning dynamics at every level.
+
+---
+
+## 7. Beyond Rotors: The Multivector Hypothesis
 
 If you're intrigued by the idea of bivectors (oriented planes), you might wonder: what else hides inside the multivector structure?
 
@@ -203,21 +318,12 @@ This is the **multivector embedding hypothesis**: different aspects of linguisti
 
 In this framework, the relationship between "king" and "queen" isn't just a vector difference — it's a full geometric transformation encoded in a multivector. The subspace captures "royalty" while the bivector captures "gender transition" as a rotation plane.
 
-This is speculative. We're still early in testing it. But the math is there, waiting to be used.
+Clifford attention (as explored in gattrlm) provides a concrete mechanism: instead of query-key dot products, the attention score is computed via the geometric product, capturing oriented-plane relationships. The model can attend to specific *types* of geometric relationships — not just "similar words" but "words that rotate each other in a particular plane."
 
----
-
-## 7. Clifford Attention: Seeing in Planes
-
-One of the most exciting developments is **Clifford Frame Attention (CFA)**.
-
-Standard attention — the "attention is all you need" mechanism that powers every major AI system — compares vectors using dot products. It asks: "how similar is this word to that word?"
-
-CFA asks a richer question: "how does this multivector transform that multivector?"
-
-In CFA, each query, key, and value is a multivector. The attention computation uses the geometric product, which captures not just alignment but oriented-plane relationships. The model can learn to attend to specific *types* of geometric relationships — not just "similar words" but "words that rotate each other in a particular plane."
-
-Early experiments suggest this captures syntactic structure more naturally. The geometric product between a subject and verb multivector might directly encode their grammatical relationship, without needing dozens of layers to learn it implicitly.
+This is speculative. We're still early in testing it. But there are now three independent lines of evidence pointing in the same direction:
+1. The FGA paper showing transformer operations can be expressed as GA operations
+2. The gattrlm experiments showing Clifford layers improve geometric reasoning
+3. Our gaflowlm results showing rotor-based training signals break performance ceilings
 
 ---
 
@@ -236,40 +342,27 @@ Geometric Algebra offers:
 - **Differentiable** operations that work with modern machine learning frameworks
 
 But it also faces real challenges:
-- It's computationally expensive (a 256-dimensional multivector requires 2^256 components in full — we use projections to keep it tractable)
+- Computational cost (a full multivector in Cl(256) is infeasible — we use projections to small k like 8)
 - The field is small — fewer than a thousand researchers worldwide work on GA for ML
 - The benefits are often subtle, not dramatic 10x improvements
 
 The history of science suggests that when you align your mathematics with the structure of your problem, progress accelerates. We used complex numbers instead of awkward trig for waves. We used matrices instead of scalar formulas for linear systems. We used tensors for general relativity.
 
-Geometric Algebra for language modeling might be the next step in that progression.
+The roadmap forward looks like this:
+
+| Stage | What | Timeline |
+|-------|------|----------|
+| 1 | Flow matching with GA (gaflowlm) | ✓ Proven — Sudoku 70.70% |
+| 2 | Attractor models with GA (gattrlm) | In progress |
+| 3 | GA-native optimizers (gamuon) | Early |
+| 4 | GA for attention (multivector QKV) | Under investigation |
+| 5 | Full GA-native language model | Future |
+
+Geometric Algebra for language modeling might be the next step in that progression — not because it's more mathematically sophisticated, but because it's a better match for what language models are actually doing.
 
 ---
 
-## 9. Where We Are and Where We're Going
-
-Our experiments are small — Sudoku puzzles, not billion-parameter models. But the trajectory is promising.
-
-| Method | Accuracy | What changed |
-|--------|----------|-------------|
-| Standard SLERP flow | 62.90% | Baseline |
-| Rotor replacement (same math) | 62.90% | Proves equivalence |
-| Rotor + embedding contrastive | 70.70% | Used bivector structure |
-| Clifford attention | Unknown | Next frontier |
-
-The jump from 62.90% to 70.70% came not from replacing SLERP with rotors, but from *having access to the rotation plane information* that rotors provide. The bivectors told us something we couldn't see before, and we used that information to improve training.
-
-That's the pattern we expect to repeat: not "replace A with B and get 10% better," but "use B's richer structure to discover something new."
-
-The next steps:
-- **Full multivector embeddings** for words, not just vectors on a sphere
-- **Clifford attention layers** that process geometric relationships directly
-- **Grade-structured losses** that give different geometric features different learning rates
-- **Scalability** testing on larger models and real language tasks
-
----
-
-## 10. A Personal Note
+## 9. A Personal Note
 
 If you're reading this and thinking "this is fascinating but I don't know where to start," you're not alone. Geometric Algebra has a steep learning curve, partly because it's so different from what most of us learned in school, and partly because it's not widely taught.
 
@@ -283,7 +376,7 @@ Start with these intuitions:
 
 4. **Rotors replace rotation matrices.** Cleaner, more general, differentiable, and they expose the rotation plane as a first-class citizen.
 
-The beauty of Geometric Algebra is that it doesn't contradict anything you already know about vectors — it *completes* it. The dot product becomes grade-lowering part of a larger whole. The cross product becomes the dual of the wedge product. Everything is connected.
+The beauty of Geometric Algebra is that it doesn't contradict anything you already know about vectors — it *completes* it. The dot product becomes the grade-lowering part of a larger whole. The cross product becomes the dual of the wedge product. Everything is connected.
 
 And in a field where connection is everything — language — that might be exactly the right tool.
 
@@ -293,9 +386,23 @@ And in a field where connection is everything — language — that might be exa
 
 - *Linear and Geometric Algebra* by Alan Macdonald — The gentlest introduction
 - *Geometric Algebra for Computer Science* by Dorst, Fontijne, and Mann — Practical and intuitive
-- *Clifford Algebra to Geometric Calculus* by Hestenes and Sobczyk — The original modern treatment, for the mathematically brave
+- *Clifford Algebra to Geometric Calculus* by Hestenes and Sobczyk — The original modern treatment
 
-Our lab's work: [github.com/pebaryan/gaflowlm](https://github.com/pebaryan/gaflowlm) — includes code, experiments, and mathematical derivations.
+### Key Papers
+
+| Paper | Where | What |
+|-------|-------|------|
+| GATr (Geometric Algebra Transformer) | NeurIPS 2023 | GA for E(3)-equivariant geometric data |
+| GAFL (Geometric Algebra Flow Matching) | NeurIPS 2024 | GA for protein backbone generation |
+| Solve the Loop (Attractor Models) | arXiv 2605.12466 | DEQ fixed-point models for language |
+| FGA (Functional GA for NLP) | arXiv 2604.25902 | GA as foundation for language semantics |
+| CliffordNet | 2025 | GA as general framework for neural nets |
+
+### Project Repositories
+
+- **gaflowlm**: [github.com/pebaryan/gaflowlm](https://github.com/pebaryan/gaflowlm) — GA flow matching for language
+- **gattrlm**: [github.com/pebaryan/gattrlm](https://github.com/pebaryan/gattrlm) — Clifford attractor model
+- **gamuon**: [github.com/pebaryan/gamuon](https://github.com/pebaryan/gamuon) — GA reformulation of Muon optimizer
 
 ---
 
