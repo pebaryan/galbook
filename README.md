@@ -6,17 +6,20 @@ An accessible book-length introduction to Geometric Algebra (GA) and its applica
 
 ## What's Inside
 
-| Ch | Title | Content |
-|----|-------|---------|
-| 1 | The Vector Revolution | Word embeddings, king − man + woman |
-| 2 | The Universe on a Sphere | Hyperspheres, SLERP, rotation geometry |
-| 3 | The Algebra We Forgot | Clifford's geometric product, bivectors, multivectors |
-| 4 | Rotors: The Engine of Change | Sandwich products, rotors vs matrices |
-| 5 | The GA+ML Landscape | GATr, GAFL, FGA, CliffordNet — the wider field |
-| 6 | Three Projects | **gaflowlm** (flow + GA, Sudoku 70.70%), **gattrlm** (Clifford attractor model), **gamuon** (GA optimizer) |
-| 7 | Beyond Rotors | The multivector embedding hypothesis |
-| 8 | The Bigger Picture | Roadmap, challenges, trajectory |
-| 9 | A Personal Note | Where to start learning GA |
+| Ch | Title | File |
+|----|-------|------|
+| — | Frontmatter | [00-frontmatter.md](chapters/00-frontmatter.md) |
+| 1 | The Vector Revolution | [01-vector-revolution.md](chapters/01-vector-revolution.md) |
+| 2 | The Universe on a Sphere | [02-universe-on-a-sphere.md](chapters/02-universe-on-a-sphere.md) |
+| 3 | The Algebra We Forgot | [03-algebra-we-forgot.md](chapters/03-algebra-we-forgot.md) |
+| 4 | Rotors: The Engine of Change | [04-rotors.md](chapters/04-rotors.md) |
+| 5 | The GA+ML Landscape | [05-ga-ml-landscape.md](chapters/05-ga-ml-landscape.md) |
+| 6 | Three Projects | [06-three-projects.md](chapters/06-three-projects.md) |
+| 7 | Beyond Rotors: The Multivector Hypothesis | [07-multivector-hypothesis.md](chapters/07-multivector-hypothesis.md) |
+| 8 | The Roadmap | [08-roadmap.md](chapters/08-roadmap.md) |
+| 9 | A Personal Note | [09-personal-note.md](chapters/09-personal-note.md) |
+
+The full manuscript can be read by concatenating the chapter files, or viewed via the git history.
 
 ## Projects Covered
 
@@ -30,7 +33,15 @@ And key external works: GATr (Qualcomm), GAFL (HITS), FGA (Pustejovsky), Cliffor
 
 ## Status
 
-Complete draft, ~28k words, 9 chapters. Open to revisions and expansions.
+Modular chapter-based draft. Recent updates include:
+
+- Split into individual chapter files under `chapters/`
+- Expanded early chapters with Manim visualizations
+- Added integrated project stack diagram (Ch6)
+- Added concrete multivector examples table (Ch7)
+- ~7,400 words across chapters (focused, readable length)
+
+Open to further revisions and expansions.
 
 ## License
 
