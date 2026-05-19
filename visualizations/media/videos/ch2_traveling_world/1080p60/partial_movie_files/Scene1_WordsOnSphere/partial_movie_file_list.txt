@@ -1,0 +1,7 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene1_WordsOnSphere/2257293077_375625478_223132457.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene1_WordsOnSphere/2135761390_2382333536_2514938365.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene1_WordsOnSphere/2135761390_62810560_1448155251.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene1_WordsOnSphere/2135761390_3627861413_3338341517.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene1_WordsOnSphere/2135761390_1304758291_2670017078.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene1_WordsOnSphere/2135761390_3794933938_3410662426.mp4'

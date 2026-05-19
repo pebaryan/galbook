@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2257293077_1631401366_223132457.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_2548862883_3628408131.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_1206780106_1499848971.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_2270971102_548719881.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_2317556225_491757835.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_4064396097_197115089.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_315849339_404088741.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch4_rotors/1080p60/partial_movie_files/Scene6_RotorInterpolation/2135761390_3794933938_461350490.mp4'

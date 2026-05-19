@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2257293077_2430447636_223132457.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_3776876490_58548040.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_121822365_1900927923.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_2803297898_1483021112.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_3971557557_897701937.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_781608926_1575338818.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_148979843_2591516597.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene4_CompositionProblem/2135761390_3794933938_2161250904.mp4'

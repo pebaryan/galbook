@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2257293077_3536373304_223132457.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_61912122_4142442137.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_987696761_3624715797.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_1726770493_1752253975.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_3805020512_3406151432.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_2709714913_891735213.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_2074846750_1098420733.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch2_traveling_world/1080p60/partial_movie_files/Scene5_GPSvsCompass/2135761390_3794933938_2177600084.mp4'

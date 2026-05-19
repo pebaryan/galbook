@@ -48,6 +48,8 @@ Why the sandwich? Because the geometric product is not commutative. If you just 
 
 The factor of 1/2 in the rotor and the double-sided multiplication combine to give the correct rotation angle.
 
+![The Rotor Sandwich](../visualizations/media/images/ch4_rotors/Scene1_RotorSandwich.png)
+
 ### A Concrete Example in 2D
 
 Let's see this work. Suppose we want to rotate the vector x = (1, 0) — pointing east — by 90 degrees counterclockwise. The result should be (0, 1) — pointing north.
@@ -91,6 +93,8 @@ x' = e₂  (= north ✓)
 
 The key insight is that the sandwich product R x R̃ preserves the grade of x. If x is a vector, x' is also a vector. The scalar and bivector parts cancel out in the full calculation.
 
+![2D Rotation Example](../visualizations/media/images/ch4_rotors/Scene2_Rotation2D.png)
+
 ### Rotors in 3D: Quaternions Revealed
 
 In 3D, rotors take a fascinating form. A general 3D rotor is:
@@ -114,6 +118,8 @@ GA reveals the answer: quaternions are rotors in 3D. The "imaginary" units i, j,
 
 The quaternion product that Hamilton discovered is just the geometric product of rotors. The mysterious quaternion multiplication rules (ij = k, jk = i, ki = j) follow directly from the geometric product of bivectors.
 
+![Quaternions as Bivectors](../visualizations/media/images/ch4_rotors/Scene3_QuaternionsAsBivectors.png)
+
 ### Composition: Why Rotors Multiply
 
 One of the most elegant properties of rotors is how they compose. If you want to apply rotation R₁ followed by rotation R₂, you simply multiply:
@@ -134,6 +140,8 @@ Same formula, but with a crucial difference: rotor multiplication is simpler and
 More importantly, when you multiply rotors, you get another rotor. The geometric product of two rotors is always a rotor. This isn't obvious from the matrix perspective — the product of two rotation matrices is a rotation matrix, but you can't easily see why from looking at the 9 (or 16, or 25...) entries.
 
 With rotors, the structure is transparent.
+
+![Rotor Composition](../visualizations/media/images/ch4_rotors/Scene4_RotorComposition.png)
 
 ### Rotors vs Rotation Matrices
 
@@ -163,6 +171,8 @@ The real advantage of rotors becomes clear when you want to:
 1. **Extract the rotation plane**: With a rotor, it's right there in the bivector part. With a matrix, you need to compute eigenvectors.
 2. **Interpolate**: Rotor interpolation is natural (see below). Matrix interpolation is notoriously difficult.
 3. **Generalize to higher dimensions**: Rotors use the same formula in any dimension. Matrices get unwieldy.
+
+![Rotor vs Matrix](../visualizations/media/images/ch4_rotors/Scene5_RotorVsMatrix.png)
 
 ### Rotor Interpolation: The Right Way to SLERP
 
@@ -200,6 +210,8 @@ This means:
 - Rotor interpolation: "Rotate from A toward B in the AB-plane" — keeps the plane
 
 If you want to continue the rotation beyond B, or compose it with another rotation, the rotor version has all the information you need. The SLERP version is stuck — it only knows the start and end points, not how you got between them.
+
+![Rotor Interpolation vs SLERP](../visualizations/media/images/ch4_rotors/Scene6_RotorInterpolation.png)
 
 ### Rotors in Language: Encoding Semantic Planes
 

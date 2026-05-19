@@ -27,6 +27,12 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch3_ga_visualization/Scene2_BivectorOrientation.png
 !visualizations/media/images/ch3_ga_visualization/Scene3_TrivectorVolume.png
 !visualizations/media/images/ch3_ga_visualization/Scene4_MultivectorComponents.png
+!visualizations/media/images/ch4_rotors/Scene1_RotorSandwich.png
+!visualizations/media/images/ch4_rotors/Scene2_Rotation2D.png
+!visualizations/media/images/ch4_rotors/Scene3_QuaternionsAsBivectors.png
+!visualizations/media/images/ch4_rotors/Scene4_RotorComposition.png
+!visualizations/media/images/ch4_rotors/Scene5_RotorVsMatrix.png
+!visualizations/media/images/ch4_rotors/Scene6_RotorInterpolation.png
 
 # OS files
 .DS_Store

@@ -1,0 +1,9 @@
+# This file is used internally by FFMPEG.
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2257293077_1871720654_223132457.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_1182253316_1796415299.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_1118292276_2850764235.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_30769104_2390802041.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_2102026283_2720025127.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_176697560_4022557299.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_2813654507_282847362.mp4'
+file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene4_Compositionality/2135761390_3794933938_1163355176.mp4'
