@@ -1,4 +1,4 @@
-## 6. Three Projects
+## 7. Three Projects
 
 This chapter tells the story of three projects that apply Geometric Algebra to language modeling. They're different approaches to the same question: *can GA improve how machines understand and generate language?*
 

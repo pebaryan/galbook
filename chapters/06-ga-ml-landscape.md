@@ -1,4 +1,4 @@
-## 5. The GA+ML Landscape: A Map of the Frontier
+## 6. The GA+ML Landscape: A Map of the Frontier
 
 Geometric Algebra in machine learning is a small but rapidly growing field. It's not one thing — it's several distinct threads of research, each with a different motivation and set of results. Let's map the territory.
 

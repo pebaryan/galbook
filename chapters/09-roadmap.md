@@ -1,4 +1,4 @@
-## 8. The Roadmap
+## 9. The Roadmap
 
 Geometric Algebra isn't the only mathematical frontier in AI, but it's a particularly promising one because of a fundamental observation:
 

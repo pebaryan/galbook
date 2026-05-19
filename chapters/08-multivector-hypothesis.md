@@ -1,4 +1,4 @@
-## 7. Beyond Rotors: The Multivector Hypothesis
+## 8. Beyond Rotors: The Multivector Hypothesis
 
 ### The Problem with "Red Car"
 

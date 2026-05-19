@@ -1,4 +1,4 @@
-## 9. A Personal Note
+## 10. A Personal Note
 
 If you're reading this and thinking "this is fascinating but I don't know where to start," you're not alone. Geometric Algebra has a steep learning curve, partly because it's so different from what most of us learned in school, and partly because it's not widely taught.
 
