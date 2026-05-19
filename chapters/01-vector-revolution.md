@@ -57,7 +57,11 @@ Word embeddings have a serious limitation: **out-of-vocabulary words**. If your 
 
 This hits harder than you'd expect. Language follows Zipf's law: a few words appear constantly, but most appear rarely. Your vocabulary of 50,000 words might cover 95% of tokens, but the remaining 5% includes millions of distinct words. In practice, word-level models face unknown tokens constantly.
 
+![Zipf's Law](../visualizations/media/images/ch1_subword_tokenization/ZipfsLaw.png)
+
 The solution was **subword tokenization**. Instead of embedding whole words, modern models embed smaller pieces. BERT uses WordPiece; GPT uses Byte-Pair Encoding (BPE). These algorithms learn to split words into frequent substrings:
+
+![Out-of-Vocabulary Problem](../visualizations/media/images/ch1_subword_tokenization/OOVProblem.png)
 
 ```
 "cryptocurrency" -> ["crypto", "##currency"]
@@ -65,7 +69,13 @@ The solution was **subword tokenization**. Instead of embedding whole words, mod
 "ChatGPT" -> ["Chat", "##G", "##PT"]
 ```
 
-Now the model can represent any word by composing subword vectors. A word it has never seen can still be understood from its parts. This is **compositionality through addition**: the vector for "cryptocurrency" becomes the sum of "crypto" and "currency" vectors.
+Now the model can represent any word by composing subword vectors. A word it has never seen can still be understood from its parts.
+
+![Subword Tokenization](../visualizations/media/images/ch1_subword_tokenization/SubwordTokenization.png)
+
+This is **compositionality through addition**: the vector for "cryptocurrency" becomes the sum of "crypto" and "currency" vectors.
+
+![Compositionality](../visualizations/media/images/ch1_subword_tokenization/Compositionality.png)
 
 But notice what happened. We replaced atomic word vectors with composite representations. The embedding for a word is no longer a single point in space—it's a *sum* of vectors. We moved from representing words as points to representing them as expressions.
 
