@@ -191,8 +191,8 @@ class Scene5_GPSvsCompass(Scene):
         slerp_title = Text("SLERP (GPS)", font_size=24, color=BLUE).shift(LEFT * 4 + UP * 2)
         slerp_desc = VGroup(
             Text("You are at:", font_size=16),
-            Text("40.7N, 74.0W", font_size=18, color=YELLOW),
-            Text("", font_size=12),
+            Text("40.7N, 74.0W", font_size=20, color=YELLOW),
+            Text(" ", font_size=20),
             Text("That's it.", font_size=16),
         ).arrange(DOWN, buff=0.25).next_to(slerp_title, DOWN, buff=0.4)
 
@@ -203,8 +203,8 @@ class Scene5_GPSvsCompass(Scene):
         ga_title = Text("Geometric Algebra", font_size=24, color=GREEN).shift(RIGHT * 4 + UP * 2)
         ga_desc = VGroup(
             Text("You are at:", font_size=16),
-            Text("40.7N, 74.0W", font_size=18, color=YELLOW),
-            Text("", font_size=12),
+            Text("40.7N, 74.0W", font_size=20, color=YELLOW),
+            Text(" ", font_size=20),
             Text("Facing: 53 west of north", font_size=16),
             Text("Plane of travel: known", font_size=16),
             Text("Can continue to any destination", font_size=16),
