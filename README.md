@@ -1,5 +1,7 @@
 # The Geometry of Meaning
 
+![Book Cover](assets/cover.png)
+
 *How Geometric Algebra Is Changing the Way Machines Understand Language*
 
 An accessible book-length introduction to Geometric Algebra (GA) and its applications to language modeling, written for a general audience. No advanced math required — just curiosity and basic vector concepts.
