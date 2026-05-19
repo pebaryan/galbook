@@ -78,26 +78,6 @@ class ElizaRuleBased(Scene):
         self.play(Create(r_output_box), Write(r_output_text))
         self.wait(1.5)
 
-        # AIML XML box (below the flow, showing the code)
-        aiml_box = RoundedRectangle(height=2.2, width=5, color=PURPLE, fill_opacity=0.08, stroke_width=1.5)
-        aiml_box.shift(RIGHT * 3.5 + DOWN * 2.2)
-
-        aiml_code = Text(
-            '<category>\n'
-            '  <pattern>I FEEL *</pattern>\n'
-            '  <template>Why do you feel <star/>?</template>\n'
-            '</category>',
-            font_size=12,
-            font="Monospace",
-            line_spacing=1.05,
-            color=WHITE
-        ).move_to(aiml_box.get_center())
-
-        aiml_label = Text("(XML representation)", font_size=11, color=GRAY).next_to(aiml_box, DOWN, buff=0.1)
-
-        self.play(Create(aiml_box), Write(aiml_code), Write(aiml_label))
-        self.wait(2)
-
         # Key limitation at bottom
         limitation = Text(
             "Both use pattern matching — no real understanding of meaning",

@@ -10,7 +10,16 @@ But they've learned something surprisingly close: they've learned to *place* wor
 
 Before dense vectors, computers handled language in much more rigid, symbolic ways.
 
-In the early days of natural language processing, language was treated as a set of rules and symbols. Systems like ELIZA (1966) used pattern matching and substitution rules. Later statistical approaches such as n-gram models simply counted how often words appeared next to each other. These systems could generate fluent text but had no real understanding of meaning.
+In the early days of natural language processing, language was treated as a set of rules and symbols. Systems like ELIZA (1966) used pattern matching and substitution rules. ALICE/AIML formalized this approach with XML:
+
+```xml
+<category>
+  <pattern>I FEEL *</pattern>
+  <template>Why do you feel <star/>?</template>
+</category>
+```
+
+Later statistical approaches such as n-gram models simply counted how often words appeared next to each other. These systems could generate fluent text but had no real understanding of meaning.
 
 ![ELIZA and AIML Rule-Based Systems](../visualizations/media/images/ch1_eliza_alice/ElizaRuleBased.png)
 
