@@ -9,7 +9,17 @@ visualizations/media/images/*/
 visualizations/media/videos/*/partial_movie_files/
 visualizations/media/videos/*/*.mp4
 
-# But keep the specific referenced files (we'll manage these manually)
+# Un-exclude the directories we need (must come before file exceptions)
+!visualizations/media/images/ch1_onehot_tfidf/
+!visualizations/media/images/ch1_vector_revolution/
+!visualizations/media/images/ch1_eliza_alice/
+!visualizations/media/images/ch1_subword_tokenization/
+!visualizations/media/images/ch2_traveling_world/
+!visualizations/media/images/ch3_ga_visualization/
+!visualizations/media/images/ch4_rotors/
+!visualizations/media/images/ch5_attention/
+
+# Keep the specific referenced PNG files
 !visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png
 !visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png
 !visualizations/media/images/ch1_eliza_alice/ElizaRuleBased1147.png
@@ -33,8 +43,6 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch4_rotors/Scene4_RotorComposition.png
 !visualizations/media/images/ch4_rotors/Scene5_RotorVsMatrix.png
 !visualizations/media/images/ch4_rotors/Scene6_RotorInterpolation.png
-
-# Chapter 5 attention mechanism
 !visualizations/media/images/ch5_attention/Scene1_QueryKeyValue.png
 !visualizations/media/images/ch5_attention/Scene2_AttentionScores.png
 !visualizations/media/images/ch5_attention/Scene3_MultiHeadAttention.png
