@@ -192,9 +192,8 @@ class Scene5_GPSvsCompass(Scene):
         slerp_desc = VGroup(
             Text("You are at:", font_size=16),
             Text("40.7N, 74.0W", font_size=20, color=YELLOW),
-            Text(" ", font_size=20),
             Text("That's it.", font_size=16),
-        ).arrange(DOWN, buff=0.25).next_to(slerp_title, DOWN, buff=0.4)
+        ).arrange(DOWN, buff=0.5).next_to(slerp_title, DOWN, buff=0.4)
 
         self.play(Write(slerp_title))
         self.play(Write(slerp_desc))
@@ -204,11 +203,10 @@ class Scene5_GPSvsCompass(Scene):
         ga_desc = VGroup(
             Text("You are at:", font_size=16),
             Text("40.7N, 74.0W", font_size=20, color=YELLOW),
-            Text(" ", font_size=20),
             Text("Facing: 53 west of north", font_size=16),
             Text("Plane of travel: known", font_size=16),
             Text("Can continue to any destination", font_size=16),
-        ).arrange(DOWN, buff=0.25).next_to(ga_title, DOWN, buff=0.4)
+        ).arrange(DOWN, buff=0.5).next_to(ga_title, DOWN, buff=0.4)
 
         self.play(Write(ga_title))
         self.play(Write(ga_desc))
