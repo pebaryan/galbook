@@ -20,6 +20,20 @@ Now imagine that instead of representing each word as a single vector in 512-dim
 
 This is the **multivector embedding hypothesis**: different aspects of linguistic meaning naturally map to different grades of a multivector. The geometric product between words becomes a rich interaction, not just a simple comparison.
 
+### Concrete Multivector Examples
+
+To make the idea less abstract, here are a few toy multivector representations (in a simplified Cl(3) space for illustration):
+
+| Word     | Scalar (grade 0) | Vector (grade 1)          | Bivector (grade 2)       | Interpretation |
+|----------|------------------|---------------------------|--------------------------|----------------|
+| king     | +0.85 (noun)     | royalty direction         | —                        | High noun-ness + royalty vector |
+| queen    | +0.85 (noun)     | royalty direction         | gender plane             | Same vector, plus gender bivector |
+| run      | +0.70 (verb)     | motion direction          | —                        | Verb + action vector |
+| quickly  | +0.40 (adverb)   | intensity modifier        | manner plane             | Modifies how the motion happens |
+| not      | —                | polarity flip             | negation plane           | Pure transformation (rotor) |
+
+These are illustrative, not learned embeddings. The point is that the *same* geometric object (a multivector) can encode category, meaning, and transformation in one structure.
+
 ### Worked Example: King → Queen
 
 Let's make this concrete. Suppose we represent "king" as a multivector where:
