@@ -24,7 +24,11 @@ This was the world before the vector revolution.
 
 ### The Vector Revolution
 
-Every word in your vocabulary can now be represented as a point in a high-dimensional space. This is called a **word embedding**, and it's one of the most important ideas in modern AI.
+The breakthrough came from a simple idea: **distributional semantics**. The words that appear together in text tend to have related meanings. "King" appears near "queen," "royal," and "castle." "Dog" appears near "puppy," "bark," and "leash.
+
+If we train a neural network to predict which words appear near each other, something remarkable happens. The network learns to represent each word as a dense vector—typically 100 to 1,000 dimensions—where similar words end up close together. These are called **word embeddings**.
+
+Unlike one-hot vectors, embeddings capture meaning through *geometry*. Words that appear in similar contexts get similar vectors. The result is a continuous space where "king" and "queen" are neighbors, and the relationships between words become mathematical operations.
 
 ### Why Embeddings Work
 
@@ -45,14 +49,16 @@ The vector from "king" to "queen" is roughly a downward shift in the gender dire
 king - man + woman ≈ queen
 ```
 
-You're performing a **geometric transformation** in meaning space.
+You're performing a **geometric transformation** in meaning space. The relationship "royalty with gender flipped" is captured as a direction you can add or subtract.
 
 ### The Power and the Problem
 
-Vectors capture meaning through their *positions and directions*. Language models are built on this foundation.
+Vectors capture meaning through their *positions and directions*. Language models— the things that power ChatGPT, Claude, Gemini—are built on this foundation. They take sequences of these word-vectors and learn to predict what comes next.
 
-But vectors are surprisingly poor at representing *relationships*, *transformations*, and *compositions* — the very things language does constantly.
+But there's a fundamental limitation. Vectors are excellent at representing *points* and *directions*, but they're surprisingly poor at representing *relationships*, *transformations*, and *compositions*—the very things language does constantly.
 
-And Geometric Algebra offers a way forward.
+Think about it: the vector offset from "king" to "queen" works for gender, but what about tense? "Walk" to "walked" is a different transformation entirely. And what about negation? "Happy" to "not happy" isn't a simple vector flip. The geometric operations we need don't fit naturally in vector space.
+
+Geometric Algebra offers a way forward—one where the math matches the structure of language itself.
 
 ---
