@@ -11,6 +11,11 @@ visualizations/media/images/*/
 !visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png
 !visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png
 !visualizations/media/images/ch1_eliza_alice/ElizaRuleBased1147.png
+!visualizations/media/images/ch1_eliza_alice/ElizaRuleBased.png
+!visualizations/media/images/ch1_subword_tokenization/ZipfsLaw.png
+!visualizations/media/images/ch1_subword_tokenization/OOVProblem.png
+!visualizations/media/images/ch1_subword_tokenization/SubwordTokenization.png
+!visualizations/media/images/ch1_subword_tokenization/Compositionality.png
 
 # OS files
 .DS_Store
