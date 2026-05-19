@@ -1,9 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2257293077_1645544514_223132457.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_2409041064_2442815449.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_487495423_3482734387.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_2253272478_878644673.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_38780976_1273313702.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_748303366_38503252.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_2696824110_772299780.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene2_OOVProblem/2135761390_3794933938_246558829.mp4'

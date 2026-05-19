@@ -1,8 +1,0 @@
-# This file is used internally by FFMPEG.
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2257293077_3798396550_223132457.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2135761390_2427219667_3533557367.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2135761390_2873551167_4258046595.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2135761390_2122341270_1412633670.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2135761390_3592321791_1400665405.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2135761390_3845466857_819931700.mp4'
-file 'file:/home/peb/gh/galbook/visualizations/media/videos/ch1_subword_tokenization/1080p60/partial_movie_files/Scene1_ZipfsLaw/2135761390_3794933938_969895267.mp4'
