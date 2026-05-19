@@ -80,7 +80,7 @@ class ElizaRuleBased(Scene):
 
         # AIML XML box (below the flow, showing the code)
         aiml_box = RoundedRectangle(height=2.2, width=5, color=PURPLE, fill_opacity=0.08, stroke_width=1.5)
-        aiml_box.shift(RIGHT * 3.5 + DOWN * 3.5)
+        aiml_box.shift(RIGHT * 3.5 + DOWN * 2.2)
 
         aiml_code = Text(
             '<category>\n'
