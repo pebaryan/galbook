@@ -1,253 +1,135 @@
 ## 7. Beyond Rotors: The Multivector Hypothesis
 
-If you're intrigued by the idea of bivectors (oriented planes), you might wonder: what else hides inside the multivector structure?
+### The Problem with "Red Car"
 
-A multivector in Cl(3,0,0) — Geometric Algebra of 3D space — has eight components:
+Here's a simple phrase that breaks standard embeddings: **"red car."**
 
-- 1 scalar (grade 0): a pure number
-- 3 vectors (grade 1): directions
-- 3 bivectors (grade 2): oriented planes
-- 1 trivector (grade 3): oriented volume
-
-Now imagine that instead of representing each word as a single vector in 512-dimensional space, you represent it as a *multivector* in a smaller Cl(8,0,0) space. Each word is now a package with distinct geometric grades that can carry different kinds of linguistic information:
-
-| Grade | Geometric meaning | Possible linguistic role |
-|-------|-------------------|--------------------------|
-| 0 (scalar) | A magnitude | Abstract category: noun-ness, verb-ness, register, formality |
-| 1 (vector) | A direction | Core semantic content: "royalty", "animal", "action" |
-| 2 (bivector) | An oriented plane | Relationships between concepts: gender transition, tense shift, polarity flip |
-| 3+ (higher) | Multi-way interactions | Compositional structure: how multiple words combine |
-
-This is the **multivector embedding hypothesis**: different aspects of linguistic meaning naturally map to different grades of a multivector. The geometric product between words becomes a rich interaction, not just a simple comparison.
-
-### Concrete Multivector Examples
-
-To make the idea less abstract, here are a few toy multivector representations (in a simplified Cl(3) space for illustration):
-
-| Word     | Scalar (grade 0) | Vector (grade 1)          | Bivector (grade 2)       | Interpretation |
-|----------|------------------|---------------------------|--------------------------|----------------|
-| king     | +0.85 (noun)     | royalty direction         | —                        | High noun-ness + royalty vector |
-| queen    | +0.85 (noun)     | royalty direction         | gender plane             | Same vector, plus gender bivector |
-| run      | +0.70 (verb)     | motion direction          | —                        | Verb + action vector |
-| quickly  | +0.40 (adverb)   | intensity modifier        | manner plane             | Modifies how the motion happens |
-| not      | —                | polarity flip             | negation plane           | Pure transformation (rotor) |
-
-These are illustrative, not learned embeddings. The point is that the *same* geometric object (a multivector) can encode category, meaning, and transformation in one structure.
-
-### Worked Example: King → Queen
-
-Let's make this concrete. Suppose we represent "king" as a multivector where:
-
-- **Scalar part** = +0.9 (high noun-ness, high concreteness)
-- **Vector part** = a unit vector in the direction of "royalty" (learned from data)
-- **Bivector part** = zero initially (no built-in transformation)
-
-Now consider the transformation from "king" to "queen". In standard word embeddings, this is captured as a vector offset:
+In vector space, you might represent this as:
 
 ```
-king + (-man + woman) ≈ queen
+"red car" ≈ "red" + "car"  (or maybe element-wise multiplication)
 ```
 
-```mermaid
-flowchart LR
-    subgraph Input["Input"]
-        K1["king: royalty vector"]
-        V1["man - woman: gender offset"]
-    end
-    K1 --> Add["vector addition (linear)"]
-    V1 --> Add
-    Add --> Q1["queen: approximate result"]
+But this is deeply unsatisfying. "Red" isn't just adding redness to car-ness. A red car is a *specific kind of car* with a *specific property*. The combination creates something new: a vehicle that attracts attention, gets pulled over more often, costs more to insure. The meaning emerges from the interaction, not the sum.
 
-    subgraph Note["Problem"]
-        N1["X No geometric meaning"]
-        N2["X Different pairs give different offsets"]
-        N3["X Can't compose transformations"]
-    end
+Standard neural networks handle this through attention — weighted sums of value vectors. But attention is fundamentally *linear*. It can blend, it can weight, but it cannot *transform*.
 
-    Q1 -.-> Note
-```
+What if we had a representation where the operation between words *produced* new structure?
 
-In the multivector framework, this becomes a **geometric transformation**:
+### The Multivector Hypothesis
 
-```
-R * king * R~ = queen
-```
+In Geometric Algebra, a multivector in Cl(3,0,0) has eight components:
 
-```mermaid
-flowchart LR
-    subgraph RotorBuild["Construct rotor"]
-        B["B = male ^ female (gender bivector)"]
-        R["R = exp(theta/2 * B) (gender rotor)"]
-        Rt["R~ = reverse(R)"]
-    end
+- **1 scalar** (grade 0): magnitude, intensity
+- **3 vectors** (grade 1): directions in space
+- **3 bivectors** (grade 2): oriented planes
+- **1 trivector** (grade 3): oriented volume
 
-    subgraph Apply["Sandwich product"]
-        K2["king: royalty vector"]
-        S["R * king * R~"]
-        Q2["queen: rotated royalty"]
-    end
+Now imagine each word as a multivector where different *grades* carry different kinds of linguistic information:
 
-    B --> R --> Rt --> S
-    K2 --> S --> Q2
+| Grade | Geometric meaning | Linguistic role |
+|-------|-------------------|-----------------|
+| Scalar | Magnitude | Category: noun-ness, verb-ness, intensity |
+| Vector | Direction | Core meaning: "royalty," "motion," "color" |
+| Bivector | Oriented plane | Relationships: gender, tense, polarity |
+| Trivector+ | Volume/higher | Composition: how words combine |
 
-    Q2 --> Gains["+ Built-in geometric meaning"]
-    Q2 --> Gains2["+ Same R works for any word pair"]
-    Q2 --> Gains3["+ R2*(R1*x*R1~)*R2~ composes"]
-```
+This is the **multivector hypothesis**: linguistic meaning naturally factorizes across geometric grades.
 
-Where R is a rotor encoding a gender transition -- a rotation in the plane spanned by "male" and "female" directions. The bivector B = "male" ^ "female" defines the rotation plane, and the rotor R = exp(theta/2 * B) applies the transition.
+### "Red Car" Revisited
 
-The crucial difference from the vector offset approach:
+Let's make this concrete. Suppose:
 
-- **Vector offset**: `king + (-man + woman)` works statistically but has no geometric interpretation. Why does adding "maleness subtracted, femaleness added" produce "queen"? The model doesn't know — it just learned the correlation.
-- **Rotor transformation**: `R · king · R̃` says "rotate the concept of royalty in the gender plane." The geometry *means* something. The bivector explicitly encodes that gender transition is a rotation between two poles, not a linear shift.
+- **"red"** = scalar(0.8, intensity) + vector(red-direction)  
+- **"car"** = scalar(0.9, object-ness) + vector(car-concept) + bivector(affordances)
 
-Furthermore, the rotor representation composes cleanly:
+The geometric product "red" · "car" produces cross-grade terms:
 
 ```
-R₂ · (R₁ · king · R̃₁) · R̃₂
+scalar·scalar   → compatibility score (does red apply to car?)
+scalar·vector   → weighted car-concept  
+vector·vector   → dot product + wedge product
 ```
 
-A second rotor could add tense ("king" → "queen" → "former queen"), or register ("queen" → "Your Majesty"). Each transformation is a separate geometric operation, not an embedding lookup.
+That **wedge product** is the key. It creates a *new bivector* representing the "red-car" property — an oriented plane spanned by the color and object directions. This isn't just combining vectors; it's creating geometric structure that didn't exist in either word alone.
 
-### Compositionality via Geometric Product
+Standard composition (addition, attention, even element-wise multiplication) cannot produce this emergent structure. The geometric product does it naturally.
 
-One of the deepest problems in language understanding is **compositionality**: how do words combine to form phrase meanings?
+### What About Transformations?
 
-Standard neural networks handle this through attention — a weighted sum of value vectors. This works, but it's fundamentally a *linear* operation. The geometric product offers a *bilinear* alternative that captures interactions standard attention cannot.
+In Chapter 4, we saw how rotors encode transformations. In a multivector embedding space, these transformations become *part of the vocabulary*.
 
-Consider "red car". In a multivector embedding space:
+Consider three words:
 
-```mermaid
-flowchart LR
-    subgraph Red["red (multivector)"]
-        R1["scalar: intensity = 0.8"]
-        R2["vector: red direction"]
-    end
+| Word | Scalar | Vector | Bivector |
+|------|--------|--------|----------|
+| king | 0.85 (noun) | royalty-direction | — |
+| queen | 0.85 (noun) | royalty-direction | gender-plane |
+| not | — | — | negation-plane |
 
-    subgraph Car["car (multivector)"]
-        C1["scalar: object-ness = 0.9"]
-        C2["vector: car concept"]
-        C3["bivector: affordances"]
-    end
+"Queen" carries the gender transformation *in its representation*. "Not" is *pure transformation* — a rotor waiting to be applied.
 
-    Red --> GP["geometric product red * car"]
-    Car --> GP
-    GP --> Result["output multivector"]
-    
-    Result --> D1["scalar*scalar: compatibility score"]
-    Result --> D2["vector*vector = dot + wedge"]
-    Result --> D3["new bivector: red-car property"]
-    Result --> D4["grade shifts: mixed interactions"]
-```
-
-- **red**: vector part encodes the color direction; scalar part encodes intensity
-- **car**: vector part encodes the object concept; bivector part encodes affordances (drives, contains people, etc.)
-
-The geometric product "red" · "car" produces a multivector with cross-grade terms:
+To transform king → queen, we don't add vectors. We apply the geometric product with the appropriate bivector structure:
 
 ```
-red · car = (scalar·scalar) + (scalar·vector + vector·scalar) + (vector·vector + scalar·bivector + ...) + ...
+queen = R_gender · king · R̃_gender
 ```
 
-The key term is **vector·vector** = dot product + wedge product. The dot captures compatibility ("is 'red' a property that applies to 'car'?") while the wedge captures the *new meaning created by their combination* ("red car" isn't just the sum of its parts — it implies a specific object with a specific property).
+The same rotor works for any word pair with a gender dimension: actor→actress, waiter→waitress, hero→heroine. The transformation is *shared*, *composable*, and *geometrically meaningful*.
 
-Standard vector composition (addition or element-wise multiplication) cannot produce this emergent structure. The geometric product naturally does.
+### Analogy as Rotor Equality
 
-### Negation as Bivector Reflection
-
-Negation is surprisingly hard for standard word vectors. If "happy" has a positive vector, what does "not happy" look like? In practice, negation doesn't map to negation of the vector (that would give you -"happy", which is meaningless). And "unhappy" isn't the opposite of "happy" in vector space — it's a different concept entirely.
-
-In the multivector framework, negation can be modeled as a **reflection through a semantic plane**. Consider a bivector P representing the polarity axis (positive ↔ negative). To negate a concept:
-
-```
-unhappy = R_π · happy · R̃_π
-```
-
-Where R_π is a rotor that rotates by π in the polarity plane P. This rotates the semantic vector to its polar opposite while preserving the concept's other properties (intensity, register, etc.).
-
-This is more than a neat analogy. If the model learns a *single* polarity rotor that works across many words, it means the geometry of negation is *shared* — exactly the kind of structural generalization that standard embeddings struggle with.
-
-### Analogy as Rotor Algebra
-
-The classic word analogy "king : queen :: man : woman" has a simple rotor interpretation:
+The classic analogy "king : queen :: man : woman" becomes a statement about rotors:
 
 ```
 R_gender · king · R̃_gender ≈ queen
 R_gender · man · R̃_gender ≈ woman
 ```
 
-The *same rotor* R_gender transforms both pairs. This means the geometric algebra naturally captures the one-to-many mapping that vector offsets approximate:
+The *same rotor* transforms both pairs. In vector space, this is an approximate pattern that models memorize. In GA space, it's an exact geometric relationship.
 
-- `queen - king =?= woman - man` in vector space
-- `R_gender` applied to both in GA space
+This means the rotor components of a multivector vocabulary explicitly encode the *transformational structure* of language. Instead of learning thousands of vector offsets (king→queen, man→woman, actor→actress...), the model learns a *single* geometric operation that applies wherever the dimension exists.
 
-The rotor formulation is *exact* (the same transformation applies to all words in the same semantic domain). The vector offset formulation is *approximate* (different word pairs give slightly different offset vectors).
+### Negation as Reflection
 
-This also means the rotor components of a multivector vocabulary explicitly encode the *transformational structure* of the semantic space — which dimensions are axes of variation, which are invariant, and how concepts relate to each other through shared transformations.
+Negation is notoriously hard for vector models. If "happy" points somewhere, "not happy" doesn't point the opposite direction (that would be -"happy", which is meaningless). And "unhappy" is a different concept entirely.
 
-### What This Means
-
-None of this is proven at scale. But there are now three independent lines of evidence pointing in the same direction:
-
-1. The FGA paper showing transformer operations can be expressed as GA operations
-2. The gattrlm experiments showing Clifford layers improve geometric reasoning
-3. Our gaflowlm results showing rotor-based training signals break performance ceilings
-
-The multivector hypothesis makes a testable prediction: a language model trained with multivector embeddings and geometric product attention should learn compositional structure more efficiently than an equivalent vector-based model, especially on tasks requiring systematic generalization (analogy, negation, composition).
-
-That test hasn't been run yet. But the machinery to run it is now in place.
-
-### Clifford Frame Attention: The Mechanism
-
-The ideas above are compelling in theory, but they need a concrete neural network mechanism to work. That mechanism already exists: **Clifford Frame Attention (CFA)**.
-
-Standard attention computes:
+In the multivector framework, negation is a **reflection through a semantic plane**. A bivector P representing the polarity axis (positive ↔ negative) defines a rotation plane. Applying a π-rotation rotor:
 
 ```
-Attention(Q, K, V) = softmax(Q · Kᵀ / √d) · V
+not-happy = R_π · happy · R̃_π
 ```
 
-The dot product Q·Kᵀ produces a single scalar per query-key pair. It asks: "how similar are these two vectors?" — but it discards everything except the alignment.
+This flips the semantic vector to its polar opposite while preserving other properties — intensity, register, concreteness. The transformation is *structured*, not arbitrary.
 
-CFA replaces every step with geometric operations:
+### The Evidence So Far
 
-**1. Multivector projections.** Instead of projecting input vectors to Q, K, V, CFA projects *multivectors* to Q, K, V. Each is a full multivector in Cl(k,0,0) — carrying scalar, vector, bivector, and higher-grade information.
+This hypothesis remains unproven at scale. But three independent lines of research point in the same direction:
 
-**2. Grade-weighted scoring.** The attention score is computed as the geometric product's scalar part between query and key:
+1. **FGA** (Chapter 5): Transformer operations can be expressed as GA operations
+2. **gattrlm**: Clifford layers improve geometric reasoning tasks
+3. **gaflowlm**: Rotor-based training signals break through performance ceilings
 
-```
-score = ⟨Q · reverse(K)⟩₀
-```
+The pattern is consistent: when we replace vector operations with geometric algebra equivalents, models become more data-efficient and more structurally aware.
 
-The `reverse(K)` operation flips the signs of higher-grade blades, making the product respect the geometric structure. The scalar part is the *grade-0 component* of the geometric product — which includes both the standard dot product AND contributions from higher-grade interactions.
+### What This Would Mean
 
-This means two tokens can have a high attention score not just because their vectors align, but because their bivectors align — they share a rotational relationship, even if their vector directions are orthogonal.
+If the multivector hypothesis is right, we've been thinking about language embeddings backwards.
 
-**3. Bilinear output.** After aggregating values via the attention weights, CFA applies one more geometric product:
+Current view: Words are points in high-dimensional space. We move between them with vector arithmetic.
 
-```
-output = geometric_product(Q, V_agg) + V_agg
-```
+Multivector view: Words are geometric objects with internal structure. They *interact* through the geometric product, producing new objects with emergent properties.
 
-This is the key innovation. Where standard attention outputs a weighted sum of values (a linear operation), CFA outputs a **geometric product** between the query and the aggregated value (a bilinear operation). This captures interactions that no linear combination can:
+"Red car" isn't a weighted sum. It's a geometric product that creates a bivector representing the color-object relationship. "Not happy" isn't a lookup. It's a reflection through a learned semantic plane. Analogies aren't statistical correlations. They're shared rotors applied across semantic domains.
 
-- If Q and V_agg both have strong vector components, their geometric product produces a bivector — encoding the *plane of interaction* between the two pieces of information.
-- If one has a strong bivector and the other a strong vector, the product shifts grade, creating a vector that mixes both.
+The implications extend beyond better embeddings. If language has this structure, then:
+- **Compositionality** falls out naturally from grade-mixing in geometric products
+- **Systematic generalization** emerges from shared transformational structure
+- **Interpretability** improves because grade components have semantic roles
 
-In code, the core of CFA is remarkably compact:
+We don't know if this works at the scale of production language models. The experiments haven't been run. But the machinery exists — Clifford Frame Attention (CFA) provides a neural mechanism for multivector attention, and the training infrastructure is in place.
 
-```python
-# Grade-weighted score (Q, K are multivectors)
-score = torch.matmul(Q, K * grade_signs) · scale
-weights = softmax(score)
-V_agg = weights · V
-
-# Bilinear output via geometric product
-output = engine.geometric_product(Q, V_agg) + V_agg
-```
-
-The current implementation lives in `gaflowlm/models/cfs_arch.py`, as part of the CFS flow-matching model. It hasn't yet been extracted into the attractor backbone (gattrlm) or the flow backbone (gaflowlm RHF). That integration — pairing CFA with a proper CE training loop — is one of the most concrete next steps on the research roadmap.
+The question isn't whether geometric algebra *can* represent language. The question is whether language *is* geometric algebra.
 
 ---
 
