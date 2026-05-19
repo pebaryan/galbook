@@ -12,6 +12,8 @@ Before dense vectors, computers handled language in much more rigid, symbolic wa
 
 In the early days of natural language processing (the 1950s through the 1990s), language was treated as a set of rules and symbols. Systems like ELIZA (1966) used pattern matching and substitution rules to simulate conversation. Later statistical approaches, such as n-gram models, simply counted how often words appeared next to each other in large corpora. These models could generate surprisingly fluent text for their time, but they had no real understanding of meaning — they were essentially sophisticated autocomplete systems.
 
+![ELIZA and AIML Rule-Based Systems](../visualizations/media/images/ch1_eliza_alice/ElizaRuleBased0665.png)
+
 When neural networks entered the picture, the first approach was **one-hot encoding**. Each word in the vocabulary was represented as a long vector of zeros with a single "1" in the position corresponding to that word. This worked, but it had two fatal problems:
 
 - The vectors were extremely sparse (mostly zeros)
