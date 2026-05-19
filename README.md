@@ -60,4 +60,8 @@ Complete first draft (May 2026). All chapters written with full Manim illustrati
 
 ## License
 
-[To be determined]
+The text and illustrations in this book are licensed under **CC BY-SA 4.0** (Creative Commons Attribution-ShareAlike 4.0 International).
+
+You are free to share and adapt the content for any purpose, as long as you provide attribution and share any adaptations under the same terms.
+
+Code in this repository (examples, scripts) is licensed under the **MIT License** — see the individual files for details.
