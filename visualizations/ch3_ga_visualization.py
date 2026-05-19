@@ -1,366 +1,231 @@
-"""
-The Geometry of Meaning — Chapter 3 Visualization
-===================================================
-
-Three scenes illustrating Geometric Algebra foundations:
-1. Geometric product: a·b + a∧b
-2. Bivector as oriented plane
-3. Trivector as oriented volume
-
-No LaTeX required — uses Text() with monospace font.
-"""
-
 from manim import *
 import numpy as np
 
-# ── Constants ──────────────────────────────────────────────────────
-BG = "#1C1C1C"
-PRIMARY = "#58C4DD"
-SECONDARY = "#83C167"
-ACCENT = "#FFFF00"
-RED = "#FF6B6B"
-PURPLE = "#C084FC"
-WHITE = "#EAEAEA"
-MONO = "Menlo"
-LIGHT = 0.4
-DARK_LABEL = 0.6
 
-
-def T(scene, text_str, **kwargs):
-    """Create flat text that always faces the camera in 3D scenes.
-    Pass 'self' (the scene) as the first argument."""
-    t = Text(text_str, font=MONO, **kwargs)
-    scene.add_fixed_in_frame_mobjects(t)
-    return t
-
-
-# ═══════════════════════════════════════════════════════════════════
-# Scene 1: The Geometric Product
-# ═══════════════════════════════════════════════════════════════════
-class Scene1_GeometricProduct(ThreeDScene):
-    """Two vectors a, b → dot product (scalar) + wedge product (bivector)."""
-
+class Scene1_GeometricProduct(Scene):
+    """Show the geometric product: ab = a·b + a∧b"""
     def construct(self):
-        self.camera.background_color = BG
-        self.set_camera_orientation(phi=70 * DEGREES, theta=-45 * DEGREES)
-        # Let camera settle before any mobjects to avoid first-frame glitch
-        self.wait(0.01)
+        title = Text("The Geometric Product", font_size=36).to_edge(UP)
+        self.play(Write(title))
 
-        # ── Title ──
-        title = T(self, "The Geometric Product", font_size=48, color=PRIMARY, weight=BOLD)
-        title.to_edge(UP)
-        self.play(Write(title), run_time=1.5)
-        self.wait(1.0)
+        # Two vectors
+        vec_a = Arrow(ORIGIN, RIGHT * 2 + UP * 1, buff=0, color=BLUE)
+        vec_b = Arrow(ORIGIN, RIGHT * 2.5 + DOWN * 0.5, buff=0, color=GREEN)
 
-        # ── Two vectors ──
-        a_vec = np.array([2.5, 0.5, 0.0])
-        b_vec = np.array([0.5, 2.0, 0.5])
+        label_a = Text("a", font_size=24, color=BLUE).next_to(vec_a.get_end(), UR, buff=0.1)
+        label_b = Text("b", font_size=24, color=GREEN).next_to(vec_b.get_end(), DR, buff=0.1)
 
-        a_label = T(self, "a", font_size=30, color=SECONDARY)
-        b_label = T(self, "b", font_size=30, color=RED)
+        self.play(GrowArrow(vec_a), Write(label_a))
+        self.play(GrowArrow(vec_b), Write(label_b))
 
-        a_arrow = Arrow3D(np.zeros(3), a_vec, color=SECONDARY, resolution=8)
-        b_arrow = Arrow3D(np.zeros(3), b_vec, color=RED, resolution=8)
+        # Show dot product (scalar part)
+        dot_eq = MathTex(r"a \cdot b = \text{scalar}", font_size=28, color=YELLOW)
+        dot_eq.shift(LEFT * 4 + UP * 1)
+        self.play(Write(dot_eq))
 
-        a_label.next_to(a_vec, RIGHT, buff=0.2)
-        b_label.next_to(b_vec, UP, buff=0.2)
+        # Projection line
+        proj_line = DashedLine(vec_b.get_end(), vec_a.get_end() * 0.7, color=GRAY)
+        self.play(Create(proj_line))
 
-        self.add_subcaption("Two vectors, a and b", duration=2)
-        self.play(
-            Create(a_arrow), Write(a_label),
-            Create(b_arrow), Write(b_label),
-            run_time=2.0
-        )
-        self.wait(1.0)
+        # Show wedge product (bivector part)
+        wedge_eq = MathTex(r"a \wedge b = \text{bivector}", font_size=28, color=ORANGE)
+        wedge_eq.shift(LEFT * 4 + DOWN * 1)
+        self.play(Write(wedge_eq))
 
-        # ── Dot product: scalar ──
-        dot_val = np.dot(a_vec, b_vec)
-        dot_title = T(self, "a . b  (dot product = scalar)", font_size=28, color=ACCENT)
-        dot_title.to_edge(DOWN, buff=1.0)
-
-        # Draw projection line
-        b_on_a = (dot_val / np.dot(a_vec, a_vec)) * a_vec
-        proj_line = DashedLine(start=b_vec, end=b_on_a, color=ACCENT, stroke_width=2)
-
-        self.add_subcaption("The dot product captures alignment", duration=2)
-        self.play(Write(dot_title), Create(proj_line), run_time=1.5)
-        self.wait(1.5)
-
-        # ── Wedge product: bivector ──
-        wedge_title = T(self, 
-            "a . b + a ^ b  (geometric product = multivector)",
-            font_size=26, color=WHITE
-        )
-        wedge_title.next_to(dot_title, DOWN, buff=0.3, aligned_edge=LEFT)
-
-        # Draw the parallelogram for a∧b
+        # Parallelogram for wedge product
         parallelogram = Polygon(
-            np.zeros(3), a_vec, a_vec + b_vec, b_vec,
-            color=PURPLE, stroke_width=3, fill_opacity=0.25
+            ORIGIN,
+            vec_a.get_end(),
+            vec_a.get_end() + vec_b.get_end(),
+            vec_b.get_end(),
+            fill_color=ORANGE,
+            fill_opacity=0.3,
+            stroke_color=ORANGE
         )
+        self.play(Create(parallelogram))
 
-        wedge_note = T(self, 
-            "a ^ b = oriented plane (bivector)",
-            font_size=24, color=PURPLE, opacity=LIGHT
-        )
-        wedge_note.next_to(wedge_title, DOWN, buff=0.3, aligned_edge=LEFT)
+        # Full geometric product equation
+        full_eq = MathTex(r"ab = a \cdot b + a \wedge b", font_size=32)
+        full_eq.to_edge(DOWN)
+        self.play(Write(full_eq))
 
-        self.add_subcaption(
-            "The wedge product creates an oriented plane - a bivector",
-            duration=2
-        )
-        self.play(
-            Create(parallelogram),
-            FadeIn(wedge_title, shift=UP),
-            run_time=2.0
-        )
-        self.wait(0.5)
-        self.play(Write(wedge_note), run_time=1.0)
-        self.wait(1.5)
-
-        # ── Reveal formula ──
-        formula_text = T(self, 
-            "ab = a . b + a ^ b",
-            font_size=40, color=ACCENT, weight=BOLD
-        )
-        formula_text.to_edge(DOWN, buff=0.3)
-        self.add_subcaption("The geometric product combines both", duration=2)
-        self.play(
-            ReplacementTransform(wedge_title, formula_text),
-            FadeOut(dot_title, shift=DOWN),
-            FadeOut(wedge_note, shift=DOWN),
-            run_time=2.0
-        )
-        self.wait(2.0)
-
-        # ── Clean exit ──
-        self.play(FadeOut(Group(*self.mobjects)), run_time=1.0)
-        self.wait(0.5)
+        note = Text("Dot product (scalar) + Wedge product (bivector)", font_size=18, color=YELLOW).next_to(full_eq, UP, buff=0.3)
+        self.play(Write(note))
+        self.wait(4)
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Scene 2: Bivector as Oriented Plane
-# ═══════════════════════════════════════════════════════════════════
-class Scene2_BivectorOrientation(ThreeDScene):
-    """Show that a∧b = -b∧a — orientation matters."""
-
+class Scene2_BivectorOrientation(Scene):
+    """Show bivector orientation and antisymmetry: a∧b = −b∧a"""
     def construct(self):
-        self.camera.background_color = BG
-        self.set_camera_orientation(phi=70 * DEGREES, theta=-30 * DEGREES)
-        self.wait(0.01)
+        title = Text("Bivector Orientation", font_size=36).to_edge(UP)
+        self.play(Write(title))
 
-        # ── Title ──
-        title = T(self, "Bivector = Oriented Plane", font_size=44, color=PRIMARY, weight=BOLD)
-        title.to_edge(UP)
-        self.play(Write(title), run_time=1.5)
-        self.wait(1.0)
+        # Left side: a ∧ b
+        left_title = Text("a ∧ b", font_size=28).shift(LEFT * 3.5 + UP * 2)
+        self.play(Write(left_title))
 
-        # ── Vectors for first bivector a∧b ──
-        a = np.array([2.5, 0.3, 0.0])
-        b = np.array([0.3, 2.0, 0.0])
+        vec_a1 = Arrow(ORIGIN + LEFT * 3.5, RIGHT * 1.5 + UP * 0.5 + LEFT * 3.5, buff=0, color=BLUE)
+        vec_b1 = Arrow(ORIGIN + LEFT * 3.5, RIGHT * 2 + DOWN * 0.3 + LEFT * 3.5, buff=0, color=GREEN)
 
-        a_arrow = Arrow3D(np.zeros(3), a, color=SECONDARY, resolution=8)
-        b_arrow = Arrow3D(np.zeros(3), b, color=RED, resolution=8)
+        label_a1 = Text("a", font_size=20, color=BLUE).next_to(vec_a1.get_end(), UR, buff=0.1)
+        label_b1 = Text("b", font_size=20, color=GREEN).next_to(vec_b1.get_end(), DR, buff=0.1)
 
-        label_a = T(self, "a", font_size=28, color=SECONDARY)
-        label_b = T(self, "b", font_size=28, color=RED)
-        label_a.next_to(a, RIGHT, buff=0.2)
-        label_b.next_to(b, UP, buff=0.2)
-
-        # Draw a∧b parallelogram
-        para1 = Polygon(
-            np.zeros(3), a, a + b, b,
-            color=PURPLE, stroke_width=3, fill_opacity=0.3
+        parallelogram1 = Polygon(
+            ORIGIN + LEFT * 3.5,
+            vec_a1.get_end(),
+            vec_a1.get_end() + (vec_b1.get_end() - (ORIGIN + LEFT * 3.5)),
+            vec_b1.get_end(),
+            fill_color=ORANGE,
+            fill_opacity=0.4,
+            stroke_color=ORANGE
         )
 
-        # Label
-        ab_label = T(self, "a ^ b", font_size=28, color=PURPLE, weight=BOLD)
-        ab_label.move_to((a + b) / 2 + np.array([0.0, 0.3, 0.5]))
+        # Orientation arc (counter-clockwise)
+        arc1 = Arc(radius=0.8, start_angle=PI/6, angle=PI/3, arc_center=ORIGIN + LEFT * 3.5, color=YELLOW)
+        arrow1 = Arrow(arc1.get_end(), arc1.get_end() + UP * 0.3 + RIGHT * 0.2, buff=0, color=YELLOW)
 
-        self.add_subcaption("a wedge b creates an oriented plane", duration=2)
-        self.play(
-            Create(a_arrow), Write(label_a),
-            Create(b_arrow), Write(label_b),
-            run_time=1.5
-        )
-        self.play(Create(para1), Write(ab_label), run_time=1.5)
-        self.wait(1.5)
+        self.play(GrowArrow(vec_a1), GrowArrow(vec_b1), Write(label_a1), Write(label_b1))
+        self.play(Create(parallelogram1))
+        self.play(Create(arc1), GrowArrow(arrow1))
 
-        # ── Show orientation arrow ──
-        orient_arc = ArcBetweenPoints(
-            a / 1.5, b / 1.5, angle=0.4,
-            color=ACCENT, stroke_width=4
-        )
-        orient_label = T(self, 
-            "orientation", font_size=22, color=ACCENT, opacity=LIGHT
-        )
-        orient_label.next_to(orient_arc, RIGHT, buff=0.3)
+        # Right side: b ∧ a
+        right_title = Text("b ∧ a", font_size=28).shift(RIGHT * 3.5 + UP * 2)
+        self.play(Write(right_title))
 
-        self.add_subcaption(
-            "The bivector has a direction - orientation matters",
-            duration=2
-        )
-        self.play(Create(orient_arc), Write(orient_label), run_time=1.5)
-        self.wait(1.5)
+        vec_b2 = Arrow(ORIGIN + RIGHT * 3.5, RIGHT * 2 + DOWN * 0.3 + RIGHT * 3.5, buff=0, color=GREEN)
+        vec_a2 = Arrow(ORIGIN + RIGHT * 3.5, RIGHT * 1.5 + UP * 0.5 + RIGHT * 3.5, buff=0, color=BLUE)
 
-        # ── Transform to b∧a (swap orientation) ──
-        self.move_camera(phi=60 * DEGREES, theta=-20 * DEGREES, run_time=2.0)
+        label_b2 = Text("b", font_size=20, color=GREEN).next_to(vec_b2.get_end(), DR, buff=0.1)
+        label_a2 = Text("a", font_size=20, color=BLUE).next_to(vec_a2.get_end(), UR, buff=0.1)
 
-        # New parallelogram for b∧a (same shape, flipped orientation)
-        para2 = Polygon(
-            np.zeros(3), b, a + b, a,
-            color=RED, stroke_width=3, fill_opacity=0.3
+        parallelogram2 = Polygon(
+            ORIGIN + RIGHT * 3.5,
+            vec_b2.get_end(),
+            vec_b2.get_end() + (vec_a2.get_end() - (ORIGIN + RIGHT * 3.5)),
+            vec_a2.get_end(),
+            fill_color=RED,
+            fill_opacity=0.4,
+            stroke_color=RED
         )
 
-        ba_label = T(self, "b ^ a = -(a ^ b)", font_size=28, color=RED, weight=BOLD)
-        ba_label.move_to((a + b) / 2 + np.array([0.0, -0.3, -0.5]))
+        # Orientation arc (clockwise)
+        arc2 = Arc(radius=0.8, start_angle=PI/3, angle=-PI/3, arc_center=ORIGIN + RIGHT * 3.5, color=YELLOW)
+        arrow2 = Arrow(arc2.get_end(), arc2.get_end() + DOWN * 0.3 + RIGHT * 0.2, buff=0, color=YELLOW)
 
-        # Flip arc
-        flip_arc = ArcBetweenPoints(
-            b / 1.5, a / 1.5, angle=0.4,
-            color=RED, stroke_width=4
-        )
+        self.play(GrowArrow(vec_b2), GrowArrow(vec_a2), Write(label_b2), Write(label_a2))
+        self.play(Create(parallelogram2))
+        self.play(Create(arc2), GrowArrow(arrow2))
 
-        self.add_subcaption(
-            "Swap the order and the bivector flips - anti-symmetry",
-            duration=2.5
-        )
-        self.play(
-            ReplacementTransform(para1, para2),
-            ReplacementTransform(ab_label, ba_label),
-            ReplacementTransform(orient_arc, flip_arc),
-            run_time=2.5
-        )
-        self.wait(2.0)
+        # Key equation
+        eq = MathTex(r"a \wedge b = - (b \wedge a)", font_size=32)
+        eq.to_edge(DOWN)
+        self.play(Write(eq))
 
-        # ── Clean exit ──
-        self.play(FadeOut(Group(*self.mobjects)), run_time=1.0)
-        self.wait(0.5)
+        note = Text("Antisymmetry: swapping vectors reverses orientation", font_size=18, color=YELLOW).next_to(eq, UP, buff=0.3)
+        self.play(Write(note))
+        self.wait(4)
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Scene 3: Trivector as Oriented Volume
-# ═══════════════════════════════════════════════════════════════════
-class Scene3_TrivectorVolume(ThreeDScene):
-    """Three vectors → oriented parallelepiped (trivector = volume)."""
-
+class Scene3_TrivectorVolume(Scene):
+    """Show trivector as oriented volume"""
     def construct(self):
-        self.camera.background_color = BG
-        self.set_camera_orientation(phi=65 * DEGREES, theta=-35 * DEGREES)
-        self.wait(0.01)
+        title = Text("Trivectors: Oriented Volume", font_size=36).to_edge(UP)
+        self.play(Write(title))
 
-        # ── Title ──
-        title = T(self, "Trivector = Oriented Volume", font_size=44, color=PRIMARY, weight=BOLD)
-        title.to_edge(UP)
-        self.play(Write(title), run_time=1.5)
-        self.wait(1.0)
+        # Three vectors
+        vec_a = Arrow(ORIGIN, RIGHT * 2 + UP * 0.5, buff=0, color=BLUE)
+        vec_b = Arrow(ORIGIN, RIGHT * 1.5 + DOWN * 1, buff=0, color=GREEN)
+        vec_c = Arrow(ORIGIN, UP * 2 + LEFT * 0.5, buff=0, color=RED)
 
-        # ── Three vectors ──
-        a = np.array([2.0, 0.2, 0.0])
-        b = np.array([0.3, 1.8, 0.0])
-        c = np.array([0.0, 0.2, 1.5])
+        label_a = Text("a", font_size=20, color=BLUE).next_to(vec_a.get_end(), RIGHT, buff=0.1)
+        label_b = Text("b", font_size=20, color=GREEN).next_to(vec_b.get_end(), DOWN, buff=0.1)
+        label_c = Text("c", font_size=20, color=RED).next_to(vec_c.get_end(), UP, buff=0.1)
 
-        a_arrow = Arrow3D(np.zeros(3), a, color=SECONDARY, resolution=8)
-        b_arrow = Arrow3D(np.zeros(3), b, color=RED, resolution=8)
-        c_arrow = Arrow3D(np.zeros(3), c, color=ACCENT, resolution=8)
+        self.play(GrowArrow(vec_a), GrowArrow(vec_b), GrowArrow(vec_c))
+        self.play(Write(label_a), Write(label_b), Write(label_c))
 
-        label_a = T(self, "a", font_size=26, color=SECONDARY)
-        label_b = T(self, "b", font_size=26, color=RED)
-        label_c = T(self, "c", font_size=26, color=ACCENT)
-        label_a.next_to(a, RIGHT, buff=0.2)
-        label_b.next_to(b, UP, buff=0.2)
-        label_c.next_to(c, OUT, buff=0.2)
-
-        self.add_subcaption("Three vectors span a volume", duration=1.5)
-        self.play(
-            Create(a_arrow), Write(label_a),
-            Create(b_arrow), Write(label_b),
-            Create(c_arrow), Write(label_c),
-            run_time=2.0
+        # Show parallelepiped (3D box)
+        # Base parallelogram
+        base = Polygon(
+            ORIGIN,
+            vec_a.get_end(),
+            vec_a.get_end() + vec_b.get_end(),
+            vec_b.get_end(),
+            fill_color=ORANGE,
+            fill_opacity=0.2,
+            stroke_color=ORANGE
         )
-        self.wait(1.0)
+        self.play(Create(base))
 
-        # ── Build the parallelepiped ──
-        verts = [
-            np.zeros(3),
-            a,
-            b,
-            a + b,
-            c,
-            a + c,
-            b + c,
-            a + b + c,
-        ]
-
-        # Front face (a, b plane)
-        front = Polygon(
-            verts[0], verts[1], verts[3], verts[2],
-            color=PURPLE, stroke_width=2, fill_opacity=0.15
+        # Top parallelogram (shifted by c)
+        c_vec = vec_c.get_end() - ORIGIN
+        top = Polygon(
+            ORIGIN + c_vec,
+            vec_a.get_end() + c_vec,
+            vec_a.get_end() + vec_b.get_end() + c_vec,
+            vec_b.get_end() + c_vec,
+            fill_color=ORANGE,
+            fill_opacity=0.2,
+            stroke_color=ORANGE
         )
-        # Back face (offset by c)
-        back = Polygon(
-            verts[4], verts[5], verts[7], verts[6],
-            color=PURPLE, stroke_width=2, fill_opacity=0.15
+        self.play(Create(top))
+
+        # Side edges
+        edge1 = Line(ORIGIN, ORIGIN + c_vec, color=GRAY)
+        edge2 = Line(vec_a.get_end(), vec_a.get_end() + c_vec, color=GRAY)
+        edge3 = Line(vec_b.get_end(), vec_b.get_end() + c_vec, color=GRAY)
+        edge4 = Line(vec_a.get_end() + vec_b.get_end(), vec_a.get_end() + vec_b.get_end() + c_vec, color=GRAY)
+
+        self.play(Create(edge1), Create(edge2), Create(edge3), Create(edge4))
+
+        # Volume label
+        volume_text = Text("a ∧ b ∧ c = trivector (volume)", font_size=24, color=PURPLE)
+        volume_text.to_edge(DOWN)
+        self.play(Write(volume_text))
+
+        # Orientation indicator
+        orientation = Text("Right-hand rule orientation", font_size=18, color=YELLOW).next_to(volume_text, UP, buff=0.3)
+        self.play(Write(orientation))
+        self.wait(4)
+
+
+class Scene4_MultivectorComponents(Scene):
+    """Show all components of a multivector"""
+    def construct(self):
+        title = Text("Multivector Components", font_size=36).to_edge(UP)
+        self.play(Write(title))
+
+        # Display components vertically
+        components = VGroup(
+            MathTex(r"\text{Scalar} = 5", font_size=24, color=YELLOW),
+            MathTex(r"\text{Vector} = 3e_1 + 2e_2 + e_3", font_size=24, color=BLUE),
+            MathTex(r"\text{Bivector} = 4e_{12} + 2e_{23}", font_size=24, color=GREEN),
+            MathTex(r"\text{Trivector} = 7e_{123}", font_size=24, color=RED),
+        ).arrange(DOWN, buff=0.5, aligned_edge=LEFT)
+
+        components.shift(UP * 0.5)
+
+        for comp in components:
+            self.play(Write(comp))
+            self.wait(0.5)
+
+        # Full multivector equation
+        full = MathTex(
+            r"M = \underbrace{5}_{\text{scalar}} + \underbrace{3e_1 + 2e_2}_{\text{vector}} + \underbrace{4e_{12}}_{\text{bivector}} + \underbrace{7e_{123}}_{\text{trivector}}",
+            font_size=28
         )
-        # Connecting edges
-        edges = VGroup()
-        for i in range(4):
-            edges.add(Line(verts[i], verts[i + 4], color=PURPLE, stroke_width=2))
+        full.to_edge(DOWN)
+        self.play(Write(full))
 
-        volume = VGroup(front, back, edges)
-
-        vol_label = T(self, "a ^ b ^ c  (trivector)", font_size=28, color=PURPLE, weight=BOLD)
-        vol_label.move_to((a + b + c) / 2 + np.array([0.0, -0.5, 0.0]))
-
-        self.add_subcaption(
-            "The wedge product of three vectors creates a trivector - an oriented volume",
-            duration=2
-        )
-        self.play(Create(volume), Write(vol_label), run_time=2.5)
-        self.wait(1.0)
-
-        # ── Rotate to show 3D structure ──
-        self.add_subcaption(
-            "A trivector has magnitude (volume) and orientation (handedness)",
-            duration=2
-        )
-        self.move_camera(phi=55 * DEGREES, theta=-55 * DEGREES, run_time=3.0)
-        self.wait(2.0)
-
-        # ── Hierarchy text ──
-        hierarchy = T(self, 
-            "grade 0: scalar    grade 1: vector\n"
-            "grade 2: bivector  grade 3: trivector",
-            font_size=22, color=WHITE, opacity=DARK_LABEL
-        )
-        hierarchy.to_edge(DOWN, buff=0.5)
-
-        self.add_subcaption(
-            "Each grade encodes a different geometric object",
-            duration=1.5
-        )
-        self.play(Write(hierarchy), run_time=1.5)
-        self.wait(2.0)
-
-        # ── Clean exit ──
-        self.play(FadeOut(Group(*self.mobjects)), run_time=1.0)
-        self.wait(0.5)
+        note = Text("A multivector contains components of all grades", font_size=18, color=YELLOW).next_to(full, UP, buff=0.3)
+        self.play(Write(note))
+        self.wait(4)
 
 
-# ═══════════════════════════════════════════════════════════════════
-# Render instructions
-# ═══════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
-    print("Render with:")
-    print("  manim -ql script.py Scene1_GeometricProduct  # draft")
-    print("  manim -qh script.py Scene1_GeometricProduct  # production")
-    print("  manim -ql script.py Scene2_BivectorOrientation")
-    print("  manim -ql script.py Scene3_TrivectorVolume")
-    print("")
-    print("Stitch:")
-    print("  cat > concat.txt << 'EOF'")
-    print("  file 'media/videos/script/480p15/Scene1_GeometricProduct.mp4'")
-    print("  file 'media/videos/script/480p15/Scene2_BivectorOrientation.mp4'")
-    print("  file 'media/videos/script/480p15/Scene3_TrivectorVolume.mp4'")
-    print("  EOF")
-    print("  ffmpeg -y -f concat -safe 0 -i concat.txt -c copy final.mp4")
+    # Render commands:
+    # manim -qh ch3_ga_visualization.py Scene1_GeometricProduct
+    # manim -qh ch3_ga_visualization.py Scene2_BivectorOrientation
+    # manim -qh ch3_ga_visualization.py Scene3_TrivectorVolume
+    # manim -qh ch3_ga_visualization.py Scene4_MultivectorComponents
+    pass

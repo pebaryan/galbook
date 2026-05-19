@@ -23,6 +23,10 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch2_traveling_world/Scene3_DifferentJourneys.png
 !visualizations/media/images/ch2_traveling_world/Scene4_CompositionProblem.png
 !visualizations/media/images/ch2_traveling_world/Scene5_GPSvsCompass.png
+!visualizations/media/images/ch3_ga_visualization/Scene1_GeometricProduct.png
+!visualizations/media/images/ch3_ga_visualization/Scene2_BivectorOrientation.png
+!visualizations/media/images/ch3_ga_visualization/Scene3_TrivectorVolume.png
+!visualizations/media/images/ch3_ga_visualization/Scene4_MultivectorComponents.png
 
 # OS files
 .DS_Store
