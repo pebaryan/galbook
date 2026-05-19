@@ -70,6 +70,13 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch7_three_projects/Scene3_MemoryProblem.png
 !visualizations/media/images/ch7_three_projects/Scene4_IntegratedStack.png
 
+# Chapter 8 multivector hypothesis
+!visualizations/media/images/ch8_multivector_hypothesis/
+!visualizations/media/images/ch8_multivector_hypothesis/Scene1_RedCarComposition.png
+!visualizations/media/images/ch8_multivector_hypothesis/Scene2_MultivectorVocabulary.png
+!visualizations/media/images/ch8_multivector_hypothesis/Scene3_RotorVsOffset.png
+!visualizations/media/images/ch8_multivector_hypothesis/Scene4_CliffordFrameAttention.png
+
 # OS files
 .DS_Store
 Thumbs.db
