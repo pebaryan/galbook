@@ -67,8 +67,8 @@ class Scene2_2DEmbeddingSpace(Scene):
         labels = {
             "king":   Text("king", font_size=20).next_to(points["king"], RIGHT),
             "queen":  Text("queen", font_size=20).next_to(points["queen"], RIGHT),
-            "man":    Text("man", font_size=20).next_to(points["man"], LEFT),
-            "woman":  Text("woman", font_size=20).next_to(points["woman"], LEFT),
+            "man":    Text("man", font_size=20).next_to(points["man"], RIGHT),
+            "woman":  Text("woman", font_size=20).next_to(points["woman"], RIGHT),
         }
 
         for name in points:
