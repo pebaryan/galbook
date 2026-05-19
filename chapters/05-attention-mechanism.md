@@ -26,7 +26,7 @@ Mathematically:
 Attention(Q, K, V) = softmax(Q · Kᵀ / √d) · V
 ```
 
-![Every word produces Q, K, V vectors](visualizations/media/images/ch5_attention/Scene1_QueryKeyValue.png)
+![Every word produces Q, K, V vectors](../visualizations/media/images/ch5_attention/Scene1_QueryKeyValue.png)
 
 The dot product Q · Kᵀ measures alignment. If query and key point in similar directions, they have a strong connection. The softmax turns these into probabilities (they sum to 1). The final output is a blend of values, weighted by relevance.
 
@@ -42,7 +42,7 @@ Let's trace through "The cat sat":
 
 When processing "sat", the query vector for "sat" has strong dot products with keys for "cat" (the subject doing the sitting) and "sat" itself. The output becomes a blend: mostly "sat", partially "cat", barely "the".
 
-![Computing attention scores for "sat"](visualizations/media/images/ch5_attention/Scene2_AttentionScores.png)
+![Computing attention scores for "sat"](../visualizations/media/images/ch5_attention/Scene2_AttentionScores.png)
 
 This happens in parallel for every word. Each position gathers information from every other position simultaneously. This is why transformers can be trained efficiently — no sequential processing like RNNs.
 
@@ -63,7 +63,7 @@ output = Concat(head_1, ..., head_h) · Wᵒ
 
 Each head learns different kinds of relationships. Some heads specialize in syntax (subject-verb agreement). Others track long-range dependencies. Some attend to specific tokens like [SEP] or punctuation.
 
-![Multi-head attention runs parallel computations](visualizations/media/images/ch5_attention/Scene3_MultiHeadAttention.png)
+![Multi-head attention runs parallel computations](../visualizations/media/images/ch5_attention/Scene3_MultiHeadAttention.png)
 
 ### The Limitation
 
@@ -73,7 +73,7 @@ The output is a weighted sum of value vectors. It can blend, it can emphasize, b
 
 This is where Geometric Algebra enters. The dot product in standard attention captures alignment. But the geometric product captures **interaction** — it produces new structure (bivectors) that didn't exist in either input.
 
-![Standard attention blends; Geometric attention transforms](visualizations/media/images/ch5_attention/Scene4_LimitationVsGA.png)
+![Standard attention blends; Geometric attention transforms](../visualizations/media/images/ch5_attention/Scene4_LimitationVsGA.png)
 
 ### A Glimpse Ahead
 
