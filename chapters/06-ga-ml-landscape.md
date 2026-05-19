@@ -1,57 +1,133 @@
-## 6. The GA+ML Landscape: A Map of the Frontier
+## 6. Explorations: How Others Apply GA
 
-Geometric Algebra in machine learning is a small but rapidly growing field. It's not one thing — it's several distinct threads of research, each with a different motivation and set of results. Let's map the territory.
+Chapter 5 showed how attention works — and where it falls short. The output is a weighted sum: linear blending, not transformation. This limitation isn't unique to language. Across machine learning, researchers have encountered problems where standard vector operations don't capture the structure of the domain.
 
-### 5.1 GATr: Geometric Algebra Transformer (Qualcomm AI Research, 2023)
-
-The most well-known GA + ML paper is the Geometric Algebra Transformer, or **GATr**, published at NeurIPS 2023 by researchers at Qualcomm AI Research.
-
-GATr's key insight: many real-world problems involve geometric data — points, vectors, rotations, translations — that have built-in symmetries under rotations, reflections, and translations (the Euclidean group E(3)). Standard neural networks must learn these symmetries from data (through data augmentation), which is inefficient. GATr uses projective geometric algebra Cl(3,0,1) to encode these transformations *directly in the architecture*.
-
-The 16-dimensional projective geometric algebra is remarkable: it can represent points, lines, planes, spheres, rotations, and translations all as first-class citizens. A rotation isn't a 3×3 matrix — it's a rotor, just like the ones we met in Chapter 4. A translation isn't a vector addition — it's also a rotor (a translation rotor in the conformal model).
-
-GATr achieves **E(3) equivariance** by construction: rotate the input, and the output rotates the same way. This is critical for applications like:
-- **N-body physics**: predicting particle trajectories respects rotational symmetry
-- **Robotics**: a robot arm's decision shouldn't depend on arbitrary rotations of the scene
-- **Medical imaging**: anatomical structures should be recognized regardless of orientation
-
-GATr consistently outperformed non-geometric and equivariant baselines across these tasks. It was followed by **L-GATr** (Lorentz-equivariant for high-energy physics) and **LaB-GATr** (for large biomedical data).
-
-But GATr wasn't designed for language. It was designed for 3D geometric reasoning. The question of how to adapt its ideas to the very different geometry of language is what drives much of the research we'll discuss next.
-
-### 5.2 GAFL: Geometric Algebra Flow Matching (HITS, 2024)
-
-**GAFL** (Geometric Algebra Flow Matching), published at NeurIPS 2024, uses GA for a different purpose: generating protein backbone structures.
-
-Proteins are chains of amino acids, each with a position and orientation in 3D space. The space of all possible protein backbones is the product of SE(3) groups — rotation + translation for each amino acid. This is a highly structured geometric space.
-
-GAFL represents protein frames as elements of the projective geometric algebra (the same Cl(3,0,1) as GATr) and uses the geometric product for message passing between residues. The flow matching objective learns to interpolate from noise to valid protein structures.
-
-The results are impressive: GAFL generates protein backbones with high "designability" (the fraction of generated structures that fold into stable proteins) while preserving a realistic distribution of secondary structures. Other methods tend to over-represent alpha helices; GAFL captures the full diversity.
-
-What GAFL showed is that Geometric Algebra's bilinear products — the geometric product between multivectors — capture richer interactions than standard vector operations. This is the same principle that makes GA interesting for language: words don't just *align* (dot product) — they *interact* (geometric product).
-
-### 5.3 FGA: Functional Geometric Algebra for NLP (Pustejovsky, 2026)
-
-The most directly relevant work for our story is James Pustejovsky's **Functional Geometric Algebra** (FGA), published in April 2026. It's a 43-page paper that argues — passionately and in detail — that Geometric Algebra is a mathematically superior foundation for natural language semantics.
-
-Pustejovsky's core claim: current approaches to language semantics are built on linear algebra (vectors, matrices, tensors), but the operations we *actually need* for compositional semantics — type coercion, operator-level contrasts, semantic transformation — are geometric operations that linear algebra expresses awkwardly or not at all.
-
-FGA proposes that words and phrases should be represented as **multivectors**, not vectors. The scalar grade captures category information. The vector grade captures entity-level semantics. The bivector grade captures relational and transformational structure. The geometric product between two word multivectors produces a richer interaction than any composition of dot products.
-
-Crucially, Pustejovsky shows that many operations already implicit in transformer attention can be made *explicit* through GA — transforming opaque neural computations into interpretable geometric transformations. The paper includes worked examples of type coercion ("began the book" → began reading/writing the book) expressed as operator-level geometric operations.
-
-This paper is important not just for its technical contributions but for its timing: it signals that the GA-for-NLP idea has moved from fringe speculation to serious academic discourse.
-
-### 5.4 Other Threads
-
-Several other works are worth noting:
-
-- **CliffordNet** (2025): proposes Clifford algebras as a general framework for neural network design, including for NLP tasks
-- **Word2Mvec** (Princeton, 2024): a senior thesis showing that representing words as multivectors (instead of vectors) and taking geometric products outperforms standard Word2Vec on word similarity and analogy tasks
-- **LLM + CGA for 3D scene editing** (2024): uses conformal geometric algebra as an intermediate representation for LLM-driven 3D manipulation
-
-What unites these threads is the belief that **the mathematical language we use shapes what we can think about**. Linear algebra is good for many things, but it's not the best language for describing composition, transformation, and geometric structure. Geometric Algebra might be.
+This chapter explores three of those problems and how Geometric Algebra provides a path forward. Each section follows the same arc: the problem, the GA opportunity, and the work that's been done.
 
 ---
 
+### The Problem of 3D Symmetry
+
+**The Problem:**
+
+Many real-world tasks involve 3D geometric data — points, vectors, rotations, translations. A protein's structure, a robot's pose, a molecule's conformation: all are fundamentally geometric.
+
+Standard neural networks treat this geometry as raw numbers. A point is three coordinates. A rotation is nine numbers in a 3×3 matrix. The network must learn from data that rotating the input should rotate the output — a constraint called **E(3) equivariance**.
+
+This is inefficient. The network learns the symmetry from scratch, through data augmentation, when the symmetry is built into the problem. Worse, the representation obscures the geometry: nine numbers in a rotation matrix don't tell you the rotation plane or angle.
+
+**The GA Opportunity:**
+
+Geometric Algebra makes the symmetry *explicit*. In projective geometric algebra Cl(3,0,1):
+- A point is a multivector with a specific grade structure
+- A rotation is a rotor (cosine + sine × bivector) — the plane and angle are explicit
+- A translation is *also* a rotor in the conformal model
+
+The algebra respects E(3) by construction. Rotate the input multivector, and the output rotates the same way — no training required.
+
+**Existing Work:**
+
+**GATr** (Geometric Algebra Transformer, Qualcomm AI Research, NeurIPS 2023) applies this to 3D geometric reasoning. It replaces standard transformer layers with GA equivalents: multivector projections instead of vector projections, geometric products instead of dot products.
+
+The 16-dimensional projective GA can represent points, lines, planes, spheres, rotations, and translations as first-class citizens. GATr achieves E(3) equivariance without data augmentation.
+
+Results: consistent outperformance on N-body physics, robotics scenes, and medical imaging. The network doesn't waste capacity learning symmetry — it starts with it.
+
+GATr was followed by **L-GATr** (Lorentz-equivariant for high-energy physics) and **LaB-GATr** (large biomedical data), showing the approach generalizes across domains.
+
+**Why This Matters for Language:**
+
+GATr wasn't designed for language. But it proves a principle: when you encode domain structure into the algebra, the architecture becomes more data-efficient. The question isn't whether GA helps 3D reasoning — it clearly does. The question is whether language has similar hidden structure waiting to be uncovered.
+
+---
+
+### The Problem of Structured Generation
+
+**The Problem:**
+
+Generating valid protein structures is hard. A protein backbone isn't just 3D coordinates — it's a sequence of amino acids, each with a specific orientation relative to its neighbors. The space of valid structures is tiny compared to the space of all possible coordinate tuples.
+
+Standard diffusion models operate on raw coordinates. They learn the structure of valid proteins implicitly, through millions of examples. But they struggle to capture global constraints: bond angles, chirality, steric clashes. The result is generated structures that look protein-like locally but violate basic physical constraints globally.
+
+**The GA Opportunity:**
+
+Protein frames live in SE(3) — the group of rotations and translations. This is exactly what geometric algebra represents naturally. Instead of generating raw coordinates, generate *frames* as multivectors in Cl(3,0,1).
+
+The geometric product enforces structure. Invalid combinations produce high-grade terms that can be penalized. Valid combinations stay within the algebraic subspace of physical configurations.
+
+**Existing Work:**
+
+**GAFL** (Geometric Algebra Flow Matching, HITS, NeurIPS 2024) applies this to protein backbone generation. It represents each amino acid frame as a multivector and uses the geometric product for message passing between residues.
+
+The flow matching objective learns to interpolate from noise to valid structures — but "valid" is now defined algebraically, not just statistically. The model learns to flow toward configurations that respect the geometric constraints of protein structure.
+
+Results: GAFL generates backbones with higher "designability" (fraction that fold into stable proteins) than coordinate-based methods. Other methods over-represent alpha helices; GAFL captures the full diversity of secondary structures.
+
+**The Deeper Insight:**
+
+GAFL showed that the geometric product captures richer interactions than standard vector operations. Coordinates add; multivectors *compose*. The difference is structure preservation — the algebra keeps track of relationships that raw numbers lose.
+
+This is the same principle that matters for language: words don't just *align* (dot product), they *interact* (geometric product). GAFL proves this principle works at scale for structured generation.
+
+---
+
+### The Problem of Compositional Semantics
+
+**The Problem:**
+
+Language is compositional. The meaning of "red car" isn't the sum of "red" and "car" — it's an emergent property of their interaction. Current approaches handle this through attention: weighted sums of vector representations. But attention is linear. It blends; it doesn't transform.
+
+Worse, standard embeddings conflate different kinds of information into a single vector:
+- Grammatical category (noun, verb, adjective)
+- Core semantic content (what the word denotes)
+- Relational structure (how it connects to other words)
+
+These get tangled together. When "king" transforms to "queen," the vector offset captures the correlation, but not the underlying geometric operation.
+
+**The GA Opportunity:**
+
+Multivectors naturally separate these aspects across grades:
+- Scalar: category, intensity, register
+- Vector: core semantic content
+- Bivector: relational and transformational structure
+
+The geometric product between two word-multivectors produces cross-grade terms that capture composition. "Red" (scalar intensity + vector color) composed with "car" (scalar object-ness + vector concept + bivector affordances) produces a bivector term representing the color-object relationship.
+
+Attention becomes geometric: instead of dot products, use the scalar part of the geometric product. Instead of weighted sums, use the full geometric product between query and value.
+
+**Existing Work:**
+
+**FGA** (Functional Geometric Algebra, Pustejovsky, 2026) makes the case for GA as a foundation for natural language semantics. It's a 43-page argument that the operations we need for compositional semantics — type coercion, operator-level contrasts, semantic transformation — are geometric operations poorly expressed in linear algebra.
+
+The paper shows that transformer attention contains implicit geometric operations that GA makes explicit. Worked examples include:
+- Type coercion: "began the book" → began reading/writing, expressed as geometric transformations
+- Operator contrasts: the difference between "hit" (contact) and "strike" (forceful contact) as grade projections
+- Semantic transformation: negation, modality, and aspect as rotor operations
+
+**CliffordNet** (2025) proposes Clifford algebras as a general framework for neural network design, with NLP applications.
+
+**Word2Mvec** (Princeton, 2024): A senior thesis showing multivector representations with geometric products outperform Word2Vec on similarity and analogy tasks. The rotor representation captures analogies as shared transformations rather than approximate vector offsets.
+
+**Why This Is Different:**
+
+GATr and GAFL apply GA to problems with obvious geometric structure — 3D coordinates, protein frames. Language's geometry is hidden. But FGA argues it's there: semantics *is* geometry, just not the spatial kind we visualize.
+
+The multivector hypothesis from Chapter 8 extends this: language has grade structure waiting to be discovered. The work exists at the frontier — not proven at scale, but pointing toward a research program.
+
+---
+
+### What Unites These Explorations
+
+Three different domains. Three different problems. One common thread:
+
+| Domain | Standard Approach | GA Approach |
+|--------|------------------|-------------|
+| 3D reasoning | Coordinates, matrices | Multivectors, rotors |
+| Protein generation | Raw coordinates | SE(3) frames as multivectors |
+| Language semantics | Vector embeddings | Grade-separated multivectors |
+
+In each case, the standard approach treats the domain as raw numbers and learns structure from data. The GA approach encodes structure into the algebra, making the network's job easier and the representations more interpretable.
+
+The question for the rest of this book: can we bring these threads together? GATr's architecture, GAFL's generation, FGA's semantics — unified in a single language model that thinks in geometric algebra.
+
+---
