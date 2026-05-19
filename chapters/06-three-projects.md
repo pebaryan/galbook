@@ -93,5 +93,46 @@ The project is in its early stages, but the core idea is compelling: if the opti
 
 **What gamuon teaches us:** GA isn't just about model architecture. It's a mathematical framework that can reshape how we think about training, optimization, and learning dynamics at every level.
 
+### 6.4 The Integrated Stack
+
+The three projects are not independent experiments. They form a coherent progression toward a full Geometric Algebra-native language model:
+
+```mermaid
+flowchart TD
+    subgraph Data["Training Data"]
+        D[Token sequences]
+    end
+
+    subgraph Opt["Optimization Layer"]
+        G[gamuon\n(GA-native optimizer)]
+    end
+
+    subgraph Arch["Architecture Layer"]
+        F[gaflowlm\n(Rotor flow matching)]
+        A[gattrlm\n(Clifford attractor DEQ)]
+    end
+
+    subgraph LM["GA-Native LM"]
+        L[Full multivector\nattention + rotors]
+    end
+
+    D --> F
+    D --> A
+    G --> F
+    G --> A
+    F --> L
+    A --> L
+
+    style L fill:#e6f3ff,stroke:#0066cc
+```
+
+**How they connect:**
+
+- **gamuon** provides the training foundation — a geometrically principled optimizer that works on multivector weights.
+- **gaflowlm** explores continuous generative modeling with rotors instead of SLERP, giving us better geometric signals during training.
+- **gattrlm** tests an entirely different backbone (attractors + Clifford layers) that could eventually replace transformers.
+
+The long-term vision is that a future model could use **gamuon** for training, **Clifford Frame Attention** (from the multivector hypothesis) for the core mechanism, and either flow or attractor dynamics depending on the task. All three projects are building pieces of the same geometric vocabulary.
+
 ---
 
