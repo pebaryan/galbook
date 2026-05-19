@@ -6,7 +6,24 @@ Machines don't understand words. They never have.
 
 But they've learned something surprisingly close: they've learned to *place* words in space.
 
-Every word in your vocabulary — "king", "queen", "apple", "computer", "sadness" — can be represented as a point in a high-dimensional space. Not 3D space like the one we live in, but a mathematical space with hundreds or thousands of dimensions. A single word becomes a list of numbers, like GPS coordinates for meaning.
+### How Computers Used to Process Language
+
+Before dense vectors, computers handled language in much more rigid, symbolic ways.
+
+In the early days of natural language processing (the 1950s through the 1990s), language was treated as a set of rules and symbols. Systems like ELIZA (1966) used pattern matching and substitution rules to simulate conversation. Later statistical approaches, such as n-gram models, simply counted how often words appeared next to each other in large corpora. These models could generate surprisingly fluent text for their time, but they had no real understanding of meaning — they were essentially sophisticated autocomplete systems.
+
+When neural networks entered the picture, the first approach was **one-hot encoding**. Each word in the vocabulary was represented as a long vector of zeros with a single "1" in the position corresponding to that word. This worked, but it had two fatal problems:
+
+- The vectors were extremely sparse (mostly zeros)
+- There was no notion of similarity — "king" and "queen" were just as different as "king" and "apple"
+
+Bag-of-words and TF-IDF improved on this by weighting words according to how important they were in a document, but they still treated words as independent atomic symbols. There was no geometry, no relationships, and no way to capture that "king" and "queen" share something meaningful.
+
+This was the world before the vector revolution.
+
+### The Vector Revolution
+
+Every word in your vocabulary — "king", "queen", "apple", "computer", "sadness" — can now be represented as a point in a high-dimensional space. Not 3D space like the one we live in, but a mathematical space with hundreds or thousands of dimensions. A single word becomes a list of numbers, like GPS coordinates for meaning.
 
 This is called a **word embedding**, and it's arguably the single most important idea in modern AI.
 
