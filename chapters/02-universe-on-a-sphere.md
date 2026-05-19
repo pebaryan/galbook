@@ -6,6 +6,8 @@ This planet has thousands of dimensions — too many to visualize — but the me
 
 Modern language models live on this planet. After processing any input, they normalize their representations to sit on the surface of a high-dimensional sphere. Why? Because distances on a sphere's surface are meaningful. The angle between two points tells you how similar they are. The closer the angle, the closer the meaning.
 
+![Words on a Spherical Planet](../visualizations/media/images/ch2_traveling_world/Scene1_WordsOnSphere.png)
+
 ### Why a Sphere?
 
 Before we travel, let's understand the terrain. In high-dimensional spaces, vectors tend to have wildly different magnitudes. A word like "the" appears everywhere and might have huge values; a rare word like "pneumonoultramicroscopicsilicovolcanoconiosis" has seen fewer examples and smaller values.
@@ -37,6 +39,8 @@ SLERP(a, b, t) = sin((1-t)ω)/sin(ω) · a + sin(tω)/sin(ω) · b
 
 Where ω is the angle between your starting point and destination, and t is how far along the journey you've traveled.
 
+![Great Circle Navigation](../visualizations/media/images/ch2_traveling_world/Scene2_GreatCircleRoute.png)
+
 ### Different Kinds of Journeys
 
 Not all travel is the same. Consider these transformations in language:
@@ -48,6 +52,8 @@ Not all travel is the same. Consider these transformations in language:
 **Negation:** possible → impossible, happy → unhappy
 
 Each is a different kind of journey on our spherical planet. Gender seems to follow a consistent direction across many words. Tense changes cluster together in their own region. Sentiment has its own axis.
+
+![Different Kinds of Journeys](../visualizations/media/images/ch2_traveling_world/Scene3_DifferentJourneys.png)
 
 In the early days of word embeddings, researchers discovered something remarkable: these semantic relationships showed up as geometric relationships. The vector from "king" to "queen" was strikingly similar to the vector from "man" to "woman." The direction of travel encoded the type of transformation.
 
@@ -65,6 +71,8 @@ Irregular forms break the simple directional model. Worse, some transformations 
 - happy → happiness → unhappiness (also works, but different intermediate)
 
 The journey matters. The path you take affects where you end up.
+
+![When Simple Directions Fail](../visualizations/media/images/ch2_traveling_world/Scene4_CompositionProblem.png)
 
 ### The Traveler's Dilemma
 
@@ -121,6 +129,8 @@ Think of it as the difference between:
 - "Sail 53° west of north along the great circle, keeping the North Star 40° above the horizon" (Geometric Algebra)
 
 The second description contains more information. It tells you not just where you're going, but how to get there — and how to continue from there.
+
+![GPS vs Compass + Map](../visualizations/media/images/ch2_traveling_world/Scene5_GPSvsCompass.png)
 
 In the next chapter, we'll meet the mathematical objects that make this possible: multivectors, the building blocks of Geometric Algebra. They're like having a compass, a sextant, and a complete map of the spherical planet — not just coordinates, but the full geometry of travel.
 

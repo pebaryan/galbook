@@ -18,6 +18,11 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch1_subword_tokenization/OOVProblem.png
 !visualizations/media/images/ch1_subword_tokenization/SubwordTokenization.png
 !visualizations/media/images/ch1_subword_tokenization/Compositionality.png
+!visualizations/media/images/ch2_traveling_world/Scene1_WordsOnSphere.png
+!visualizations/media/images/ch2_traveling_world/Scene2_GreatCircleRoute.png
+!visualizations/media/images/ch2_traveling_world/Scene3_DifferentJourneys.png
+!visualizations/media/images/ch2_traveling_world/Scene4_CompositionProblem.png
+!visualizations/media/images/ch2_traveling_world/Scene5_GPSvsCompass.png
 
 # OS files
 .DS_Store
