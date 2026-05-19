@@ -117,20 +117,14 @@ class BookCoverMinimal(Scene):
         
         # Title
         title = Text("THE GEOMETRY", font_size=56, color=WHITE)
-        title.to_edge(UP, buff=1.2)
+        title.to_edge(UP, buff=0.6)
         self.add(title)
         
         title2 = Text("OF MEANING", font_size=56, color=WHITE)
         title2.next_to(title, DOWN, buff=0.1)
         self.add(title2)
         
-        # Subtitle
-        subtitle = Text("How Geometric Algebra Is Changing Machine Language Understanding", 
-                       font_size=18, color="#8b949e")
-        subtitle.next_to(title2, DOWN, buff=0.4)
-        self.add(subtitle)
-        
-        # Central icon: Rotor in 3D
+        # Central icon: Rotor in 3D (moved to center)
         # Bivector plane
         plane = Polygon(
             [-1.5, -0.5, 0],
@@ -142,11 +136,12 @@ class BookCoverMinimal(Scene):
             stroke_color=BLUE,
             stroke_width=2
         )
+        plane.shift(DOWN * 0.3)
         self.add(plane)
         
         # Vector being rotated
         vector_before = Arrow(ORIGIN, RIGHT, color=WHITE, buff=0, stroke_width=3)
-        vector_before.shift(DOWN * 0.5)
+        vector_before.shift(DOWN * 0.8)
         self.add(vector_before)
         
         label_before = Text("word", font_size=16, color=WHITE)
@@ -155,12 +150,12 @@ class BookCoverMinimal(Scene):
         
         # Rotation arc
         arc = Arc(radius=1, start_angle=0, angle=PI/2, color=YELLOW, stroke_width=3)
-        arc.shift(DOWN * 0.5)
+        arc.shift(DOWN * 0.8)
         self.add(arc)
         
         # Vector after rotation
         vector_after = Arrow(ORIGIN, UP, color=GREEN, buff=0, stroke_width=3)
-        vector_after.shift(DOWN * 0.5)
+        vector_after.shift(DOWN * 0.8)
         self.add(vector_after)
         
         label_after = Text("meaning", font_size=16, color=GREEN)
@@ -169,12 +164,18 @@ class BookCoverMinimal(Scene):
         
         # Rotor label
         rotor_text = MathTex(r"R \cdot x \cdot \tilde{R}", font_size=20, color=YELLOW)
-        rotor_text.move_to(np.array([0.8, 0.5, 0]))
+        rotor_text.move_to(np.array([0.8, 0.2, 0]))
         self.add(rotor_text)
         
+        # Subtitle (moved below visual)
+        subtitle = Text("How Geometric Algebra Is Changing Machine Language Understanding", 
+                       font_size=18, color="#8b949e")
+        subtitle.to_edge(DOWN, buff=1.2)
+        self.add(subtitle)
+        
         # Bottom info
-        author = Text("Pebaryan", font_size=16, color="#8b949e")
-        author.to_edge(DOWN, buff=0.8)
+        author = Text("Peb Ruswono Aryan", font_size=16, color="#8b949e")
+        author.to_edge(DOWN, buff=0.5)
         self.add(author)
         
         self.wait(0.5)
