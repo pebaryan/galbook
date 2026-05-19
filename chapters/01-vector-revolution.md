@@ -40,7 +40,7 @@ Consider a simple 2D analogy. Suppose we have two axes: one for "royalty" and on
 
 The vector from "king" to "queen" is roughly (0, -1.6) — a downward shift in the gender direction. The vector from "man" to "woman" is almost identical. This is why the famous equation works:
 
-![2D Embedding Space](visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png)
+![2D Embedding Space](../visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png)
 
 ```
 king - man + woman ≈ queen
