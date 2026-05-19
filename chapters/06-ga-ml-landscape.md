@@ -23,6 +23,8 @@ Geometric Algebra makes the symmetry *explicit*. In projective geometric algebra
 - A rotation is a rotor (cosine + sine × bivector) — the plane and angle are explicit
 - A translation is *also* a rotor in the conformal model
 
+![Learning symmetry from data vs built-in equivariance](../visualizations/media/images/ch6_explorations/Scene1_SymmetryProblem.png)
+
 The algebra respects E(3) by construction. Rotate the input multivector, and the output rotates the same way — no training required.
 
 **Existing Work:**
@@ -59,6 +61,8 @@ The geometric product enforces structure. Invalid combinations produce high-grad
 
 **GAFL** (Geometric Algebra Flow Matching, HITS, NeurIPS 2024) applies this to protein backbone generation. It represents each amino acid frame as a multivector and uses the geometric product for message passing between residues.
 
+![Coordinate diffusion vs SE(3) frames](../visualizations/media/images/ch6_explorations/Scene2_StructureProblem.png)
+
 The flow matching objective learns to interpolate from noise to valid structures — but "valid" is now defined algebraically, not just statistically. The model learns to flow toward configurations that respect the geometric constraints of protein structure.
 
 Results: GAFL generates backbones with higher "designability" (fraction that fold into stable proteins) than coordinate-based methods. Other methods over-represent alpha helices; GAFL captures the full diversity of secondary structures.
@@ -93,6 +97,8 @@ Multivectors naturally separate these aspects across grades:
 
 The geometric product between two word-multivectors produces cross-grade terms that capture composition. "Red" (scalar intensity + vector color) composed with "car" (scalar object-ness + vector concept + bivector affordances) produces a bivector term representing the color-object relationship.
 
+![Standard attention blends; geometric product transforms](../visualizations/media/images/ch6_explorations/Scene3_CompositionProblem.png)
+
 Attention becomes geometric: instead of dot products, use the scalar part of the geometric product. Instead of weighted sums, use the full geometric product between query and value.
 
 **Existing Work:**
@@ -125,6 +131,8 @@ Three different domains. Three different problems. One common thread:
 | 3D reasoning | Coordinates, matrices | Multivectors, rotors |
 | Protein generation | Raw coordinates | SE(3) frames as multivectors |
 | Language semantics | Vector embeddings | Grade-separated multivectors |
+
+![The unifying pattern across domains](../visualizations/media/images/ch6_explorations/Scene4_UnifyingPattern.png)
 
 In each case, the standard approach treats the domain as raw numbers and learns structure from data. The GA approach encodes structure into the algebra, making the network's job easier and the representations more interpretable.
 

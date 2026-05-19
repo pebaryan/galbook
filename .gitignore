@@ -18,8 +18,9 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch3_ga_visualization/
 !visualizations/media/images/ch4_rotors/
 !visualizations/media/images/ch5_attention/
+!visualizations/media/images/ch6_explorations/
 
-# Keep the specific referenced PNG files
+# Keep the specific referenced PNG files (Chapter 1)
 !visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png
 !visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png
 !visualizations/media/images/ch1_eliza_alice/ElizaRuleBased1147.png
@@ -28,25 +29,39 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch1_subword_tokenization/OOVProblem.png
 !visualizations/media/images/ch1_subword_tokenization/SubwordTokenization.png
 !visualizations/media/images/ch1_subword_tokenization/Compositionality.png
+
+# Chapter 2
 !visualizations/media/images/ch2_traveling_world/Scene1_WordsOnSphere.png
 !visualizations/media/images/ch2_traveling_world/Scene2_GreatCircleRoute.png
 !visualizations/media/images/ch2_traveling_world/Scene3_DifferentJourneys.png
 !visualizations/media/images/ch2_traveling_world/Scene4_CompositionProblem.png
 !visualizations/media/images/ch2_traveling_world/Scene5_GPSvsCompass.png
+
+# Chapter 3
 !visualizations/media/images/ch3_ga_visualization/Scene1_GeometricProduct.png
 !visualizations/media/images/ch3_ga_visualization/Scene2_BivectorOrientation.png
 !visualizations/media/images/ch3_ga_visualization/Scene3_TrivectorVolume.png
 !visualizations/media/images/ch3_ga_visualization/Scene4_MultivectorComponents.png
+
+# Chapter 4
 !visualizations/media/images/ch4_rotors/Scene1_RotorSandwich.png
 !visualizations/media/images/ch4_rotors/Scene2_Rotation2D.png
 !visualizations/media/images/ch4_rotors/Scene3_QuaternionsAsBivectors.png
 !visualizations/media/images/ch4_rotors/Scene4_RotorComposition.png
 !visualizations/media/images/ch4_rotors/Scene5_RotorVsMatrix.png
 !visualizations/media/images/ch4_rotors/Scene6_RotorInterpolation.png
+
+# Chapter 5
 !visualizations/media/images/ch5_attention/Scene1_QueryKeyValue.png
 !visualizations/media/images/ch5_attention/Scene2_AttentionScores.png
 !visualizations/media/images/ch5_attention/Scene3_MultiHeadAttention.png
 !visualizations/media/images/ch5_attention/Scene4_LimitationVsGA.png
+
+# Chapter 6
+!visualizations/media/images/ch6_explorations/Scene1_SymmetryProblem.png
+!visualizations/media/images/ch6_explorations/Scene2_StructureProblem.png
+!visualizations/media/images/ch6_explorations/Scene3_CompositionProblem.png
+!visualizations/media/images/ch6_explorations/Scene4_UnifyingPattern.png
 
 # OS files
 .DS_Store
