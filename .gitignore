@@ -4,8 +4,10 @@ __pycache__/
 *$py.class
 *.so
 
-# Manim intermediate frames (keep only final referenced images)
+# Manim intermediate frames and videos (keep only final referenced images)
 visualizations/media/images/*/
+visualizations/media/videos/*/partial_movie_files/
+visualizations/media/videos/*/*.mp4
 
 # But keep the specific referenced files (we'll manage these manually)
 !visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png

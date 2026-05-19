@@ -35,8 +35,9 @@ class Scene1_ZipfsLaw(Scene):
         self.play(Write(top_words))
         self.play(Write(tail_words))
 
-        # Coverage note
-        coverage = Text("50K words cover 95% of tokens, but miss the long tail", font_size=18, color=YELLOW).to_edge(DOWN)
+        # Coverage note - position above the axis label to avoid overlap
+        coverage = Text("50K words cover 95% of tokens, but miss the long tail", font_size=18, color=YELLOW)
+        coverage.next_to(axes, DOWN, buff=0.8)
         self.play(Write(coverage))
         self.wait(4)
 
