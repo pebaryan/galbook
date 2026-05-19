@@ -10,7 +10,7 @@ visualizations/media/images/*/
 # But keep the specific referenced files (we'll manage these manually)
 !visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png
 !visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png
-!visualizations/media/images/ch1_eliza_alice/ElizaRuleBased0962.png
+!visualizations/media/images/ch1_eliza_alice/ElizaRuleBased1147.png
 
 # OS files
 .DS_Store
