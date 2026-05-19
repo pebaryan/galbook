@@ -77,6 +77,12 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch8_multivector_hypothesis/Scene3_RotorVsOffset.png
 !visualizations/media/images/ch8_multivector_hypothesis/Scene4_CliffordFrameAttention.png
 
+# Chapter 9 roadmap
+!visualizations/media/images/ch9_roadmap/
+!visualizations/media/images/ch9_roadmap/Scene1_IntegratedStack.png
+!visualizations/media/images/ch9_roadmap/Scene2_RoadmapTimeline.png
+!visualizations/media/images/ch9_roadmap/Scene3_HonestAssessment.png
+
 # OS files
 .DS_Store
 Thumbs.db

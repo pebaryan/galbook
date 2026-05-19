@@ -18,6 +18,8 @@ This book's three projects aren't just three separate experiments. They're **bui
 
 These three pieces connect through a **consistent geometric vocabulary** — the same rotors, the same Clifford engine, the same multivector layout. The book you're reading defines this vocabulary and serves as the manifesto tying everything together.
 
+![The integrated GA stack](../visualizations/media/images/ch9_roadmap/Scene1_IntegratedStack.png)
+
 ### The Spine
 
 **Grade-Wise Scheduling** — the insight that different grades of a multivector need different learning rates — runs through all three projects. It was prototyped in gaflowlm's GWS research and is the first principled way to train multivector networks that acknowledges their internal structure. This isn't a trick. It's a new capability: the ability to say "learn rotations faster than scales" and have that mean something mathematically precise.
@@ -32,6 +34,8 @@ The three projects and Clifford Frame Attention are not independent experiments 
 - **CliffordFrameAttention** can serve as the attention mechanism that ties them together, replacing dot-product attention with geometric product operations across both flow and attractor models.
 
 The shared vocabulary (rotors, multivectors, grade-wise operations) means components developed in one project can be reused in the others with minimal friction. The long-term vision is to train a model with gamuon, generate with rotor-based flow matching, and reason with a Clifford attractor — all speaking the same geometric language.
+
+![The roadmap timeline](../visualizations/media/images/ch9_roadmap/Scene2_RoadmapTimeline.png)
 
 ### The Road Ahead
 
@@ -64,6 +68,8 @@ A honest assessment of where this approach falls short:
 **Hardware is not on our side.** GPUs are optimized for matrix multiply, not for geometric products. A single geometric product via einsum is ~2-10x more expensive than an equivalent matrix operation. Without custom CUDA kernels for GA operations, wall-clock speed will lag behind standard architectures regardless of theoretical advantages.
 
 These aren't reasons to stop. They're reasons to be precise about what we claim and rigorous about how we measure.
+
+![Open questions to answer](../visualizations/media/images/ch9_roadmap/Scene3_HonestAssessment.png)
 
 ### What Success Looks Like
 
