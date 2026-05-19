@@ -63,6 +63,13 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch6_explorations/Scene3_CompositionProblem.png
 !visualizations/media/images/ch6_explorations/Scene4_UnifyingPattern.png
 
+# Chapter 7 three projects
+!visualizations/media/images/ch7_three_projects/
+!visualizations/media/images/ch7_three_projects/Scene1_HiddenInformation.png
+!visualizations/media/images/ch7_three_projects/Scene2_Breakthrough.png
+!visualizations/media/images/ch7_three_projects/Scene3_MemoryProblem.png
+!visualizations/media/images/ch7_three_projects/Scene4_IntegratedStack.png
+
 # OS files
 .DS_Store
 Thumbs.db

@@ -1,138 +1,182 @@
-## 7. Three Projects
+## 7. Three Projects: Building With GA
 
-This chapter tells the story of three projects that apply Geometric Algebra to language modeling. They're different approaches to the same question: *can GA improve how machines understand and generate language?*
+Chapter 6 showed how others have applied Geometric Algebra to 3D reasoning, protein generation, and semantic theory. This chapter turns inward: three projects from our own research, each attacking a different layer of the language modeling stack.
 
-### 6.1 gaflowlm: Flow Matching on the Sphere
-
-Our first project, **gaflowlm**, starts with a simple observation: the most successful language models based on continuous diffusion — flow matching — operate on the surface of a hypersphere (S^{d-1}). They interpolate between noise and meaningful content using SLERP (spherical linear interpolation), which is a trigonometric operation.
-
-But as we saw in Chapter 4, SLERP is a grade-1 projection of a rotor sandwich. The rotor operation is richer — it preserves the bivector (rotation plane) information that SLERP discards.
-
-The experiment was straightforward: replace SLERP with rotor-based operations in an existing flow matching architecture (called S-FLM). The model is otherwise identical — same transformer backbone, same training procedure. The rotor version produces mathematically identical results (SLERP = rotor sandwich projected to grade 1).
-
-We trained multiple models on **Sudoku** — a puzzle task where the model sees the first 81 digits of a 9×9 grid and must predict the remaining 81 digits. It's a simple test bed for evaluating new ideas in language modeling.
-
-Every variant hit the same wall: **62.90% accuracy**. SFM baseline: 62.90%. RHF (rotor replacement): 62.90%. Clifford variant: 62.90%. No matter what we changed — model size, layers, learning rate — the ceiling held.
-
-The breakthrough came when we realized the rotor representation gave us access to something new: the bivectors. By adding a loss term that pushed the 12 token embeddings toward orthogonality — making them geometrically more separable — we achieved **70.70% accuracy**. The bivector information let us see and fix a separability bottleneck we couldn't detect before.
-
-**What gaflowlm taught us:** You don't need to change the model. You need to change what information you have access to. The rotor representation gave us a window into the rotation geometry, and that window revealed a fix.
+The pattern is the same: identify a limitation in standard approaches, find where GA provides leverage, and build something to test the hypothesis.
 
 ---
 
-### 6.2 gattrlm: Clifford Attractor Models (USC, 2025)
+### The Problem of Hidden Information
 
-The second project, **gattrlm**, takes a completely different approach. Instead of flow matching, it uses **attractor models** — a fascinating alternative to transformer stacks.
+**The Problem:**
 
-#### The Deep Equilibrium (DEQ) Idea
+Flow matching has emerged as a powerful approach for continuous generative modeling. It works by interpolating on a hypersphere between noise and data using SLERP. The mathematics are elegant, the training is stable, and the results are competitive with diffusion.
 
-Standard language models stack layers: layer 1, layer 2, ..., layer L. Each layer transforms the representation, and the total computation grows with the number of layers.
+But flow matching hits walls. On the Sudoku task — predicting the remaining digits given the first half of a 9×9 grid — every variant we tried plateaued at **62.90% accuracy**. Larger models, deeper layers, different learning rates: nothing broke through.
 
-Deep Equilibrium models ask a different question: what if we learn a single transformation f and iterate it until we reach a fixed point?
+The issue isn't capacity. It's visibility. SLERP operates on the surface of the sphere, treating each point as a vector. But the rotation that moves you from noise to data has structure: a plane of rotation, encoded in the bivector. SLERP discards this.
+
+When everything is projected to grade 1 (vectors on the sphere), you lose the geometric information that might tell you why the model is stuck.
+
+**The GA Opportunity:**
+
+What if we kept the bivector? Rotors encode both the angle and the plane of rotation. The full rotor sandwich R · x · R̃ contains more information than its grade-1 projection.
+
+The key insight: SLERP(x₀, x₁, t) = ⟨R(t) · x₀ · R̃(t)⟩₁. They're mathematically equivalent at the output, but the rotor version carries the full multivector through the computation.
+
+This means:
+- We can train with the same objective (the grade-1 projection matches SLERP)
+- But we have access to the bivector components during training
+- These components might reveal structure invisible to standard methods
+
+**What We Built:**
+
+**gaflowlm** replaces SLERP with rotor-based flow matching. The architecture is identical — same transformer backbone, same training loop — except the interpolation uses rotors.
+
+We trained on Sudoku, a structured reasoning task. For 12 tokens (digits 1-9 plus padding), the model must learn to place them in valid grid configurations.
+
+The baseline hit 62.90%. The rotor version also hit 62.90%. Nothing had changed at the output level, as expected.
+
+Then we looked at the bivectors.
+
+**The Breakthrough:**
+
+The rotor representation let us inspect the geometric relationships between token embeddings. We computed the angles between embedding vectors in the full multivector space.
+
+The embeddings weren't orthogonal. They were clustered, overlapping, geometrically entangled. The model had learned to solve Sudoku, but it hadn't learned to keep its token representations separable.
+
+We added a simple loss term: push the 12 token embeddings toward orthogonality. Not a complex architectural change — just a geometric regularization term visible only because we had the full multivector.
+
+**70.70% accuracy.** The ceiling broke.
+
+![Bivector regularization breakthrough](../visualizations/media/images/ch7_three_projects/Scene2_Breakthrough.png)
+
+**What gaflowlm Taught Us:**
+
+You don't need to change the model architecture to benefit from GA. Sometimes you need to change what you can *see*. The rotor representation gave us a window into the rotation geometry, and that window revealed a bottleneck invisible to standard analysis.
+
+The grade-1 projection discards information that matters for training dynamics. Keeping the full multivector doesn't change the forward pass, but it changes what you can regularize, inspect, and optimize.
+
+![SLERP loses bivector information](../visualizations/media/images/ch7_three_projects/Scene1_HiddenInformation.png)
+
+---
+
+### The Problem of Linear Memory Growth
+
+**The Problem:**
+
+Standard transformers stack layers: layer 1 feeds layer 2 feeds layer 3... feed layer L. Each layer transforms the representation, and you need to store intermediate activations for backpropagation. Memory grows with depth.
+
+This is expensive. For a 96-layer model, you're storing 96 sets of activations. The computation is parallel across the sequence, but sequential through the layers. Want deeper reasoning? Pay linear memory cost.
+
+![Linear memory vs constant memory DEQ](../visualizations/media/images/ch7_three_projects/Scene3_MemoryProblem.png)
+
+Deep Equilibrium (DEQ) models offer an alternative: instead of stacking L different layers, iterate a single layer f until convergence.
 
 ```
-x_{t+1} = f(x_t)   for t = 0, 1, 2, ...
+x_{t+1} = f(x_t) for t = 0, 1, 2, ...
 ```
 
-Instead of stacking L layers, you apply the same block f repeatedly until the representation stops changing — until it reaches an **attractor** state. This decouples effective depth from memory: you can iterate for hundreds of steps while only storing the final state (using a mathematical trick called implicit differentiation).
+The representation converges to a fixed point — an attractor. You can iterate for hundreds of steps while storing only the final state (using implicit differentiation for gradients). Memory becomes constant in depth.
 
-This is the idea behind the paper *"Solve the Loop"* (Fein-Ashley & Rashidinejad, USC, 2025), which shows that attractor models match or exceed standard transformers at language modeling, reasoning (Sudoku, ARC-AGI), and in-context learning — while using constant memory.
+But the standard DEQ still processes vectors. It doesn't have geometric structure built in. The model must learn from scratch that rotations should compose, that distances matter, that the space has metric structure.
 
-#### Adding Geometric Algebra
+**The GA Opportunity:**
 
-The **gattrlm** extension adds Clifford algebra layers directly into the DEQ iteration block. Instead of processing plain vectors, the model processes **multivectors** — complete geometric objects with scalar, vector, bivector, and trivector components.
+What if the DEQ iteration operated on multivectors instead of vectors? Each state would be a complete geometric object with scalar, vector, bivector, and trivector components. The fixed point would be a geometric equilibrium, not just a numerical one.
 
 The DEQ block becomes a chain of geometric operations:
-1. **RotorLayer**: learns bivector coefficients and applies the sandwich product R·x·R̃, giving the model built-in rotation equivariance
-2. **CliffordLinear**: channel mixing that preserves blade structure across the multivector components
-3. **GeometricProductLayer**: computes the geometric product of x with itself (quadratic self-interaction), creating cross-blade terms without adding parameters
-4. **BladeSelector**: learns which geometric grades to amplify or suppress — effectively letting the model decide what kind of geometric information matters for each task
+- **RotorLayer**: learns bivector coefficients, applies R · x · R̃
+- **CliffordLinear**: channel mixing that preserves blade structure
+- **GeometricProductLayer**: computes x · x for quadratic self-interaction
+- **BladeSelector**: learns which grades to amplify or suppress
 
-The result is an architecture with **built-in geometric priors** that would require extensive data augmentation for standard networks to learn.
+The geometry is built in. The model doesn't learn that rotations compose — it operates in an algebra where they must.
 
-#### Conformal Geometric Algebra for 3D Reasoning
+**What We Built:**
 
-The gattrlm project also implements **Cl(4,1) Conformal Geometric Algebra (CGA)**, which extends 3D Euclidean space into a 5D Minkowski-like space. CGA can represent spheres, circles, planes, and lines as **grade-1 multivectors** — the same type of object as a point. This means:
-- Intersection of two spheres = geometric product, no special-case code
-- Translation and rotation = same operation (a rotor), no separate matrix and vector
-- Rigid motions = screw rotors combining rotation and translation in a single step
+**gattrlm** adds Clifford algebra layers to the DEQ framework. Instead of iterating vector transformations, we iterate geometric transformations.
 
-For language models that need to reason about physical space — describing a scene, following navigation instructions, or manipulating objects — this unified representation could be transformative.
+The implementation uses Cl(8,0,0) — 256-dimensional multivectors — for language experiments. But the project also implements Cl(4,1) Conformal Geometric Algebra (CGA) for 3D reasoning tasks.
 
-**What gattrlm taught us:** GA isn't just about replacing operations in existing architectures. It enables entirely new model designs where geometry is built in from the ground up — and the DEQ framework gives you constant memory regardless of how deep the geometric reasoning goes.
+CGA is remarkable: points, spheres, planes, and lines are all grade-1 multivectors in a 5D Minkowski space. A rotation and a translation are the same operation (a rotor). Intersections become geometric products.
+
+For language models that need spatial reasoning — understanding "left of the red chair," navigating from descriptions, manipulating objects — this unified representation is powerful.
+
+**What gattrlm Taught Us:**
+
+GA enables new architectures, not just better operations within old ones. The DEQ framework gives constant memory regardless of effective depth. Adding GA gives built-in geometric priors that would require massive data augmentation to learn.
+
+The combination is potent: unbounded effective depth with geometric structure at every iteration. The model can "think longer" without paying memory costs, and its thoughts are geometrically structured from the first iteration.
 
 ---
 
-### 6.3 gamuon: GA Reformulation of the Muon Optimizer
+### The Problem of Geometric Optimization
 
-The third project, **gamuon**, takes GA in a completely different direction — not into the model architecture, but into the **optimizer**.
+**The Problem:**
 
-#### What is Muon?
+Training neural networks is optimization: find weights that minimize loss. The optimizer's job is to propose weight updates based on gradients.
 
-The Muon optimizer (from the Grok paper, 2024) is a recent innovation in training large language models. It's based on a theoretical insight: the gradient signal in neural network training can be understood as a matrix structure, and the optimal update is related to the **orthogonalization** of that structure.
+Standard optimizers (Adam, SGD) treat weights as raw numbers. They don't know that a weight matrix might represent a rotation, or that certain directions in parameter space are more "natural" than others.
 
-Muon works by computing the **matrix sign function** of the gradient — essentially asking "what is the nearest orthogonal matrix to this gradient?" — and using that as the update direction. This is related to Newton's method but much cheaper computationally.
+The Muon optimizer (from the Grok paper, 2024) takes a step toward geometric awareness. It computes the matrix sign function of the gradient — the nearest orthogonal matrix — and uses that as the update direction. This respects the structure of linear transformations better than raw gradient descent.
 
-For language models, Muon has been shown to train significantly faster than Adam (the standard optimizer), especially at scale.
+But matrix sign functions are... matrix operations. They don't generalize to higher-order tensors, they don't unify with scalar or vector updates, and they don't explicitly use the geometric structure of the parameter space.
 
-#### Reformulating with GA
+**The GA Opportunity:**
 
-The key insight of **gamuon** is that the matrix sign function — the core computational primitive of Muon — is actually a **geometric operation**. Orthogonal matrices are rotors (in even dimensions). The sign function is related to the polar decomposition, which in GA terms is the decomposition of a multivector into a rotor times a positive definite factor.
+Orthogonal matrices are rotors in even dimensions. The matrix sign function is a geometric operation hiding in linear algebra notation.
 
-Gamuon reformulates the entire Muon optimizer using Geometric Algebra:
+In GA terms:
 - Gradients are multivectors in the Clifford algebra of the weight space
-- The matrix sign function becomes a geometric function on multivectors
-- The orthogonal constrain behaves naturally under the geometric product
+- The sign function becomes a geometric function on multivectors
+- Orthogonality is natural under the geometric product
+- The same operation works for scalars, vectors, matrices, and higher-order structures
 
-This reformulation offers several potential advantages:
-- **Natural gradient structure**: GA captures the manifold structure of the optimization landscape more faithfully
-- **Unified treatment**: the same operations work for scalars, vectors, matrices, and higher-order weight structures — no special cases
-- **Differentiable metric**: the geometric product naturally respects the metric of the parameter space
+The polar decomposition — gradient = rotor × positive-definite — is explicit in GA. The rotor component is the "direction" of the update. The positive-definite component is the "magnitude."
 
-The project is in its early stages, but the core idea is compelling: if the optimal update in neural network training is a geometric operation, it should be expressed in the language of geometry.
+**What We Built:**
 
-**What gamuon teaches us:** GA isn't just about model architecture. It's a mathematical framework that can reshape how we think about training, optimization, and learning dynamics at every level.
+**gamuon** reformulates Muon using Geometric Algebra. The core computation — finding the geometrically natural update direction — becomes a multivector operation.
 
-### 6.4 The Integrated Stack
+Instead of:
+- Special-casing matrices vs vectors vs scalars
+- Computing SVD for the sign function
+- Working in coordinates
 
-The three projects are not independent experiments. They form a coherent progression toward a full Geometric Algebra-native language model:
+We have:
+- Unified multivector gradients
+- Geometric sign function via rotor extraction
+- Natural metric structure from the geometric product
 
-```mermaid
-flowchart TD
-    subgraph Data["Training Data"]
-        D[Token sequences]
-    end
+The project is early-stage. We haven't trained a 70B parameter model with gamuon yet. But the theoretical foundation is compelling: if the optimal update is geometric, the optimizer should speak geometric algebra.
 
-    subgraph Opt["Optimization Layer"]
-        G[gamuon\n(GA-native optimizer)]
-    end
+**What gamuon Teaches Us:**
 
-    subgraph Arch["Architecture Layer"]
-        F[gaflowlm\n(Rotor flow matching)]
-        A[gattrlm\n(Clifford attractor DEQ)]
-    end
+GA applies at every level of the stack: architecture (gattrlm), generation (gaflowlm), and optimization (gamuon). It's not just a technique for model design — it's a mathematical framework for understanding learning itself.
 
-    subgraph LM["GA-Native LM"]
-        L[Full multivector\nattention + rotors]
-    end
-
-    D --> F
-    D --> A
-    G --> F
-    G --> A
-    F --> L
-    A --> L
-
-    style L fill:#e6f3ff,stroke:#0066cc
-```
-
-**How they connect:**
-
-- **gamuon** provides the training foundation — a geometrically principled optimizer that works on multivector weights.
-- **gaflowlm** explores continuous generative modeling with rotors instead of SLERP, giving us better geometric signals during training.
-- **gattrlm** tests an entirely different backbone (attractors + Clifford layers) that could eventually replace transformers.
-
-The long-term vision is that a future model could use **gamuon** for training, **Clifford Frame Attention** (from the multivector hypothesis) for the core mechanism, and either flow or attractor dynamics depending on the task. All three projects are building pieces of the same geometric vocabulary.
+The gradient of a loss function with respect to multivector weights has grade structure. The update direction should respect that structure. Gamuon is a step toward optimizers that understand the geometry of what they're optimizing.
 
 ---
 
+### Toward Integration
+
+The three projects attack different problems:
+
+| Project | Layer | Problem | GA Solution |
+|---------|-------|---------|-------------|
+| gaflowlm | Generation | Hidden bivector information | Keep full multivector, regularize geometry |
+| gattrlm | Architecture | Linear memory with depth | DEQ + Clifford layers, constant memory |
+| gamuon | Optimization | Coordinate-based updates | Multivector gradients, geometric sign function |
+
+![Integrated GA stack](../visualizations/media/images/ch7_three_projects/Scene4_IntegratedStack.png)
+
+They're not independent. They form a vision of a GA-native language model:
+
+- **gamuon** trains the weights with geometric awareness
+- **gattrlm** provides a backbone with built-in geometric priors and constant memory depth
+- **gaflowlm** shows how to generate with rotors, keeping geometric information visible
+
+The missing piece — Clifford Frame Attention — connects the geometry of individual tokens to the relationships between them. That's Chapter 8.
+
+---
