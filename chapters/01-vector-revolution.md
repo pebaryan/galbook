@@ -51,6 +51,26 @@ king - man + woman ≈ queen
 
 You're performing a **geometric transformation** in meaning space. The relationship "royalty with gender flipped" is captured as a direction you can add or subtract.
 
+### The Vocabulary Problem
+
+Word embeddings have a serious limitation: **out-of-vocabulary words**. If your training corpus never contained "cryptocurrency," your model has no vector for it. Every new proper noun, technical term, or misspelling becomes an unknown token.
+
+This hits harder than you'd expect. Language follows Zipf's law: a few words appear constantly, but most appear rarely. Your vocabulary of 50,000 words might cover 95% of tokens, but the remaining 5% includes millions of distinct words. In practice, word-level models face unknown tokens constantly.
+
+The solution was **subword tokenization**. Instead of embedding whole words, modern models embed smaller pieces. BERT uses WordPiece; GPT uses Byte-Pair Encoding (BPE). These algorithms learn to split words into frequent substrings:
+
+```
+"cryptocurrency" -> ["crypto", "##currency"]
+"unhappiness" -> ["un", "##happy", "##ness"]
+"ChatGPT" -> ["Chat", "##G", "##PT"]
+```
+
+Now the model can represent any word by composing subword vectors. A word it has never seen can still be understood from its parts. This is **compositionality through addition**: the vector for "cryptocurrency" becomes the sum of "crypto" and "currency" vectors.
+
+But notice what happened. We replaced atomic word vectors with composite representations. The embedding for a word is no longer a single point in space—it's a *sum* of vectors. We moved from representing words as points to representing them as expressions.
+
+Geometric Algebra will take this insight further.
+
 ### The Power and the Problem
 
 Vectors capture meaning through their *positions and directions*. Language models— the things that power ChatGPT, Claude, Gemini—are built on this foundation. They take sequences of these word-vectors and learn to predict what comes next.
