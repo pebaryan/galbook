@@ -19,6 +19,8 @@ When neural networks entered the picture, the first approach was **one-hot encod
 
 Bag-of-words and TF-IDF improved on this by weighting words according to how important they were in a document, but they still treated words as independent atomic symbols. There was no geometry, no relationships, and no way to capture that "king" and "queen" share something meaningful.
 
+![One-Hot vs TF-IDF](../visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png)
+
 This was the world before the vector revolution.
 
 ### The Vector Revolution
