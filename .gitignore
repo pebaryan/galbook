@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Manim intermediate frames (keep only final referenced images)
+visualizations/media/images/*/
+
+# But keep the specific referenced files (we'll manage these manually)
+!visualizations/media/images/ch1_onehot_tfidf/OneHotVsTFIDF0782.png
+!visualizations/media/images/ch1_vector_revolution/Scene2_2DEmbeddingSpace0294.png
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
