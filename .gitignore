@@ -34,6 +34,12 @@ visualizations/media/videos/*/*.mp4
 !visualizations/media/images/ch4_rotors/Scene5_RotorVsMatrix.png
 !visualizations/media/images/ch4_rotors/Scene6_RotorInterpolation.png
 
+# Chapter 5 attention mechanism
+!visualizations/media/images/ch5_attention/Scene1_QueryKeyValue.png
+!visualizations/media/images/ch5_attention/Scene2_AttentionScores.png
+!visualizations/media/images/ch5_attention/Scene3_MultiHeadAttention.png
+!visualizations/media/images/ch5_attention/Scene4_LimitationVsGA.png
+
 # OS files
 .DS_Store
 Thumbs.db
