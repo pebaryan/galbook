@@ -11,7 +11,7 @@ This book's projects aren't just separate experiments. They're **probes** into a
 - **gaflowlm**: Rotor primitives are mathematically correct. The CFS track is promising. But no language modeling win yet.
 - **gattrlm**: Clifford attention provides free equivariance. But text quality is neutral or slightly worse.
 - **gamuon**: Negative result. The rotor exponential is too expensive; slower than AdamW with worse convergence.
-- **gatoken**: Early implementation. No production comparisons yet.
+- **gatoken**: **Positive results under review.** A FLORES-101 benchmark across 12 languages demonstrates that the geometric merge prior significantly improves cross-linguistic tokenization parity. The exact numbers are withheld while the paper is under peer review.
 - **bbt GA diffusion**: The only project with a real, published metric (PPL 1.723 at 1B tokens). But the model is tiny and the task is small.
 
 ---
@@ -23,7 +23,7 @@ This book's projects aren't just separate experiments. They're **probes** into a
 | 1 | **gamuon** | **Negative result** | Grade-aware optimizer. The training signal should respect geometry — rotors for rotations, separate control over scaling and strain. | Benchmarked on wikitext-2 and bbt 16L dim16. 6× slower than Adam with worse convergence. The `torch.matrix_exp` bottleneck dominates. |
 | 2 | **gaflowlm** | RHF validated; CFS active | Rotor-based flow matching. Replaces trigonometric sphere operations with a unified algebraic framework. | RHF is numerically identical to SLERP. CFS has clean flow loss but not competitive LM quality. |
 | 3 | **gattrlm** | Prototyped | GA-native architecture. DEQ models with built-in rotors, geometric products, and blade selection. Constant memory regardless of reasoning depth. | Equivariance is proven on synthetic tasks. Text quality is neutral or slightly worse. |
-| 4 | **gatoken** | Early implementation | Geometric tokenization. Rotor-guided merging reduces language bias. | Cl(3,0) engine is correct. No benchmark comparisons yet. |
+| 4 | **gatoken** | **Positive results under review** | Geometric tokenization. Rotor-guided merging reduces language bias. | FLORES-101 benchmark across 12 languages shows improved parity. Exact numbers withheld pending peer review. No downstream LM evaluation yet. |
 | 5 | **bbt GA diffusion** | Proven at small scale | Byte-level GA diffusion. 16L dim16 model reaches PPL 1.723 on TinyStories at 1B tokens. | **The only real metric in this book.** Small scale, simple task. |
 
 These projects share a **consistent geometric vocabulary** — the same rotors, the same Clifford engine, the same multivector layout. But they are not yet an integrated stack. They are independent experiments.
@@ -42,7 +42,7 @@ This is the section that every research book needs but few include. What have we
 
 **gamuon has not proven that GA optimization beats standard methods.** The grade decomposition, rotor exponential, and versor sandwich are all implemented. Benchmarks on wikitext-2 and bbt 16L dim16 show that Gamuon is **6× slower than Adam** with **worse convergence**. The `torch.matrix_exp` bottleneck on the rotor exponential dominates the step cost. Unless a faster rotor approximation is found, the theoretical elegance is not enough to justify the practical cost.
 
-**gatoken has not proven that geometric tokenization reduces bias.** The Cl(3,0) engine is correct. The merge logic runs. But the 49-sentence test set is tiny. No comparison against sentencepiece, tiktoken, or other production tokenizers exists.
+**gatoken has positive results under review.** A FLORES-101 benchmark across 12 languages shows that the geometric merge prior improves cross-linguistic tokenization parity. The exact numbers are withheld while the paper is under peer review. The limitations remain: the training data is small (50–100 sentences per language vs billions for production tokenizers), the absolute efficiency tradeoff exists (English fertility is higher than GPT-2), and there is **no downstream evaluation** — we measure token counts, not model quality. Whether fairer tokenization leads to better cross-lingual LM performance is still open.
 
 **bbt GA diffusion has proven that GA can train at the byte level, but not that it scales.** PPL 1.723 at 1B tokens is real. But the model is 16L dim16 — tiny. The task is TinyStories — relatively easy. The gap to frontier models is enormous.
 
@@ -66,7 +66,7 @@ The roadmap is now **conditional**. Each step depends on the previous step showi
 **Immediate (next 3 months):**
 
 - **bbt GA diffusion**: Scale to 5B tokens. Evaluate on a held-out test set with proper bootstrap confidence intervals. Compare against a standard AR baseline at the same model size.
-- **gatoken**: Benchmark against sentencepiece on a SEA-language corpus. Measure fertility, tokens/char, and downstream model performance.
+- **gatoken**: Downstream evaluation. The parity improvement is demonstrated in a paper under review. The next step is training a small LM on geometrically tokenized text and comparing against the same LM on standard tokenization.
 - **gaflowlm**: CFS with proper cross-entropy training. The current flow objective is not a standard LM metric. Train a CFS model to minimize actual token perplexity.
 
 **Medium-term (6-12 months):**

@@ -64,7 +64,11 @@ The result is a rotor-guided tokenizer that makes geometrically informed subword
 
 The implementation is early. The Cl(3,0) geometric product is correct and unit-tested (15 sign errors were fixed in the initial version). The rotor-guided merging runs on synthetic benchmarks.
 
-But there are **no production comparisons yet** against sentencepiece, tiktoken, or other standard tokenizers. The fertility numbers shown above are from a small 49-sentence test set. Whether the geometric approach scales to corpus-level tokenization and whether it actually reduces cross-language bias remains to be tested.
+**A FLORES-101 benchmark across 12 languages demonstrates that the geometric merge prior significantly improves cross-linguistic tokenization parity.** The parity improvement is consistent across both small and matched vocabularies, and across multiple metrics including tokens-per-word and characters-per-token. The exact numbers are withheld while the paper is under peer review.
+
+But the limitations remain: the training data is small (50–100 sentences per language vs billions for production tokenizers), the absolute efficiency tradeoff exists (English fertility is higher than GPT-2), and there is **no downstream evaluation** — we measure token counts, not model quality. Whether fairer tokenization leads to better cross-lingual LM performance is still open.
+
+Whether the geometric approach scales to corpus-level tokenization and whether it actually improves downstream model performance remains to be tested.
 
 ---
 

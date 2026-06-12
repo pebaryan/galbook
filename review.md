@@ -21,7 +21,7 @@ Long-term goal: Create components (optimizer + generative backbone + memory-effi
 | **gamuon** | Training foundation | Exact, grade-aware optimizer. Drop-in upgrade for any PyTorch model. | **Negative result**: 6× slower than Adam with worse convergence on wikitext-2 and bbt 16L dim16 |
 | **gaflowlm** | Generative / flow-based modeling | Replaces trig-based spherical flows with rotor sandwiches and Clifford attention. | RHF validated; CFS active research |
 | **gattrlm** | Efficient deep reasoning | Attractor models (DEQ) with GA layers. Constant memory, built-in equivariance. | Prototype; equivariance proven, text neutral |
-| **gatoken** | Tokenization | Rotor-guided subword tokenization. Reduces language bias. | Early implementation |
+| **gatoken** | Tokenization | Rotor-guided subword tokenization. Reduces language bias. | **Positive results under review** — FLORES-101 benchmark across 12 languages shows improved parity. Exact numbers withheld pending peer review. |
 | **bbt** | Byte-level efficiency | Single-GPU stack. GA diffusion track reaches PPL 1.723 at 1B tokens. | Proven at small scale |
 
 Connections:
@@ -45,7 +45,7 @@ Connections:
 
 6. **Hybrid/Alternative GA Signatures** — Beyond Cl(3,0)/Cl(4,1): projective GA, spacetime algebras, custom signatures for language. Efficiency optimizations for sparse multivectors or hardware-aware GPU kernels.
 
-7. **Frontier Reasoning & Scientific Tasks** — No results on advanced math, code, physics simulation, or agentic benchmarks. The strongest published metric is bbt GA diffusion at PPL 1.723 on TinyStories (small scale).
+7. **Frontier Reasoning & Scientific Tasks** — No results on advanced math, code, physics simulation, or agentic benchmarks. The strongest published metric is bbt GA diffusion at PPL 1.723 on TinyStories (small scale). gatoken has positive results under review on FLORES-101 parity.
 
 ---
 
@@ -55,7 +55,7 @@ Connections:
 >
 > *"He's essentially asking: 'What if we stopped treating neural nets as bags of matrices and started treating them as geometric objects in a proper algebra?' The repos are his working prototypes for that worldview."*
 >
-> *"The honest framing is important: most of these are prototypes or negative results, not proven wins. The strongest result is the bbt byte-level diffusion (PPL 1.723). gamuon is a negative result — the rotor exponential is too expensive for standard LM training. The rest is theoretical elegance waiting for empirical validation."*
+> *"The honest framing is important: most of these are prototypes or negative results, not proven wins. The strongest published metric is bbt byte-level diffusion (PPL 1.723). gatoken has positive results under review on FLORES-101 parity. gamuon is a negative result — the rotor exponential is too expensive for standard LM training. The rest is theoretical elegance waiting for empirical validation."*
 
 ---
 
