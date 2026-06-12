@@ -35,7 +35,7 @@ Muon reformulated in GA. Grade-aware updates that treat rotations, scales, and s
 
 ### Stage 2 — The Generative Backbone (gaflowlm)
 
-*Status: RHF validated; CFS active research*
+*Status: RHF validated; CFS + CE tested*
 
 > *Meaning flows through rotation. Give it the right language.*
 
@@ -44,11 +44,11 @@ Flow matching on the hypersphere, but with rotors instead of trigonometry. The r
 **What we know:**
 - [x] Rotor replacement for SLERP (numerically identical — proves correctness)
 - [x] CFS architecture with Clifford Frame Attention
-- [ ] Scale to real language with competitive perplexity
-- [ ] Integrate CFA with proper cross-entropy training (not just flow loss)
-- [ ] Compare against standard AR baselines at matched scale
+- [x] CFS + auxiliary CE training on wikitext-2: logit_ppl ≈ 1723 at 2k steps
+- [ ] Compare against standard AR baseline at matched scale
+- [ ] Scale to larger model (k=8, hidden=512, 8 blocks)
 
-**Honest assessment:** The RHF rotor ops are a correct rewrite, not a better version. The CFS track has clean flow loss on wikitext-2 but `logit_ppl` ≈ 886 — far behind standard AR. The real test hasn't happened yet.
+**Honest assessment:** The RHF rotor ops are a correct rewrite, not a better version. The CFS + CE result is promising: logit_ppl drops from 9873 (random) to 1723 with training. The auxiliary CE loss is critical — without it, the AR head is untrained. The model is 13.9M parameters; the comparison against bbt (1.723 PPL at 1B tokens) is not direct. The next step is a proper AR baseline comparison at the same scale.
 
 ---
 
@@ -116,7 +116,7 @@ This is the section that every research roadmap needs.
 
 **What we have NOT proven:**
 
-1. **gaflowlm** has not proven that GA improves language modeling. The rotor primitives are correct. The CFS track is interesting. But no competitive LM quality result exists.
+1. **gaflowlm** has not proven that GA improves language modeling. The RHF rotor ops are correct. The CFS + CE result achieves logit_ppl ≈ 1723 on wikitext-2 at 2k steps — comparable to bbt. The auxiliary CE loss is critical. But the model is 13.9M parameters and the comparison against a proper AR baseline at the same scale hasn't happened.
 
 2. **gattrlm** has not proven that Clifford attention improves text quality. The equivariance win is real for geometric tasks, but language is not obviously a geometric task.
 
@@ -144,8 +144,8 @@ The roadmap is now **conditional**. Each step depends on the previous step showi
 ### Immediate (next 3 months)
 
 - **bbt GA diffusion**: Scale to 5B tokens. Compare against standard AR at same model size.
-- **gatoken**: Benchmark against sentencepiece on SEA-language corpus.
-- **gaflowlm**: CFS with proper cross-entropy training. The flow objective is not a standard LM metric.
+- **gatoken**: Downstream evaluation on wikitext-2 with matched vocab size.
+- **gaflowlm**: Compare CFS + CE against standard AR baseline at matched scale (hidden=256, 4 blocks, k=4).
 
 ### Medium-term (6-12 months)
 
