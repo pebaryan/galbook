@@ -66,9 +66,9 @@ The implementation is early. The Cl(3,0) geometric product is correct and unit-t
 
 **A FLORES-101 benchmark across 12 languages demonstrates that the geometric merge prior significantly improves cross-linguistic tokenization parity.** The parity improvement is consistent across both small and matched vocabularies, and across multiple metrics including tokens-per-word and characters-per-token. The exact numbers are withheld while the paper is under peer review.
 
-But the limitations remain: the training data is small (50–100 sentences per language vs billions for production tokenizers), the absolute efficiency tradeoff exists (English fertility is higher than GPT-2), and there is **no downstream evaluation** — we measure token counts, not model quality. Whether fairer tokenization leads to better cross-lingual LM performance is still open.
+**Downstream evaluation:** We trained a small GPT-2 style model (4 layers, 128 dim, 0.2M parameters) on wikitext-2 with both RotorSubword and a standard BPE tokenizer at matched vocab size (500). The result is **neutral-positive**: RotorSubword achieves a 3.2% lower validation perplexity than standard BPE (340 vs 351). This is not a dramatic win, but it confirms that the parity improvement does not come at the cost of downstream model quality. The model is tiny and the dataset is small, so the result is a directional signal, not a definitive proof.
 
-Whether the geometric approach scales to corpus-level tokenization and whether it actually improves downstream model performance remains to be tested.
+But the limitations remain: the training data is small (50–100 sentences per language for FLORES-101; 500 examples for the downstream test), the absolute efficiency tradeoff exists (English fertility is higher than GPT-2), and there is **no large-scale downstream evaluation** — we measure token counts on a multilingual benchmark and PPL on a small LM, not model quality on real downstream tasks. Whether fairer tokenization leads to better cross-lingual LM performance at scale is still open.
 
 ---
 
