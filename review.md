@@ -19,7 +19,7 @@ Long-term goal: Create components (optimizer + generative backbone + memory-effi
 | Repo | Role | What it contributes | Status |
 |------|------|---------------------|--------|
 | **gamuon** | Training foundation | Exact, grade-aware optimizer. Drop-in upgrade for any PyTorch model. | **Negative result**: 6× slower than Adam with worse convergence on wikitext-2 and bbt 16L dim16 |
-| **gaflowlm** | Generative / flow-based modeling | Replaces trig-based spherical flows with rotor sandwiches and Clifford attention. | RHF validated; CFS + CE tested. Auxiliary CE achieves logit_ppl ≈ 1723 on wikitext-2. Next: compare against AR baseline. |
+| **gaflowlm** | Generative / flow-based modeling | Replaces trig-based spherical flows with rotor sandwiches and Clifford attention. | RHF validated; CFS + CE tested. Auxiliary CE achieves logit_ppl ≈ 1723 on wikitext-2, but standard AR baseline at same scale reaches PPL 248 (7× better). Next: diagnose the gap. |
 | **gattrlm** | Efficient deep reasoning | Attractor models (DEQ) with GA layers. Constant memory, built-in equivariance. | Prototype; equivariance proven, text neutral |
 | **gatoken** | Tokenization | Rotor-guided subword tokenization. Reduces language bias. | **Positive results under review** — FLORES-101 benchmark across 12 languages shows improved parity. Exact numbers withheld pending peer review. |
 | **bbt** | Byte-level efficiency | Single-GPU stack. GA diffusion track reaches PPL 1.723 at 1B tokens. | Proven at small scale |
@@ -55,8 +55,8 @@ Connections:
 >
 > *"He's essentially asking: 'What if we stopped treating neural nets as bags of matrices and started treating them as geometric objects in a proper algebra?' The repos are his working prototypes for that worldview."*
 >
-> *"The honest framing is important: most of these are prototypes or negative results, not proven wins. The strongest published metric is bbt byte-level diffusion (PPL 1.723). gatoken has positive results under review on FLORES-101 parity. gaflowlm CFS + CE achieves logit_ppl ≈ 1723 on wikitext-2 — a promising but not yet validated result. gamuon is a negative result — the rotor exponential is too expensive for standard LM training. The rest is theoretical elegance waiting for empirical validation."*
+> *"The honest framing is important: most of these are prototypes or negative results, not proven wins. The strongest published metric is bbt byte-level diffusion (PPL 1.723). gatoken has positive results under review on FLORES-101 parity. gaflowlm CFS + CE achieves logit_ppl ≈ 1723 on wikitext-2, but a standard AR baseline at the same scale reaches PPL 248 — 7× better. gamuon is a negative result — the rotor exponential is too expensive for standard LM training. The rest is theoretical elegance waiting for empirical validation."*
 
 ---
 
-*Received May 2026. Revised June 2026 after galbook audit removed unverifiable metrics, added honest status assessment, documented gamuon negative result, and added CFS + CE downstream evaluation.*
+*Received May 2026. Revised June 2026 after galbook audit removed unverifiable metrics, added honest status assessment, documented gamuon negative result, added CFS + CE downstream evaluation, and compared against AR baseline.*

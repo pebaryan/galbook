@@ -35,15 +35,7 @@ The RHF rotor primitives are **numerically identical** to the standard trigonome
 
 The structural benefit — having access to the full bivector during training — is real but **unproven at scale**. The CFS (Clifford Flow Matching) track is the active research direction, using multivector embeddings and Clifford Frame Attention. It reaches clean flow-loss convergence on wikitext-2 but has not yet matched standard AR language modeling quality.
 
-**Update:** CFS with auxiliary cross-entropy training (flow loss + CE loss) has been tested on wikitext-2. At 2000 steps, k=4, hidden=256, 4 blocks, the model reaches **logit_ppl ≈ 1723** — comparable to the bbt GA diffusion baseline (PPL 1.723). The key finding is that the auxiliary CE loss is **critical**: without it, the AR-mode token embeddings are untrained and logit_ppl stays at ~9873. With CE, the model learns both flow matching and AR generation, and the logit_ppl drops to 1723. The model is 13.9M parameters (vs bbt's tiny 16L dim16), so the comparison is not direct, but the result confirms that CFS can train a meaningful AR head.
-
-|| Setup | AR gen_ppl | SFM ≡ RHF gen_ppl | CFS logit_ppl |
-||-------|-----------|-------------------|---------------|
-|| wikitext-2, 2k steps | **955** | 6655 | — |
-|| wikitext-2, 10k steps | **172** | 8124 | — |
-|| CFS + CE, 2k steps | — | — | **1723** |
-
-The flow objective is not directly comparable to standard perplexity. The real test — whether the bivector information enables a breakthrough on real language tasks — is still open. But the CFS + CE result shows the model is learning something: it goes from random (PPL 59k) to 1723 with training. The next step is scaling to larger models and comparing against a proper AR baseline at the same scale.
+**Update:** CFS with auxiliary cross-entropy training (flow loss + CE loss) has been tested on wikitext-2. At 2000 steps, k=4, hidden=256, 4 blocks, the model reaches **logit_ppl ≈ 1723** — but a standard AR transformer at the same scale (hidden=256, 4 blocks, 4 heads, 16.2M params) reaches **PPL 248** on the same dataset. The CFS model is **7× worse** than the AR baseline. The auxiliary CE loss is necessary for the AR head to learn anything (without it, logit_ppl stays at ~9873), but even with CE, the CFS model does not approach standard AR quality. The next step is understanding whether the gap is due to the flow objective, the multivector embedding, or the Clifford attention mechanism.
 
 ![SLERP loses bivector information](../visualizations/media/images/ch7_three_projects/Scene1_HiddenInformation.png)
 
