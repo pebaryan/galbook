@@ -82,6 +82,17 @@ Where GA pays off is **geometric tasks**. On a synthetic rotor regression task (
 | MLP (no Clifford) | 109× | 215× |
 | CliffordAttn | **4.2×** | **2.5×** |
 
+**3D Coordinate Rotation Benchmark:** A 3D coordinate rotation task tests whether Clifford attention generalizes to unseen rotation axes. The model receives a point cloud (8 points), a rotation axis, and an angle; it must predict the rotated coordinates. Training uses rotations around x, y, z axes; testing uses held-out axes (diagonal planes).
+
+With 10k training samples, 50 epochs, 4-layer, 128-dim models:
+
+| Model | Val MSE | OOD Test MSE | Gap |
+|-------|---------|--------------|-----|
+| Standard Transformer | 0.0076 | 0.4626 | 61× |
+| Clifford Attention | **0.0043** | **0.3131** | 73× |
+
+Clifford attention achieves **1.8× lower val MSE** and **1.5× lower OOD test MSE** than standard attention on the same architecture. The gap is consistent but not dramatic. Both models struggle with OOD generalization (test MSE is 50–70× worse than val MSE), but Clifford attention handles unseen rotation axes better.
+
 The lesson: Clifford attention is the operative component for equivariance, but it does not improve language modeling at the 140M scale. The geometric structure is free when you need it, but it costs a small penalty on text where no geometric structure is present.
 
 ---
