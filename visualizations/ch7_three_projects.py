@@ -55,8 +55,8 @@ class Scene1_HiddenInformation(Scene):
         # Result: ceiling
         ceiling = VGroup(
             Text("Result:", font_size=16),
-            Text("62.90% accuracy", font_size=16, color=RED),
-            Text("(can't see why)", font_size=14, color=GRAY)
+            Text("SLERP: grade-1 only", font_size=16, color=RED),
+            Text("(bivector discarded)", font_size=14, color=GRAY)
         )
         ceiling.arrange(DOWN, buff=0.1)
         ceiling.next_to(vector_out, RIGHT, buff=0.8)
@@ -66,8 +66,8 @@ class Scene1_HiddenInformation(Scene):
         rotor_text = VGroup(
             Text("Rotor approach:", font_size=16, color=GREEN),
             Text("Keep full multivector", font_size=14),
-            Text("→ Regularize geometry", font_size=14),
-            Text("→ 70.70% accuracy", font_size=16, color=GREEN)
+            Text("Preserve bivector plane", font_size=14),
+            Text("Same output, richer signal", font_size=16, color=GREEN)
         )
         rotor_text.arrange(DOWN, buff=0.1)
         rotor_text.to_edge(DOWN, buff=0.5)
@@ -77,9 +77,9 @@ class Scene1_HiddenInformation(Scene):
 
 
 class Scene2_Breakthrough(Scene):
-    """Scene 2: The breakthrough - bivector regularization"""
+    """Scene 2: RHF preserves full multivector structure"""
     def construct(self):
-        title = Text("The Breakthrough: Geometric Regularization", font_size=32)
+        title = Text("RHF Preserves Multivector Structure", font_size=32)
         title.to_edge(UP)
         self.add(title)
         
@@ -135,8 +135,8 @@ class Scene2_Breakthrough(Scene):
         
         # Result
         result = VGroup(
-            Text("62.90% → 70.70%", font_size=24, color=GREEN),
-            Text("Same model, better geometry", font_size=16)
+            Text("RHF = SLERP", font_size=24, color=GREEN),
+            Text("Same output, richer signal", font_size=16)
         )
         result.arrange(DOWN, buff=0.2)
         result.to_edge(DOWN, buff=0.5)

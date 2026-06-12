@@ -41,6 +41,8 @@ And in a field where connection is everything — language — that might be exa
 - **gaflowlm**: [github.com/pebaryan/gaflowlm](https://github.com/pebaryan/gaflowlm) — GA flow matching for language
 - **gattrlm**: [github.com/pebaryan/gattrlm](https://github.com/pebaryan/gattrlm) — Clifford attractor model
 - **gamuon**: [github.com/pebaryan/gamuon](https://github.com/pebaryan/gamuon) — GA reformulation of Muon optimizer
+- **gatoken**: [github.com/pebaryan/gatoken](https://github.com/pebaryan/gatoken) — GA-aware tokenization
+- **bbt**: [github.com/pebaryan/bbt](https://github.com/pebaryan/bbt) — Byte-level training with GA diffusion
 - **galbook**: [github.com/pebaryan/galbook](https://github.com/pebaryan/galbook) — This book (manuscript, roadmap, reviews)
 
 ---
@@ -49,4 +51,4 @@ The work described in these pages is still early. But every time we have given g
 
 Whether Geometric Algebra becomes the next foundational language for machine learning or remains a powerful niche tool will depend on the rigor, scale, and honesty with which we pursue it. This book is one step in that direction.
 
-*Written in May 2026, after one small victory (70.70% on Sudoku) and many questions still open.*
+*Written in June 2026. The strongest real result so far: bbt GA diffusion at 1.723 PPL on 1B tokens. The most important open question: whether that result scales.*

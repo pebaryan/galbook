@@ -157,17 +157,18 @@ V_agg = weights · V
 output = engine.geometric_product(Q, V_agg) + V_agg
 ```
 
-Current implementation lives in `gaflowlm/models/cfs_arch.py`. Full integration with training — pairing CFA with a proper cross-entropy loop — is active research.
+Current implementation lives in `gaflowlm/models/cfs_arch.py`. CFS has clean flow-loss convergence on wikitext-2 but its `logit_ppl` is far behind standard AR (Chapter 7). Full integration with a proper cross-entropy training loop is the next step.
 
 ### What the Evidence Shows
 
 The multivector hypothesis remains unproven at production scale. But three lines of research converge:
 
 1. **FGA** (Chapter 6): Transformer operations can be expressed as GA operations
-2. **gattrlm** (Chapter 7): Clifford layers improve geometric reasoning
-3. **gaflowlm** (Chapter 7): Rotor-based signals break performance ceilings
+2. **gattrlm** (Chapter 7): Clifford layers provide built-in equivariance on geometric tasks
+3. **gaflowlm** (Chapter 7): Rotor-based flow preserves bivector information during training
+4. **bbt** (Chapter 11): GA diffusion trains successfully at the byte level
 
-The pattern: replacing vector operations with GA equivalents improves data efficiency and structural awareness.
+The pattern: replacing vector operations with GA equivalents reveals structure that standard methods discard. Whether that structure translates to better language modeling is the open question.
 
 ### What This Would Mean
 

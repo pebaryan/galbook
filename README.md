@@ -20,7 +20,9 @@ An accessible book-length introduction to Geometric Algebra (GA) and its applica
 | 7 | [Three Projects](chapters/07-three-projects.md) | gaflowlm, gattrlm, gamuon — our research |
 | 8 | [The Multivector Hypothesis](chapters/08-multivector-hypothesis.md) | Language as geometric algebra |
 | 9 | [The Roadmap](chapters/09-roadmap.md) | Where we go from here |
-| 10 | [A Personal Note](chapters/10-personal-note.md) | Getting started with GA |
+| 10 | [Tokenization as Geometry](chapters/10-tokenization-as-geometry.md) | gatoken: rotor-guided tokenization |
+| 11 | [The Byte-Level Test](chapters/11-the-byte-level-test.md) | bbt: GA diffusion at the byte level |
+| 12 | [A Personal Note](chapters/12-personal-note.md) | Getting started with GA |
 
 ## Book Structure
 
@@ -28,21 +30,26 @@ The book follows a learning progression:
 
 - **Chapters 1-4**: Foundations — from familiar concepts (embeddings, attention) to GA machinery (multivectors, rotors)
 - **Chapters 5-7**: The Landscape — how GA is being applied, by others and by us
-- **Chapters 8-10**: The Hypothesis — what language might *be*, and how to test it
+- **Chapters 8-11**: The Hypothesis — what language might *be*, and how to test it
+- **Chapter 12**: Starting point — resources for readers who want to explore further
 
 ## Projects Covered
 
 This book draws on both published research and active open-source projects:
 
-- **[gaflowlm](https://github.com/pebaryan/gaflowlm)** — Rotor-based flow matching for language modeling
-- **[gattrlm](https://github.com/pebaryan/gattrlm)** — Clifford attractor models (DEQ + GA)
-- **[gamuon](https://github.com/pebaryan/gamuon)** — GA reformulation of the Muon optimizer
+| Project | Repo | Chapter | Status |
+|---------|------|---------|--------|
+| gaflowlm | [github.com/pebaryan/gaflowlm](https://github.com/pebaryan/gaflowlm) | 7 | RHF validated; CFS active research |
+| gattrlm | [github.com/pebaryan/gattrlm](https://github.com/pebaryan/gattrlm) | 7 | Prototype; equivariance proven, text neutral |
+| gamuon | [github.com/pebaryan/gamuon](https://github.com/pebaryan/gamuon) | 7 | Implemented; no benchmarks yet |
+| gatoken | [github.com/pebaryan/gatoken](https://github.com/pebaryan/gatoken) | 10 | Early implementation |
+| bbt | [github.com/pebaryan/bbt](https://github.com/pebaryan/bbt) | 11 | PPL 1.723 at 1B tokens (small scale) |
 
 And key external works: GATr (Qualcomm), GAFL (HITS), FGA (Pustejovsky), CliffordNet, and more.
 
 ## Visualizations
 
-Each chapter includes Manim visualizations (43 total across Chapters 1-9):
+Each chapter includes Manim visualizations:
 
 - Chapter 1: 7 illustrations (embeddings, Zipf's law, tokenization)
 - Chapter 2: 5 illustrations (hypersphere, SLERP, journeys)
@@ -50,13 +57,15 @@ Each chapter includes Manim visualizations (43 total across Chapters 1-9):
 - Chapter 4: 6 illustrations (rotors, sandwich product, quaternions)
 - Chapter 5: 4 illustrations (Q/K/V, attention scores, multi-head, GA comparison)
 - Chapter 6: 4 illustrations (3D symmetry, structured generation, composition)
-- Chapter 7: 4 illustrations (hidden information, breakthrough, memory, stack)
+- Chapter 7: 4 illustrations (hidden information, architecture, memory, stack)
 - Chapter 8: 4 illustrations (red car, vocabulary, rotor vs offset, CFA)
-- Chapter 9: 3 illustrations (integrated stack, roadmap, open questions)
+- Chapter 9: 3 illustrations (integrated stack, roadmap, honest assessment)
+- Chapter 10: 3 illustrations (tokenization, language bias, geometric merging)
+- Chapter 11: 3 illustrations (byte-level, diffusion, scaling test)
 
 ## Status
 
-Complete first draft (May 2026). All chapters written with full Manim illustration sets. Open to revisions based on reader feedback.
+Revised draft (June 2026). Chapter 7 was rewritten to remove an unverifiable Sudoku metric (70.70%) and replace it with an honest accounting of each project's status. Chapters 10-11 were added to cover gatoken and bbt. The roadmap (Chapter 9) is now conditional — each step depends on previous results showing real, reproducible wins.
 
 ## License
 
