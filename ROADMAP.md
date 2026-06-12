@@ -48,7 +48,7 @@ Flow matching on the hypersphere, but with rotors instead of trigonometry. The r
 - [ ] Compare against standard AR baseline at matched scale
 - [ ] Scale to larger model (k=8, hidden=512, 8 blocks)
 
-**Honest assessment:** The RHF rotor ops are a correct rewrite, not a better version. The CFS + CE result achieves logit_ppl ≈ 1723 on wikitext-2 at 2k steps, but a standard AR baseline at the same scale reaches **PPL 248** — CFS is **7× worse**. The auxiliary CE loss is necessary for the AR head to learn anything (without it, logit_ppl stays at ~9873), but even with CE, the CFS model does not approach standard AR quality. The next step is diagnosing the gap: flow objective, multivector embedding, or Clifford attention.
+**Honest assessment:** The RHF rotor ops are a correct rewrite, not a better version. The CFS + CE result achieves logit_ppl ≈ 1723 on wikitext-2 at 2k steps, but a standard AR baseline at the same scale reaches **PPL 248** — CFS is **7× worse**. The auxiliary CE loss is necessary for the AR head to learn anything (without it, logit_ppl stays at ~9873), but even with CE, the CFS model does not approach standard AR quality. Scaling to k=6/h=512 does not close the gap (PPL 1808). A diagnostic isolates the multivector embedding as the primary bottleneck: a standard transformer with multivector embeddings (k=4) reaches PPL 662 — 2.7× worse than standard embeddings. The Clifford attention adds another ∼2.6× penalty. The gap is structural, not a training artifact.
 
 ---
 
@@ -116,7 +116,7 @@ This is the section that every research roadmap needs.
 
 **What we have NOT proven:**
 
-1. **gaflowlm** has not proven that GA improves language modeling. The RHF rotor ops are correct. The CFS + CE result achieves logit_ppl ≈ 1723 on wikitext-2 at 2k steps, but a standard AR baseline at the same scale reaches **PPL 248**. CFS is **7× worse** than AR. The auxiliary CE loss is necessary but not sufficient.
+1. **gaflowlm** has not proven that GA improves language modeling. The RHF rotor ops are correct. The CFS + CE result achieves logit_ppl ≈ 1723 on wikitext-2 at 2k steps, but a standard AR baseline at the same scale reaches **PPL 248**. CFS is **7× worse** than AR. Scaling to k=6/h=512 does not close the gap (PPL 1808). A diagnostic isolates the multivector embedding as the primary bottleneck (2.7× penalty vs standard embedding); Clifford attention adds another ∼2.6×. The gap is structural, not a training artifact.
 
 2. **gattrlm** has not proven that Clifford attention improves text quality. The equivariance win is real for geometric tasks, but language is not obviously a geometric task.
 
@@ -145,7 +145,7 @@ The roadmap is now **conditional**. Each step depends on the previous step showi
 
 - **bbt GA diffusion**: Scale to 5B tokens. Compare against standard AR at same model size.
 - **gatoken**: Downstream evaluation on wikitext-2 with matched vocab size.
-- **gaflowlm**: Diagnose CFS gap. CFS + CE is 7× worse than AR baseline. Test whether the gap is due to flow objective, multivector embedding, or Clifford attention.
+- **gaflowlm**: Diagnose CFS gap. CFS + CE is 7× worse than AR baseline. Diagnostic isolates multivector embedding as primary bottleneck (2.7× penalty); Clifford attention adds another ∼2.6×. Test whether improving the multivector embedding (e.g., larger k, learnable projection) or replacing Clifford attention with standard attention can close the gap.
 
 ### Medium-term (6-12 months)
 
