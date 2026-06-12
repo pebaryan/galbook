@@ -18,7 +18,7 @@ Long-term goal: Create components (optimizer + generative backbone + memory-effi
 
 | Repo | Role | What it contributes | Status |
 |------|------|---------------------|--------|
-| **gamuon** | Training foundation | Exact, grade-aware optimizer. Drop-in upgrade for any PyTorch model. | Implemented; no benchmarks yet |
+| **gamuon** | Training foundation | Exact, grade-aware optimizer. Drop-in upgrade for any PyTorch model. | **Negative result**: 6× slower than Adam with worse convergence on wikitext-2 and bbt 16L dim16 |
 | **gaflowlm** | Generative / flow-based modeling | Replaces trig-based spherical flows with rotor sandwiches and Clifford attention. | RHF validated; CFS active research |
 | **gattrlm** | Efficient deep reasoning | Attractor models (DEQ) with GA layers. Constant memory, built-in equivariance. | Prototype; equivariance proven, text neutral |
 | **gatoken** | Tokenization | Rotor-guided subword tokenization. Reduces language bias. | Early implementation |
@@ -55,8 +55,8 @@ Connections:
 >
 > *"He's essentially asking: 'What if we stopped treating neural nets as bags of matrices and started treating them as geometric objects in a proper algebra?' The repos are his working prototypes for that worldview."*
 >
-> *"The honest framing is important: most of these are prototypes, not proven wins. The strongest result is the bbt byte-level diffusion (PPL 1.723). The rest is theoretical elegance waiting for empirical validation."*
+> *"The honest framing is important: most of these are prototypes or negative results, not proven wins. The strongest result is the bbt byte-level diffusion (PPL 1.723). gamuon is a negative result — the rotor exponential is too expensive for standard LM training. The rest is theoretical elegance waiting for empirical validation."*
 
 ---
 
-*Received May 2026. Revised June 2026 after galbook audit removed unverifiable metrics and added honest status assessment.*
+*Received May 2026. Revised June 2026 after galbook audit removed unverifiable metrics, added honest status assessment, and documented gamuon negative result.*

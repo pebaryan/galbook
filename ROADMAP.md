@@ -14,7 +14,7 @@ But the vision is **conditional**. It stands or falls based on whether GA provid
 
 ### Stage 1 — The Optimizer (gamuon)
 
-*Status: Implemented, no benchmarks*
+*Status: **Negative result***
 
 > *The training signal itself should respect geometry.*
 
@@ -24,10 +24,12 @@ Muon reformulated in GA. Grade-aware updates that treat rotations, scales, and s
 - [x] Core GA reformulation of matrix sign function
 - [x] Grade decomposition (scalar, bivector, strain)
 - [x] Rotor exponential with closed-form 2×2/3×3 and `torch.matrix_exp` fallback
-- [ ] Verification on standard LM benchmarks (perplexity match or beat Adam/Muon)
+- [x] **Benchmarked on wikitext-2 and bbt 16L dim16**
+- [x] **6× slower than Adam with worse convergence**
+- [ ] Faster rotor approximation (e.g., Newton-Schulz, truncated Taylor)
 - [ ] Integration with gaflowlm and gattrlm training loops
 
-**Open question:** Does GA optimization improve convergence speed or final quality? Theoretical elegance is not enough. We need training runs.
+**Conclusion:** The `torch.matrix_exp` bottleneck on the rotor exponential dominates the step cost. The grade-aware updates do not compensate for the compute cost. Gamuon is not competitive with AdamW for standard LM training. Unless a faster rotor approximation is found, the project is a negative result.
 
 ---
 
@@ -118,7 +120,7 @@ This is the section that every research roadmap needs.
 
 2. **gattrlm** has not proven that Clifford attention improves text quality. The equivariance win is real for geometric tasks, but language is not obviously a geometric task.
 
-3. **gamuon** has not proven that GA optimization beats standard methods. No training runs have been performed.
+3. **gamuon** has not proven that GA optimization beats standard methods. Benchmarks on wikitext-2 and bbt 16L dim16 show that Gamuon is **6× slower than Adam** with **worse convergence**. The `torch.matrix_exp` bottleneck on the rotor exponential dominates the step cost.
 
 4. **gatoken** has not proven that geometric merging reduces bias. The implementation is early. The benchmarks are tiny.
 
@@ -148,7 +150,7 @@ The roadmap is now **conditional**. Each step depends on the previous step showi
 ### Medium-term (6-12 months)
 
 - **gattrlm**: Find a task where Clifford attention improves text quality. If not on wikitext, test on geometrically structured tasks.
-- **gamuon**: Benchmark against Adam and Muon on a standard LM training run.
+- **gamuon**: Investigate faster rotor approximations (e.g., Newton-Schulz, truncated Taylor series) or accept the negative result and document it. The benchmark is done.
 - **bbt**: Mamba vs Transformer comparison at matched compute.
 
 ### Long-term (1-2 years)

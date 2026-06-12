@@ -10,7 +10,7 @@ This book's projects aren't just separate experiments. They're **probes** into a
 
 - **gaflowlm**: Rotor primitives are mathematically correct. The CFS track is promising. But no language modeling win yet.
 - **gattrlm**: Clifford attention provides free equivariance. But text quality is neutral or slightly worse.
-- **gamuon**: Theoretical foundation is solid. But no training benchmarks exist.
+- **gamuon**: Negative result. The rotor exponential is too expensive; slower than AdamW with worse convergence.
 - **gatoken**: Early implementation. No production comparisons yet.
 - **bbt GA diffusion**: The only project with a real, published metric (PPL 1.723 at 1B tokens). But the model is tiny and the task is small.
 
@@ -20,7 +20,7 @@ This book's projects aren't just separate experiments. They're **probes** into a
 
 | Stage | Project | Status | What it does | What we know |
 |-------|---------|--------|--------------|-------------|
-| 1 | **gamuon** | Prototype implemented | Grade-aware optimizer. The training signal should respect geometry — rotors for rotations, separate control over scaling and strain. | Code exists. No training runs yet. |
+| 1 | **gamuon** | **Negative result** | Grade-aware optimizer. The training signal should respect geometry — rotors for rotations, separate control over scaling and strain. | Benchmarked on wikitext-2 and bbt 16L dim16. 6× slower than Adam with worse convergence. The `torch.matrix_exp` bottleneck dominates. |
 | 2 | **gaflowlm** | RHF validated; CFS active | Rotor-based flow matching. Replaces trigonometric sphere operations with a unified algebraic framework. | RHF is numerically identical to SLERP. CFS has clean flow loss but not competitive LM quality. |
 | 3 | **gattrlm** | Prototyped | GA-native architecture. DEQ models with built-in rotors, geometric products, and blade selection. Constant memory regardless of reasoning depth. | Equivariance is proven on synthetic tasks. Text quality is neutral or slightly worse. |
 | 4 | **gatoken** | Early implementation | Geometric tokenization. Rotor-guided merging reduces language bias. | Cl(3,0) engine is correct. No benchmark comparisons yet. |
@@ -40,7 +40,7 @@ This is the section that every research book needs but few include. What have we
 
 **gattrlm has not proven that Clifford attention wins on text.** The 0.022 val loss difference on wikitext-103 is within noise. The Clifford MLP adds 4× compute for zero quality gain. The equivariance win is real but niche — it applies to geometric tasks, not language.
 
-**gamuon has not proven that GA optimization beats standard methods.** The grade decomposition, rotor exponential, and versor sandwich are all implemented. But no training runs have been performed. It is a prototype, not a validated optimizer.
+**gamuon has not proven that GA optimization beats standard methods.** The grade decomposition, rotor exponential, and versor sandwich are all implemented. Benchmarks on wikitext-2 and bbt 16L dim16 show that Gamuon is **6× slower than Adam** with **worse convergence**. The `torch.matrix_exp` bottleneck on the rotor exponential dominates the step cost. Unless a faster rotor approximation is found, the theoretical elegance is not enough to justify the practical cost.
 
 **gatoken has not proven that geometric tokenization reduces bias.** The Cl(3,0) engine is correct. The merge logic runs. But the 49-sentence test set is tiny. No comparison against sentencepiece, tiktoken, or other production tokenizers exists.
 
@@ -71,7 +71,7 @@ The roadmap is now **conditional**. Each step depends on the previous step showi
 
 **Medium-term (6-12 months):**
 - **gattrlm**: Find a task where Clifford attention improves text quality. If it can't win on wikitext, test on a geometrically structured task (e.g., synthetic reasoning with spatial relations, code with structural patterns).
-- **gamuon**: Benchmark against Adam and Muon on a standard LM training run. If GA optimization doesn't improve convergence or final loss, the theoretical elegance is not enough.
+- **gamuon**: Investigate faster rotor approximations (e.g., truncated Taylor series, Newton-Schulz iterations) or accept the negative result and document it. The benchmark is done; the question is whether the bottleneck can be removed.
 - **bbt**: Compare Mamba vs Transformer at matched compute on the same dataset. The goal is a decision memo: where Mamba is better, where it is not, and the default backbone recommendation.
 
 **Long-term (1-2 years):**

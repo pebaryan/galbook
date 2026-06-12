@@ -115,7 +115,26 @@ In GA terms:
 
 The theoretical foundation exists and is implemented. The grade decomposition (scalar, bivector, strain) is correct. The rotor exponential uses closed-form formulas for 2×2 and 3×3, and `torch.matrix_exp` for larger matrices. The versor sandwich update is implemented.
 
-But there are **no training benchmarks yet**. The project has not been validated against Adam or standard Muon on any standard language modeling task. It is a principled implementation of a compelling idea, but still a prototype.
+But the **training benchmarks are negative**. On a standard transformer trained on wikitext-2:
+
+| Optimizer | Final val loss | Time per step |
+|-----------|---------------|---------------|
+| Adam | **6.21** | 4.9 ms |
+| Muon (NS) | 6.52 | 11.0 ms |
+| Gamuon | 6.25 | **30.7 ms** |
+
+Gamuon is **6× slower than Adam** with slightly worse validation loss. The bottleneck is `torch.matrix_exp` on the rotor exponential — an iterative Padé approximation that dominates the step cost.
+
+On the bbt 16L dim16 byte-level diffusion model (TinyStories, 1000 steps):
+
+| | AdamW | GamuonAuto |
+|---|---|---|
+| step 900 loss | **3.18** | **3.83** |
+| time/step | **~16 s** | **~26 s** |
+
+Gamuon reaches **~20% worse loss** at 40% slower speed. The rotor exponential cost on many small 2D matrices (q_proj, k_proj, v_proj, o_proj, MLP layers) compounds. Additionally, GamuonAuto routes non-2D parameters (embeddings, norms, biases) to SGD, which is suboptimal for language modeling; switching to AdamW for those params did not change the outcome because the matrix_exp bottleneck dominates.
+
+**The honest assessment:** The mathematics is elegant, but the rotor exponential is too expensive for standard LM training. The grade-aware updates do not compensate for the compute cost. Unless a faster rotor approximation is found, Gamuon is not competitive with AdamW for language models.
 
 ---
 
@@ -127,7 +146,7 @@ The three projects attack different problems:
 |---------|-------|--------------|--------|
 | gaflowlm | Generation | Rotor-based flow matching, preserves bivector | Numerically validated; no LM win yet |
 | gattrlm | Architecture | DEQ + Clifford layers, constant memory | Equivariance proven; text quality neutral |
-| gamuon | Optimization | Grade-aware multivector optimizer | Implemented; no benchmarks yet |
+| gamuon | Optimization | Grade-aware multivector optimizer | **Negative result: slower than AdamW with worse convergence** |
 
 ![Integrated GA stack](../visualizations/media/images/ch7_three_projects/Scene4_IntegratedStack.png)
 
@@ -135,7 +154,7 @@ They're not yet building blocks for a unified stack. They are independent experi
 
 - **gaflowlm**: The rotor primitives work. The CFS track is promising but not yet competitive.
 - **gattrlm**: Clifford attention gives free equivariance but does not improve text quality.
-- **gamuon**: The mathematics is elegant. The training runs haven't happened yet.
+- **gamuon**: The mathematics is elegant, but the rotor exponential is too expensive for standard LM training.
 
 The missing piece — Clifford Frame Attention — connects the geometry of individual tokens to the relationships between them. That's Chapter 8.
 
