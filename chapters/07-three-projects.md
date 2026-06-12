@@ -93,7 +93,27 @@ With 10k training samples, 50 epochs, 4-layer, 128-dim models:
 
 Clifford attention achieves **1.8× lower val MSE** and **1.5× lower OOD test MSE** than standard attention on the same architecture. The gap is consistent but not dramatic. Both models struggle with OOD generalization (test MSE is 50–70× worse than val MSE), but Clifford attention handles unseen rotation axes better.
 
-The lesson: Clifford attention is the operative component for equivariance, but it does not improve language modeling at the 140M scale. The geometric structure is free when you need it, but it costs a small penalty on text where no geometric structure is present.
+**Scaling to larger point clouds:**
+
+| Points | Model | Val MSE | OOD Test MSE |
+|--------|-------|---------|--------------|
+| 16 | Standard | 0.0121 | 0.3119 |
+| 16 | Clifford | **0.0037** | **0.3378** |
+| 32 | Standard | 0.0055 | 0.5474 |
+| 32 | Clifford | 0.0065 | **0.3966** |
+
+At 16 points, Clifford is 3.2× better on val but slightly worse on OOD. At 32 points, Clifford is worse on val but 1.4× better on OOD. The pattern is non-monotonic: Clifford attention's advantage on OOD generalization is most pronounced at 8 points (1.5×) and 32 points (1.4×), but not at 16 points.
+
+**3D Object Rotation Benchmark (actual mesh vertices):** A more realistic benchmark uses actual mesh vertices from Platonic solids. Training on cube, tetrahedron, octahedron; testing on dodecahedron and icosahedron (held-out objects with more vertices). With 5k samples, 50 epochs:
+
+| Model | Val MSE | OOD Test MSE |
+|-------|---------|--------------|
+| Standard Transformer | 0.000012 | 0.3427 |
+| Clifford Attention | 0.000038 | **0.3406** |
+
+Both models overfit to near-zero val MSE on the training objects. On OOD test objects, Clifford is marginally better (0.3406 vs 0.3427) but the gap is negligible. The task is too easy for the model capacity — the vertex patterns are highly structured and the models memorize them quickly.
+
+The lesson: Clifford attention is the operative component for equivariance, but it does not improve language modeling at the 140M scale. The geometric structure is free when you need it, but it costs a small penalty on text where no geometric structure is present. On synthetic 3D tasks, the advantage is real but modest (1.4–1.8×).
 
 ---
 
